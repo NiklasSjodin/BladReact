@@ -1,13 +1,18 @@
 import './App.css'
-import { Button } from '@/components/ui/button';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './components/layout/Layout';
+import MainPage from './pages/MainPage/MainPage';
 
 function App() {
 
   return (
-		<>
-			<Button>Button</Button>
-			<Button variant='pill'>Button</Button>
-		</>
+		<Router>
+			<Routes>
+				<Route path='/' element={<Layout />}>
+					<Route index element={<MainPage />} />
+				</Route>
+			</Routes>
+		</Router>
 	);
 }
 
