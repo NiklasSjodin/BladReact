@@ -10,7 +10,7 @@ function LogInPage() {
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <Link to="/">
         <img
-            alt="Your Company"
+            alt="Our logo, blad in text"
             src={BladLogo}
             className="mx-auto h-40 w-auto"
           />
