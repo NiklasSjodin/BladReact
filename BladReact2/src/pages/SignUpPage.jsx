@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import BladLogo from '../Images/blad.png';
-import GoogleLogo from '../Images/googlelogo.webp';
+import GoogleLogo from '../images/googlelogo.png'
+import AppleLogo from '../images/applelogo.png'
 import { Link } from 'react-router-dom';
 
 export default function SignUpPage() {
@@ -131,7 +132,7 @@ export default function SignUpPage() {
           <div className="mt-6">
             <button
               type="button"
-              className="flex w-full justify-center items-center rounded-md bg-white px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm ring-1 ring-gray-300 hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
+              className="flex w-full justify-center items-center rounded-md bg-white px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
             >
               <img src={GoogleLogo} alt="Google Logo" className="h-5 w-5 mr-2" />
               Sign in with Google
@@ -144,7 +145,7 @@ export default function SignUpPage() {
               className="flex w-full justify-center items-center rounded-md bg-white px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
             >
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
+                src={AppleLogo}
                 alt="Apple Logo"
                 className="h-5 w-5 mr-2"
               />
