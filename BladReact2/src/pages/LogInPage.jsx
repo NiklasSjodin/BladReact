@@ -1,5 +1,6 @@
 import BladLogo from '../Images/blad.png';
-import GoogleLogo from '../Images/googlelogo.webp';
+import GoogleLogo from '../Images/googlelogo.png';
+import AppleLogo from '../images/applelogo.png'
 import { Link } from 'react-router-dom'; // Lägg till detta om du använder Link
 
 // Skapa en funktion för LogInPage-komponenten
@@ -99,7 +100,7 @@ function LogInPage() {
               className="flex w-full justify-center items-center rounded-md bg-white px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
             >
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
+                src={AppleLogo}
                 alt="Apple Logo"
                 className="h-5 w-5 mr-2"
               />
