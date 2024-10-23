@@ -70,6 +70,17 @@ function LogInPage() {
                 />
               </div>
             </div>
+            
+            <div className="flex items-center space-x-3 text-white font-bold">
+              <input
+              type="checkbox"
+              id="rememberMe"
+              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+              />
+              <label htmlFor='rememberMe'>
+                Remember Me
+              </label>
+            </div>
 
             <div>
               <button
