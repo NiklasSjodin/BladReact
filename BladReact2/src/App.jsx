@@ -1,25 +1,35 @@
-import './App.css'
+import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import MainPage from './pages/MainPage/MainPage';
 import LogInPage from './pages/LogInPage';
 import SignUpPage from './pages/SignUpPage';
+import Home from './pages/LoggedIn/Home';
+import ProtectedRoute from './components/layout/ProtectedRoute';
 
-function App() {
-
-  return (
+const App = () => {
+	return (
 		<>
-		<Router>
-			<Routes>
-				<Route path='/' element={<Layout />}>
-					<Route index element={<MainPage />} />
-					<Route path="login" element={<LogInPage />} />
-					<Route path="signup" element={<SignUpPage />} />
-				</Route>
-			</Routes>
-		</Router>
+			<Router>
+				<Routes>
+					<Route path='/' element={<Layout />}>
+						<Route index element={<MainPage />} />
+						<Route path='login' element={<LogInPage />} />
+						<Route path='signup' element={<SignUpPage />} />
+						{/* Skyddad rutt för Home-sidan */}
+						<Route
+							path='home'
+							element={
+								<ProtectedRoute>
+									<Home />
+								</ProtectedRoute>
+							}
+						/>
+					</Route>
+				</Routes>
+			</Router>
 		</>
 	);
-}
+};
 
-export default App
+export default App;
