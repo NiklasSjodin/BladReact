@@ -64,3 +64,61 @@
     @apply bg-background text-foreground;
   }
 }
+
+.marquee {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.marquee2 {
+  display: flex;
+  justify-content: flex-start;
+  overflow: hidden; /* Göra att bilder som lämnar skärmen döljs */
+  white-space: nowrap; /* Se till att alla bilder är i samma rad */
+}
+
+.marquee-content {
+  display: flex;
+  animation: marquee 30s linear infinite; /* För höger till vänster rullning */
+}
+
+.marquee-content2 {
+  display: flex;
+  animation: marquee2 30s linear infinite; /* För vänster till höger rullning */
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0); /* Startposition för höger till vänster */
+  }
+  100% {
+    transform: translateX(-100%); /* Flyttar hela raden med bilder utanför skärmen */
+  }
+}
+
+@keyframes marquee2 {
+  0% {
+    transform: translateX(-100%); /* Startposition för vänster till höger */
+  }
+  100% {
+    transform: translateX(0); /* Flyttar hela raden med bilder utanför skärmen */
+  }
+}
+
+.marquee-content img {
+  height: 12rem;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.marquee-content2 img{
+  height: 17rem;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
