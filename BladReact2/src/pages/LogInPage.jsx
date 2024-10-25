@@ -1,21 +1,35 @@
+import React, { useState } from 'react'; 
 import BladLogo from '../Images/blad.png';
 import GoogleLogo from '../Images/googlelogo.png';
-import AppleLogo from '../images/applelogo.png'
-import { Link } from 'react-router-dom'; // Lägg till detta om du använder Link
+import { Link } from 'react-router-dom'; 
 
-// Skapa en funktion för LogInPage-komponenten
+// Create a function for the LogInPage component
 function LogInPage() {
+  const [email, setEmail] = useState(''); // State for email
+  const [showPassword, setShowPassword] = useState(false); // State to control password visibility
+  const [emailLocked, setEmailLocked] = useState(false); // State to lock email
+
+  const handleNext = () => {
+    setShowPassword(true); // Show the password field
+    setEmailLocked(true); // Lock the email field
+  };
+
+  const handleBack = () => {
+    setShowPassword(false); // Hide the password field
+    setEmailLocked(false); // Unlock the email field
+  };
+
   return (
     <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-black">
+      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-red-900">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <Link to="/">
-        <img
-            alt="Our logo, blad in text"
-            src={BladLogo}
-            className="mx-auto h-40 w-auto"
-          />
-        </Link>
+          <Link to="/">
+            <img
+              alt="Your Company"
+              src={BladLogo}
+              className="mx-auto h-40 w-auto"
+            />
+          </Link>
           <h2 className="mt-10 text-left text-2xl font-bold leading-9 tracking-tight text-white">
             Log in
           </h2>
@@ -30,68 +44,93 @@ function LogInPage() {
               >
                 Email address
               </label>
-              <div className="mt-2">
+              <div className="mt-2 m">
                 <input
                   id="email"
                   name="email"
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)} // Update email state
                   required
                   autoComplete="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  disabled={emailLocked} // Lock the field if email is locked
+                  className="block w-full rounded-md border-0 py-1.5 pl-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
 
-            <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-white"
-                >
-                  Password
-                </label>
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-semibold text-white hover:text-indigo-500"
+            {/* Conditionally render the password field */}
+            {showPassword && (
+              <div>
+                <div className="flex items-center justify-between">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium leading-6 text-white"
                   >
-                    Forgot password?
-                  </a>
+                    Password
+                  </label>
+                  <div className="text-sm">
+                    <a
+                      href="#"
+                      className="font-semibold text-white hover:text-indigo-500"
+                    >
+                      Forgot password?
+                    </a>
+                  </div>
+                </div>
+                <div className="mt-2">
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    required
+                    autoComplete="current-password"
+                    className="block w-full rounded-md border-0 py-1.5 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
                 </div>
               </div>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  autoComplete="current-password"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-3 text-white font-bold">
-              <input
-              type="checkbox"
-              id="rememberMe"
-              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-              />
-              <label htmlFor='rememberMe'>
-                Remember Me
-              </label>
-            </div>
+            )}
 
-            <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Log In
-              </button>
-              <div className="text-white flex justify-center pt-5 font-bold">
-                Or
+            {/* Back button to go back to the email field */}
+            {showPassword && (
+              <div>
+                <button
+                  type="button" // Use button type instead of submit
+                  onClick={handleBack} // Handle the back button click
+                  className="flex w-full justify-center rounded-md bg-gray-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"
+                >
+                  Back
+                </button>
               </div>
+            )}
+
+            {/* Next button to show password field */}
+            {!showPassword && (
+              <div>
+                <button
+                  type="button" // Use button type instead of submit
+                  onClick={handleNext} // Handle the next button click
+                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Next
+                </button>
+              </div>
+            )}
+
+            {/* Submit button for login */}
+            {showPassword && (
+              <div>
+                <button
+                  type="submit"
+                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Log In
+                </button>
+              </div>
+            )}
+
+            <div className="text-white flex justify-center pt-5 font-bold">
+              Or
             </div>
           </form>
 
@@ -111,7 +150,7 @@ function LogInPage() {
               className="flex w-full justify-center items-center rounded-md bg-white px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
             >
               <img
-                src={AppleLogo}
+                src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
                 alt="Apple Logo"
                 className="h-5 w-5 mr-2"
               />
