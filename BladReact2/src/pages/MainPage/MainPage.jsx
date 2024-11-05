@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import HeroPicture from "../../images/books.png";
 import BookCoversMarquee from '../../components/Sections/BookCoversMarquee'
 import TestMarquee from '../../components/Sections/TestMarquee'
+import Footer from "@/components/Footer/DesktopFooter";
 
 export default function MainPage() {
 
@@ -41,6 +42,7 @@ export default function MainPage() {
           direction="right"
           height="8rem"
         />
+    <Footer></Footer>
 		</>
 	);
 }
