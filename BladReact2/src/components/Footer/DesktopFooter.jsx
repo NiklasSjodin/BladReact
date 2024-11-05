@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
 	return (
-		<footer className="w-full border-t-2 border-black pt-4">
+		<footer className="w-full h-40 border-t-2 border-black pt-4">
 			<nav className="container mx-auto flex justify-between items-center">
 				<p>&copy; 2024 blad.</p>
 				<ul className="flex space-x-4">
