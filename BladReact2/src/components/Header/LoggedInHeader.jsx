@@ -28,7 +28,7 @@ export default function LoggedInHeader() {
 						<AvatarImage src='/path/to/avatar.jpg' alt='User Avatar' />
 						<AvatarFallback>U</AvatarFallback>
 					</Avatar>
-					<span>Username</span>
+					<Link to='/account'>Username</Link>
 				</div>
 			</div>
 		</header>
