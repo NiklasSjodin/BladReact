@@ -97,11 +97,11 @@ export default function SignUpPage() {
               />
               <label htmlFor="termsCheckbox">
                 By selecting Create Account below, I agree to{' '}
-                <a href="/terms" className="underline">
+                <a href="/termsofservice" className="underline" target="_blank">
                   Terms of Service
                 </a>{' '}
                 &{' '}
-                <a href="/privacy" className="underline">
+                <a href="/privacy" className="underline" target="_blank">
                   Privacy Policy
                 </a>
               </label>
