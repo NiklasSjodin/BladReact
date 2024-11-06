@@ -6,6 +6,7 @@ import LogInPage from './pages/LogInPage';
 import SignUpPage from './pages/SignUpPage';
 import Home from './pages/LoggedIn/Home';
 import ProtectedRoute from './components/layout/ProtectedRoute';
+import Library from './pages/LoggedIn/Library';
 
 const App = () => {
 	return (
@@ -22,6 +23,38 @@ const App = () => {
 							element={
 								<ProtectedRoute>
 									<Home />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='clubs'
+							element={
+								<ProtectedRoute>
+									{/* <Clubs /> */}
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='explore'
+							element={
+								<ProtectedRoute>
+									{/* <Explore /> */}
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='library'
+							element={
+								<ProtectedRoute>
+									<Library />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='account'
+							element={
+								<ProtectedRoute>
+									{/* <Account /> */}
 								</ProtectedRoute>
 							}
 						/>
