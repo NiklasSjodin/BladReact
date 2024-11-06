@@ -29,13 +29,13 @@ const UserProfile = () => {
       <div className="space-y-2">
         <MenuLink text="Profil inställningar" href="/settings" />
         <MenuLink text="Klubbar" href="/clubs" />
-        <MenuLink text="Library" href="/library" />
+        <MenuLink text="Bokhylla" href="/library" />
 
         <hr className="my-4 border-gray-700" />
 
-        <MenuLink text="Reviews" href="/reviews" />
+        <MenuLink text="Recensioner" href="/reviews" />
         <MenuLink text="Support" href="/support" />
-        <MenuLink text="Logout" href="/logout" />
+        <MenuLink text="Logga ut" href="/logout" />
       </div>
     </div>
   );

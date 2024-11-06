@@ -1,6 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 const UserProfileSettings = () => {
+  // Lägg till tillstånd för att hantera dialogens synlighet
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleCancel = () => {
+    // Stänger dialogen när användaren klickar på "Avbryt"
+    setIsDialogOpen(false);
+    console.log("Avbryt åtgärd");
+  };
+
+  const handleDelete = () => {
+    // Lägg till logik för att ta bort kontot
+    console.log("Kontot tas bort");
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 text-white px-4 py-6">
       {/* Header */}
@@ -29,7 +52,36 @@ const UserProfileSettings = () => {
       <div className="space-y-2">
         <MenuLink text="Ändra användarnamn" href="/" />
         <MenuLink text="Ändra lösenord" href="/" />
-        <MenuLink text="Ta bort konto" href="/" />
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger>
+            <MenuLink text="Ta bort konto" />
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Är du säker på att du vill ta bort ditt konto?</DialogTitle>
+              <DialogDescription>
+                Denna åtgärd kan inte ångras. Detta kommer att ta bort ditt konto permanent
+                och ta bort dina data från våra servrar.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="btn btn-secondary mr-2"
+              >
+                Avbryt
+              </button>
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="btn btn-danger"
+              >
+                Ta bort
+              </button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         <hr className="my-4 border-gray-700" />
       </div>
