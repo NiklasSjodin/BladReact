@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import HeroPicture from "../../images/books.png";
-import BookCoversMarquee from '../../components/Sections/BookCoversMarquee'
 import TestMarquee from '../../components/Sections/TestMarquee'
 import Footer from "@/components/Footer/DesktopFooter";
 
@@ -8,7 +7,7 @@ export default function MainPage() {
 
   return (
 		<>
-		<div className="flex items-center justify-between max-w-7xl mx-auto pl-32 py-24 sm:py-32 lg:py-40 bg-black">
+		<div className="flex items-center justify-between mx-auto pl-32 py-24 sm:py-32 lg:py-40 bg-black">
         <div className="text-left flex-1 pr-8">
           <h1 className="text-balance text-4xl font-bold tracking-tight text-white sm:text-6xl">
           Skapa din perfekta bokhylla och dela dina favoriter
