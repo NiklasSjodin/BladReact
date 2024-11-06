@@ -1,9 +1,11 @@
 import { Outlet, useLocation } from 'react-router-dom';
-import Footer from '../Footer/DesktopFooter';
+// import Footer from '../Footer/DesktopFooter';
 import Header from '../Header/DesktopHeader';
-import MobileHeader from '../Header/MobileHeader';
-import MainPageHeader from '../Header/MainPageHeader';
+// import MobileHeader from '../Header/MobileHeader';
+// import MainPageHeader from '../Header/MainPageHeader';
 import MobileNavbar from '../Navbar/MobileNavbar';
+import LoggedInHeader from '../Header/LoggedInHeader';
+import Footer from '../Footer/DesktopFooter';
 
 const Layout = () => {
 
@@ -11,27 +13,31 @@ const Layout = () => {
 
 
 	return (
-		<div className='flex flex-col h-screen overflow-hidden'>
+		<div className='flex flex-col min-h-screen'>
 			{location.pathname === '/login' ? (
 				<></>
+			) : location.pathname === '/' ? (
+				<div className='hidden md:block'>
+					<Header />
+				</div>
 			) : (
 				<>
 					{/* <div className='block md:hidden sm:hidden'>
 						<MobileHeader />
 					</div> */}
 					<div className='hidden md:block'>
-						<Header />
+						<LoggedInHeader />
 					</div>
 				</>
 			)}
-			<main className='flex-grow overflow-auto'>
+			<main className='flex-grow'>
 				<Outlet />
 			</main>
 			{location.pathname === '/login' ? (
 				<></>
 			) : (
 				<>
-					<div className='block lg:hidden'>
+					<div className='block lg:hidden fixed bottom-0 w-full'>
 						<MobileNavbar />
 					</div>
 					<div className='hidden md:block'>
