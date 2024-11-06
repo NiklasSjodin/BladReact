@@ -7,7 +7,7 @@ export default function MainPage() {
 
   return (
 		<>
-		<div className="flex items-center justify-between mx-auto pl-32 py-24 sm:py-32 lg:py-40 bg-black">
+		<div className="items-center justify-between px-5 lg:mx-auto lg:pl-32 py-24 sm:py-32 sm: lg:py-40 lg:flex bg-black">
         <div className="text-left flex-1 pr-8">
           <h1 className="text-balance text-4xl font-bold tracking-tight text-white sm:text-6xl">
           Skapa din perfekta bokhylla och dela dina favoriter
@@ -24,7 +24,7 @@ export default function MainPage() {
             </Link>
           </div>
         </div>
-        <div className="flex-1">
+        <div className="flex-1 hidden md:block">
           <img
             src={HeroPicture}
             alt="Description of image"
