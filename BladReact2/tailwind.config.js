@@ -57,6 +57,9 @@ module.exports = {
 				},
 				'background-burgundy': 'var(--custom-color-background-burgundy)',
 			},
+			backgroundImage: {
+				'hero-pattern': "url(/src/images/pexels-jessikaarraes-19561461.jpg)"
+			}
 		},
 	},
 	plugins: [require('tailwindcss-animate'), addVariablesForColors],
