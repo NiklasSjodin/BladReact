@@ -18,7 +18,7 @@ export default function MainPage() {
     <div className="mt-8 flex items-center gap-x-6">
       <Link
         to="signup"
-        className="rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-600 transition duration-300 ease-in-out"
+        className="rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-600 transition duration-300 ease-in-out"
       >
         Registrera dig nu  
       </Link>
