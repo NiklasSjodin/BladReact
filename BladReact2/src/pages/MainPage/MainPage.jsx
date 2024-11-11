@@ -41,7 +41,6 @@ export default function MainPage() {
           direction="right"
           height="8rem"
         />
-    <Footer></Footer>
 		</>
 	);
 }
