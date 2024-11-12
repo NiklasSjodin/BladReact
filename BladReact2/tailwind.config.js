@@ -57,6 +57,9 @@ module.exports = {
 				},
 				'background-burgundy': 'var(--custom-color-background-burgundy)',
 			},
+			fontFamily: {
+				comico: ['Comico', 'sans-serif'],
+			},
 		},
 	},
 	plugins: [require('tailwindcss-animate'), addVariablesForColors],
