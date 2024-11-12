@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 // import HeroPicture from "../../images/books.png";
 import TestMarquee from "../../components/Sections/TestMarquee";
-import Information from "../LoggedIn/InformationSection";
+import { TextParallaxContentExample } from "../../components/Sections/TextParallaxScroll";
+import Information from "../../components/Sections/InformationSection";
+import { BouncyCardsFeatures } from "@/components/Sections/BouncyCards";
 import Footer from "@/components/Footer/DesktopFooter";
 
 export default function MainPage() {
@@ -37,7 +39,9 @@ export default function MainPage() {
       {/* <BookCoversMarquee/> */}
       <TestMarquee direction="left" height="10rem" />
       <TestMarquee direction="right" height="14rem" />
+      <BouncyCardsFeatures/>
       <Information/>
+      <TextParallaxContentExample/>
       <Footer></Footer>
     </>
   );
