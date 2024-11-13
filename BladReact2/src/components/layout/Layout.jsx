@@ -16,6 +16,8 @@ const Layout = () => {
 		<div className='flex flex-col min-h-screen'>
 			{location.pathname === '/login' ? (
 				<></>
+			) : location.pathname === '/signup' ? (
+				<></>
 			) : location.pathname === '/' ? (
 				<div className='hidden md:block'>
 					<Header />
@@ -33,8 +35,9 @@ const Layout = () => {
 			<main className='flex-grow'>
 				<Outlet />
 			</main>
-			{location.pathname === '/login' ? (
-				<></>
+			{location.pathname === '/' ? (
+				<>
+				</>
 			) : (
 				<>
 					<div className='block lg:hidden fixed bottom-0 w-full'>
