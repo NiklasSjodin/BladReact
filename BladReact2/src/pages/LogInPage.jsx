@@ -36,7 +36,7 @@ function LogInPage() {
 		setIsLoading(true);
 
 		try {
-			const response = await fetch(`${API_URL}api/account/login`, {
+			const response = await fetch(`${API_URL}api/accounts/login`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -52,6 +52,7 @@ function LogInPage() {
 			if (response.ok) {
 				// Store the token in localStorage or a secure storage method
 				localStorage.setItem('token', data.token);
+				// localStorage.setItem('userEmail', data.email) // Används om vi vill visa upp email adressen på accounts settings
 				// Redirect to dashboard or home page
 				navigate('/home');
 			} else if (response.status === 423) {
