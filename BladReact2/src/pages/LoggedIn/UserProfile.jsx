@@ -1,6 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
 
 const UserProfile = () => {
+// const [userData, setUserData] = useState({email:''}) // Används om vi vill skicka med email adressen till account settings sidan
+
+// useEffect(() => {
+//   const email = localStorage.getItem("userEmail")
+
+//   if(email){
+//     setUserData({email})
+//   }
+// }, []
+// )
+
+
+
   return (
     <div className="min-h-screen bg-gray-900 text-white px-4 py-6">
       {/* Header */}
@@ -18,6 +32,7 @@ const UserProfile = () => {
         <div>
           <h2 className="text-xl font-semibold">John Doe</h2>
           <p className="text-gray-400">john.doe@example.com</p>
+          {/* {userData.email} Används om vi vill skicka med email adressen i svaret från backend */}
         </div>
       </div>
 
