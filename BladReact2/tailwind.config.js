@@ -60,6 +60,9 @@ module.exports = {
 			fontFamily: {
 				comico: ['Comico', 'sans-serif'],
 			},
+			backgroundImage: {
+				'hero-pattern': "url(/src/images/pexels-jessikaarraes-19561461.jpg)"
+			}
 		},
 	},
 	plugins: [require('tailwindcss-animate'), addVariablesForColors],

@@ -24,7 +24,7 @@ const TestMarquee = ({
   ];
 
   return (
-    <div className="my-8">
+    <div className="my-8 ">
       <MarqueeComponent 
         images={images}
         direction={direction}

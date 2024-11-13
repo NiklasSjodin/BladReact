@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -23,16 +24,17 @@ const UserProfileSettings = () => {
     // Lägg till logik för att ta bort kontot
     console.log("Kontot tas bort");
   };
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-gray-900 text-white px-4 py-6">
       {/* Header */}
       <div className="flex items-center space-x-4 mb-6">
-        <button className="text-gray-400">
+        <button className="text-gray-400" onClick={() => navigate(-1)}>
           {/* Back button */}
           <span>&larr;</span>
         </button>
-        <h1 className="text-lg font-bold">Account</h1>
+        <h1 className="text-lg font-bold">Settings</h1>
       </div>
 
       {/* User Info */}
