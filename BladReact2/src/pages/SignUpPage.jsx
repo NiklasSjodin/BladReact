@@ -2,9 +2,14 @@ import React, { useState } from 'react';
 import BladLogo from '../Images/blad.png';
 import GoogleLogo from '../images/googlelogo.png'
 import AppleLogo from '../images/applelogo.png'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function SignUpPage() {
+  function handlePageRefresh(){
+    window.location.reload()
+  }
+  const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = (e) => {
@@ -27,11 +32,22 @@ export default function SignUpPage() {
         }
             const response = await axios.post('https://localhost:7076/api/accounts/register', newUser) // POST förfrågan till vårt API
             console.log('New user created: ', response.data) // Loggar svaret om det fungerade
+
+            if (response.ok) {
+              // Store the token in localStorage or a secure storage method
+              localStorage.setItem('token', data.token);
+              // Redirect to dashboard or home page
+              navigate('/home');
+            } else if (response.status === 423) {
+              setError(data.message);
+              handleBack(); // Reset to email step when account is locked
+            } else {
+              setError(data.message);
+            }
         }catch(error){
             console.log('Error creating user: ', error) // Loggar vad som gick fel
         }
-        // refresh() // Användning av props i föräldrar komponenten, i detta fall App.jsx. Gör samma sak som koden under
-        // //window.location.reload() // Uppdaterar sidan efter att filmen har skapats
+        handlePageRefresh()
     }
 
   return (
