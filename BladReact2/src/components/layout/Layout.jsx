@@ -24,9 +24,6 @@ const Layout = () => {
 				</div>
 			) : (
 				<>
-					{/* <div className='block md:hidden sm:hidden'>
-						<MobileHeader />
-					</div> */}
 					<div className='hidden md:block'>
 						<LoggedInHeader />
 					</div>
@@ -35,12 +32,12 @@ const Layout = () => {
 			<main className='flex-grow'>
 				<Outlet />
 			</main>
-			{location.pathname === '/' ? (
+			{location.pathname === '/login' ? (
 				<>
 				</>
 			) : (
 				<>
-					<div className='block lg:hidden fixed bottom-0 w-full'>
+					<div className='block md:hidden fixed bottom-0 w-full'>
 						<MobileNavbar />
 					</div>
 					<div className='hidden md:block'>
