@@ -53,7 +53,7 @@ function LogInPage() {
 				// Store the token in localStorage or a secure storage method
 				localStorage.setItem('token', data.token);
 				// Redirect to dashboard or home page
-				navigate('/');
+				navigate('/home');
 			} else if (response.status === 423) {
 				setError(data.message);
 				handleBack(); // Reset to email step when account is locked
