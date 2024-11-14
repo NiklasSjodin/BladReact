@@ -6,9 +6,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function SignUpPage() {
-  function handlePageRefresh(){
-    window.location.reload()
-  }
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
 
@@ -28,26 +25,33 @@ export default function SignUpPage() {
         try{
             const newUser = 
         {
-            fullName, userName, email, password 
+            fullName, userName, email, password
         }
+        console.log(newUser); // Log to see if all fields are correct
             const response = await axios.post('https://localhost:7076/api/accounts/register', newUser) // POST förfrågan till vårt API
             console.log('New user created: ', response.data) // Loggar svaret om det fungerade
 
-            if (response.ok) {
+            if (response.status === 200) {
               // Store the token in localStorage or a secure storage method
-              localStorage.setItem('token', data.token);
+              localStorage.setItem('token', response.data.token);
               // Redirect to dashboard or home page
               navigate('/home');
             } else if (response.status === 423) {
-              setError(data.message);
+              setError(response.data.message);
               handleBack(); // Reset to email step when account is locked
             } else {
               setError(data.message);
             }
         }catch(error){
-            console.log('Error creating user: ', error) // Loggar vad som gick fel
+          if (error.response) {
+            console.log('Error response:', error.response.data);  // Logs backend error details
+            console.log('Error status:', error.response.status);
+          } else if (error.request) {
+            console.log('Error request:', error.request);
+          } else {
+            console.log('Error message:', error.message);
+          }
         }
-        handlePageRefresh()
     }
 
   return (
