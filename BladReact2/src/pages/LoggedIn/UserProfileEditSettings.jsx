@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Dialog,
@@ -9,35 +9,56 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
+import {jwtDecode} from "jwt-decode";
+import axios from "axios";
 
 const UserProfileSettings = () => {
-  // Lägg till tillstånd för att hantera dialogens synlighet
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [userId, setUserId] = useState(null); // Används för hämta och spara id:et
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token"); // Hämtar token från local storage
+    if (token) {
+      const decoded = jwtDecode(token); // Tar ut userid från token
+      setUserId(decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]);
+    }
+  }, []);
 
   const handleCancel = () => {
-    // Stänger dialogen när användaren klickar på "Avbryt"
     setIsDialogOpen(false);
     console.log("Avbryt åtgärd");
   };
 
-  const handleDelete = () => {
-    // Lägg till logik för att ta bort kontot
-    console.log("Kontot tas bort");
+  const handleDelete = async () => {
+    if (!userId) return;
+
+    try {
+      await axios.delete(`https://localhost:7076/api/users/${userId}`, { // Api endpoint
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Hämtar id:et från token
+        },
+      });
+      console.log("Kontot har tagits bort.");
+
+      localStorage.removeItem("token"); // Tar bort token från minnet
+
+      navigate("/");
+    } catch (error) {
+      console.error("Fel vid borttagning av kontot: ", error);
+    }
   };
-  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-gray-900 text-white px-4 py-6">
-      {/* Header */}
       <div className="flex items-center space-x-4 mb-6">
         <button className="text-gray-400" onClick={() => navigate(-1)}>
-          {/* Back button */}
           <span>&larr;</span>
         </button>
         <h1 className="text-lg font-bold">Settings</h1>
       </div>
 
-      {/* User Info */}
       <div className="flex items-center space-x-4 p-4 bg-gray-800 rounded-lg mb-4">
         <img
           src="https://via.placeholder.com/80"
@@ -50,13 +71,18 @@ const UserProfileSettings = () => {
         </div>
       </div>
 
-      {/* Menu Links */}
       <div className="space-y-2">
         <MenuLink text="Ändra användarnamn" href="/" />
         <MenuLink text="Ändra lösenord" href="/" />
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger>
-            <MenuLink text="Ta bort konto" />
+        <Dialog open={isDialogOpen} onOpenChange={(isOpen) => setIsDialogOpen(isOpen)}>
+          <DialogTrigger asChild>
+            <button
+              className="flex items-center justify-between p-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition duration-150 w-full"
+              onClick={() => setIsDialogOpen(true)}
+            >
+              <span>Ta bort konto</span>
+              <span className="text-gray-500">&gt;</span>
+            </button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
