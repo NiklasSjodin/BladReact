@@ -11,7 +11,7 @@ function LogInPage() {
 	const [emailLocked, setEmailLocked] = useState(false);
 	const [error, setError] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
-  const API_URL = 'https://localhost:7076/';
+ 	const API_URL = 'https://localhost:7076/';
 
 	const handleNext = async () => {
 		if (!email) {
@@ -36,7 +36,7 @@ function LogInPage() {
 		setIsLoading(true);
 
 		try {
-			const response = await fetch(`${API_URL}api/account/login`, {
+			const response = await fetch(`${API_URL}api/accounts/login`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

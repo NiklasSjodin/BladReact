@@ -13,7 +13,7 @@ export default function SignUpPage() {
   });
   const [isChecked, setIsChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-  const API_URL = "https://localhost:7076/api/account/register";
+  const API_URL = "https://localhost:7076/api/accounts/register";
 
   // Hantera ändringar i formulärfälten
   const handleChange = (e) => {
