@@ -1,5 +1,7 @@
+export default TrendingBooks;
+
 import { useEffect, useState } from 'react';
-import { fetchTrendingBooks } from '../../services/booksService';
+import { FetchBooks } from '../../services/booksService';
 import ScrollableContainer from '../Sections/ScrollableContainer';
 import { SectionHeader } from '../Sections/SectionHeader';
 import BookCard from '../BookCard';
@@ -9,7 +11,7 @@ export const TrendingBooks = () => {
 
 	useEffect(() => {
 		const loadBooks = async () => {
-			const fetchedBooks = await fetchTrendingBooks();
+			const fetchedBooks = await FetchBooks();
 			setBooks(fetchedBooks);
 		};
 		loadBooks();
@@ -28,8 +30,6 @@ export const TrendingBooks = () => {
 					/>
 				))}
 			</ScrollableContainer>
-			<SectionHeader title='Vänner (aktivitet)' viewAllLink='#' />
-			<SectionHeader title='Klubbar (aktivitet)' viewAllLink='#' />
 		</div>
 	);
 };

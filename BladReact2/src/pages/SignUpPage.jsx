@@ -8,6 +8,8 @@ import axios from 'axios';
 export default function SignUpPage() {
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const API_URL = "https://localhost:7076/api/accounts/register";
 
   const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);
