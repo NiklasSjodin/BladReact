@@ -1,4 +1,4 @@
-export default TrendingBooks;
+export default ListBooks;
 
 import { useEffect, useState } from 'react';
 import { FetchBooks } from '../../services/booksService';
@@ -6,7 +6,7 @@ import ScrollableContainer from '../Sections/ScrollableContainer';
 import { SectionHeader } from '../Sections/SectionHeader';
 import BookCard from '../BookCard';
 
-export const TrendingBooks = () => {
+export const ListBooks = () => {
 	const [books, setBooks] = useState([]);
 
 	useEffect(() => {
