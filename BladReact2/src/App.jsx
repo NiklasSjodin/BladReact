@@ -13,6 +13,7 @@ import Library from './pages/LoggedIn/Library';
 import UserProfile from './pages/LoggedIn/UserProfile';
 import UserProfileSettings from './pages/LoggedIn/UserProfileEditSettings';
 import Support from './pages/LoggedIn/Support';
+import Clubs from './pages/LoggedIn/Clubs';
 
 const App = () => {
 	return (
@@ -43,7 +44,7 @@ const App = () => {
 							path='clubs'
 							element={
 								<ProtectedRoute>
-									{/* <Clubs /> */}
+									<Clubs />
 								</ProtectedRoute>
 							}
 						/>
