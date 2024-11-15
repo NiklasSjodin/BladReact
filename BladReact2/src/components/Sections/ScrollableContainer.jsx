@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { SectionHeader } from './SectionHeader';
 
 const ScrollableContainer = ({ children, itemWidth }) => {
 	const scrollContainerRef = useRef(null);
@@ -76,31 +77,34 @@ const ScrollableContainer = ({ children, itemWidth }) => {
 				direction === 'left' ? 'left-0 rounded-r-lg' : 'right-0 rounded-l-lg'
 			}`}
 		>
-			{direction === 'left' ? '←' : '→'}
+			{direction === 'left' ? '<' : '>'}
 		</button>
 	);
 
 	return (
-		<div
-			className='relative'
-			onMouseEnter={() => setIsHovering(true)}
-			onMouseLeave={() => setIsHovering(false)}
-		>
-			<ScrollButton direction='left' onClick={() => handleScroll('left')} />
-
+		<div className='flex flex-col'>
+			<SectionHeader title={title} viewAllLink={viewAllLink} />
 			<div
-				className='overflow-x-auto scrollbar-hide'
-				ref={scrollContainerRef}
-				style={{
-					scrollbarWidth: 'none',
-					msOverflowStyle: 'none',
-					WebkitOverflowScrolling: 'touch',
-				}}
+				className='relative'
+				onMouseEnter={() => setIsHovering(true)}
+				onMouseLeave={() => setIsHovering(false)}
 			>
-				<div className='flex'>{children}</div>
-			</div>
+				<ScrollButton direction='left' onClick={() => handleScroll('left')} />
 
-			<ScrollButton direction='right' onClick={() => handleScroll('right')} />
+				<div
+					className='overflow-x-auto scrollbar-hide'
+					ref={scrollContainerRef}
+					style={{
+						scrollbarWidth: 'none',
+						msOverflowStyle: 'none',
+						WebkitOverflowScrolling: 'touch',
+					}}
+				>
+					<div className='flex'>{children}</div>
+				</div>
+
+				<ScrollButton direction='right' onClick={() => handleScroll('right')} />
+			</div>
 		</div>
 	);
 };
