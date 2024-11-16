@@ -192,14 +192,22 @@ const BookCardSkeleton = () => (
 
 // Main Home Component
 export default function Home() {
-	const [books, setBooks] = useState([]);
+	const [popularBooks, setPopularBooks] = useState([]);
+	const [scifiBooks, setScifiBooks] = useState([]);
+	const [fantasyBooks, setFantasyBooks] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const loadBooks = async () => {
 			setIsLoading(true);
-			const fetchedBooks = await FetchBooks('', 10);
-			setBooks(fetchedBooks);
+			const [popular, scifi, fantasy] = await Promise.all([
+				FetchBooks('popular', 10),
+				FetchBooks('science fiction', 10),
+				FetchBooks('fantasy', 10)
+			]);
+			setPopularBooks(popular);
+			setScifiBooks(scifi);
+			setFantasyBooks(fantasy);
 			setIsLoading(false);
 		};
 		loadBooks();
@@ -207,31 +215,42 @@ export default function Home() {
 
 	return (
 		<PageContainer>
-			<h1 className='text-2xl font-bold text-white pt-6'>Welcome home</h1>
+			<div className="space-y-8">
+				<div className="pt-6 space-y-4">
+					<h1 className='text-3xl font-bold text-white'>Welcome to Your Library</h1>
+					<p className="text-gray-400">Discover your next favorite book</p>
+				</div>
 
-			<ScrollableContainer
-				title='Popular Books'
-				viewAllLink='/books'
-				itemWidth={192}
-			>
-				{isLoading ? (
-					// Show multiple skeleton cards while loading
-					Array.from({ length: 10 }).map((_, index) => (
-						<BookCardSkeleton key={index} />
-					))
-				) : books.length > 0 ? (
-					books.map((book) => (
-						<BookCard
-							key={book.id}
-							title={book.title}
-							author={book.author}
-							coverId={book.coverId}
-						/>
-					))
-				) : (
-					<div className="text-white">No books found</div>
-				)}
-			</ScrollableContainer>
+				<ScrollableContainer title="Popular Now" viewAllLink="/books/popular" itemWidth={192}>
+					{isLoading ? (
+						Array.from({ length: 10 }).map((_, index) => (
+							<BookCardSkeleton key={index} />
+						))
+					) : popularBooks.map((book) => (
+						<BookCard key={book.id} {...book} />
+					))}
+				</ScrollableContainer>
+
+				<ScrollableContainer title="Science Fiction" viewAllLink="/books/scifi" itemWidth={192}>
+					{isLoading ? (
+						Array.from({ length: 10 }).map((_, index) => (
+							<BookCardSkeleton key={index} />
+						))
+					) : scifiBooks.map((book) => (
+						<BookCard key={book.id} {...book} />
+					))}
+				</ScrollableContainer>
+
+				<ScrollableContainer title="Fantasy" viewAllLink="/books/fantasy" itemWidth={192}>
+					{isLoading ? (
+						Array.from({ length: 10 }).map((_, index) => (
+							<BookCardSkeleton key={index} />
+						))
+					) : fantasyBooks.map((book) => (
+						<BookCard key={book.id} {...book} />
+					))}
+				</ScrollableContainer>
+			</div>
 		</PageContainer>
 	);
 }
