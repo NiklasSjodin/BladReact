@@ -17,27 +17,28 @@ const SectionHeader = ({ title, viewAllLink }) => (
 // BookCard Component
 const BookCard = ({ title, author, coverId }) => {
 	const coverUrl = coverId
-		? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` // Changed to -M.jpg
+		? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`
 		: '/api/placeholder/150/200';
 
-	console.log('BookCard Props:', { title, author, coverId, coverUrl }); // Debug log
-
 	return (
-		<div className='flex-shrink-0 w-48 h-64 m-2 rounded-lg bg-gray-200 flex flex-col items-center justify-center p-2'>
-			<img
-				src={coverUrl}
-				alt={title}
-				className='w-full h-48 object-cover rounded'
-				onError={(e) => {
-					e.target.src = '/api/placeholder/150/200';
-				}}
-			/>
-			<p className='mt-2 text-sm text-center font-medium truncate w-full'>
-				{title}
-			</p>
-			<p className='mt-1 text-xs text-center text-gray-600 truncate w-full'>
-				{author}
-			</p>
+		<div className='group flex-shrink-0 w-48 m-2 overflow-hidden'>
+			<div className='relative aspect-[2/3] transition-all duration-300 group-hover:scale-105'>
+				<img
+					loading="lazy"
+					src={coverUrl}
+					alt={title}
+					className='w-full h-full object-cover rounded-lg shadow-lg'
+					onError={(e) => {
+						e.target.src = '/api/placeholder/150/200';
+					}}
+				/>
+				<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg'>
+					<div className='absolute bottom-0 p-4 text-white'>
+						<h3 className='font-bold truncate'>{title}</h3>
+						<p className='text-sm text-gray-300 truncate'>{author}</p>
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 };
@@ -183,10 +184,14 @@ const FetchBooks = async (searchQuery = '', limit = 10) => {
 
 // Add a BookCardSkeleton component
 const BookCardSkeleton = () => (
-    <div className='flex-shrink-0 w-48 h-64 m-2 rounded-lg bg-gray-200 flex flex-col items-center justify-center p-2'>
-        <Skeleton className="w-full h-48 rounded" />
-        <Skeleton className="mt-2 w-full h-4" />
-        <Skeleton className="mt-1 w-3/4 h-3" />
+    <div className='flex-shrink-0 w-48 m-2'>
+        <div className='aspect-[2/3]'>
+            <Skeleton className="w-full h-full rounded-lg" />
+        </div>
+        <div className='mt-2 space-y-2'>
+            <Skeleton className="w-full h-4" />
+            <Skeleton className="w-2/3 h-3" />
+        </div>
     </div>
 );
 
