@@ -116,22 +116,33 @@ const ScrollableContainer = ({ children, itemWidth, title, viewAllLink }) => {
 	const ScrollButton = ({ direction, onClick }) => (
 		<button
 			onClick={onClick}
-			className={`absolute top-1/2 transform -translate-y-1/2 z-20 bg-gray-700 hover:bg-gray-600 text-white p-2 ${
-				direction === 'left' ? 'left-0 rounded-r-lg' : 'right-0 rounded-l-lg'
-			}`}
+			className={`absolute top-1/2 -translate-y-1/2 z-20 
+				bg-black/50 hover:bg-black/70 text-white p-4 
+				backdrop-blur-sm transition-all duration-300
+				${direction === 'left' 
+					? 'left-2 rounded-l-xl' 
+					: 'right-2 rounded-r-xl'}`}
 		>
-			{direction === 'left' ? '<' : '>'}
+			{direction === 'left' ? '←' : '→'}
 		</button>
 	);
 
 	return (
 		<div className='flex flex-col'>
-			<SectionHeader title={title} viewAllLink={viewAllLink} />
-			<div
-				className='relative'
+			<div className='flex items-center justify-between mb-4'>
+				<h2 className='text-xl font-bold text-white'>{title}</h2>
+				{viewAllLink && (
+					<a href={viewAllLink} 
+					   className='text-blue-400 hover:text-blue-300 transition-colors duration-200
+								flex items-center gap-2'>
+						View All
+						<span>→</span>
+					</a>
+				)}
+			</div>
+			<div className='relative'
 				onMouseEnter={() => setIsHovering(true)}
-				onMouseLeave={() => setIsHovering(false)}
-			>
+				onMouseLeave={() => setIsHovering(false)}>
 				<ScrollButton direction='left' onClick={() => handleScroll('left')} />
 
 				<div
@@ -195,6 +206,27 @@ const BookCardSkeleton = () => (
     </div>
 );
 
+const HeroSection = () => (
+    <div className="relative h-[300px] mb-8 rounded-xl overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600" />
+        <div className="absolute inset-0 bg-[url('/hero-pattern.png')] opacity-10" />
+        <div className="relative h-full flex items-center px-8">
+            <div className="max-w-2xl">
+                <h1 className="text-4xl font-bold text-white mb-4">
+                    Welcome to Your Digital Library
+                </h1>
+                <p className="text-lg text-gray-200 mb-6">
+                    Discover millions of books, from classics to the latest releases
+                </p>
+                <button className="bg-white text-blue-600 px-6 py-2 rounded-lg
+                                 hover:bg-blue-50 transition-colors duration-200">
+                    Start Exploring
+                </button>
+            </div>
+        </div>
+    </div>
+);
+
 // Main Home Component
 export default function Home() {
 	const [popularBooks, setPopularBooks] = useState([]);
@@ -220,6 +252,7 @@ export default function Home() {
 
 	return (
 		<PageContainer>
+			<HeroSection />
 			<div className="space-y-8">
 				<div className="pt-6 space-y-4">
 					<h1 className='text-3xl font-bold text-white'>Welcome to Your Library</h1>
