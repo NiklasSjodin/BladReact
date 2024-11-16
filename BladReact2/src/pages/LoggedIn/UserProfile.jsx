@@ -1,19 +1,30 @@
 import React, { useEffect, useState } from "react";
-
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../components/ui/avatar";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const UserProfile = () => {
-// const [userData, setUserData] = useState({email:''}) // Används om vi vill skicka med email adressen till account settings sidan
+  const [userName, setUserName] = useState(null);
+  const navigate = useNavigate();
 
-// useEffect(() => {
-//   const email = localStorage.getItem("userEmail")
+  useEffect(() => {
+    const token = localStorage.getItem("token"); // Hämtar token från local storage
+    if (token) {
+      const decoded = jwtDecode(token); // Tar ut userid från token
+      setUserName(
+        decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]
+      );
+    }
+  }, []);
 
-//   if(email){
-//     setUserData({email})
-//   }
-// }, []
-// )
-
-
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white px-4 py-6">
@@ -24,15 +35,12 @@ const UserProfile = () => {
 
       {/* User Info */}
       <div className="flex items-center space-x-4 p-4 bg-gray-800 rounded-lg mb-4">
-        <img
-          src="https://via.placeholder.com/80"
-          alt="User Avatar"
-          className="w-16 h-16 rounded-full"
-        />
+        <Avatar>
+          <AvatarImage src="/path/to/avatar.jpg" alt="User Avatar" />
+          <AvatarFallback>U</AvatarFallback>
+        </Avatar>
         <div>
-          <h2 className="text-xl font-semibold">John Doe</h2>
-          <p className="text-gray-400">john.doe@example.com</p>
-          {/* {userData.email} Används om vi vill skicka med email adressen i svaret från backend */}
+          <h2 className="text-xl font-semibold">{userName}</h2>
         </div>
       </div>
 
@@ -46,7 +54,12 @@ const UserProfile = () => {
 
         <MenuLink text="Recensioner" href="/reviews" />
         <MenuLink text="Support" href="/support" />
-        <MenuLink text="Logga ut" href="/logout" />
+        <button
+          onClick={handleLogout}
+          className="w-full text-left p-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition duration-150"
+        >
+          Logga ut
+        </button>
       </div>
     </div>
   );
