@@ -1,32 +1,51 @@
 export default ListBooks;
 
 import { useEffect, useState } from 'react';
-import { FetchBooks } from '../../services/booksService';
+import { fetchBooks } from '../../services/BooksService';
 import ScrollableContainer from '../Sections/ScrollableContainer';
 import { SectionHeader } from '../Sections/SectionHeader';
 import BookCard from '../BookCard';
 
 export const ListBooks = () => {
 	const [books, setBooks] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const loadBooks = async () => {
-			const fetchedBooks = await FetchBooks();
-			setBooks(fetchedBooks);
+			setIsLoading(true);
+			try {
+				const fetchedBooks = await fetchBooks({ 
+					searchQuery: 'trending',
+					limit: 10 
+				});
+				setBooks(fetchedBooks);
+			} catch (error) {
+				console.error('Error loading books:', error);
+			} finally {
+				setIsLoading(false);
+			}
 		};
 		loadBooks();
 	}, []);
 
 	return (
 		<div className='mt-8 max-w-7xl'>
-			<SectionHeader title='Trendande' viewAllLink='#' />
+			<SectionHeader 
+				title='Trendande' 
+				viewAllLink='#'
+				variant='large'
+			/>
 			<ScrollableContainer itemWidth={208}>
-				{books.map((book) => (
+				{isLoading ? (
+					Array.from({ length: 10 }).map((_, index) => (
+						<BookCardSkeleton key={index} />
+					))
+				) : books.map((book) => (
 					<BookCard
 						key={book.id}
-						title={book.title}
-						author={book.author}
-						coverId={book.coverId}
+						{...book}
+						interactive={true}
+						size="md"
 					/>
 				))}
 			</ScrollableContainer>

@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { SectionHeader } from './SectionHeader';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const ScrollableContainer = ({ children, itemWidth }) => {
+const ScrollableContainer = ({ children, itemWidth, title, viewAllLink }) => {
 	const scrollContainerRef = useRef(null);
 	const [isHovering, setIsHovering] = useState(false);
 	const scrollTimeoutRef = useRef(null);
@@ -73,11 +74,14 @@ const ScrollableContainer = ({ children, itemWidth }) => {
 	const ScrollButton = ({ direction, onClick }) => (
 		<button
 			onClick={onClick}
-			className={`absolute top-1/2 transform -translate-y-1/2 z-20 bg-gray-700 hover:bg-gray-600 text-white p-2 ${
-				direction === 'left' ? 'left-0 rounded-r-lg' : 'right-0 rounded-l-lg'
-			}`}
+			className={`absolute top-1/2 -translate-y-1/2 z-20 
+				bg-black/50 hover:bg-black/70 text-white p-4 
+				backdrop-blur-sm transition-all duration-300
+				${direction === 'left' 
+					? 'left-2 rounded-l-xl' 
+					: 'right-2 rounded-r-xl'}`}
 		>
-			{direction === 'left' ? '<' : '>'}
+			{direction === 'left' ? <ChevronLeft size={24} /> : <ChevronRight size={24} />}
 		</button>
 	);
 
