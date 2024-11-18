@@ -13,6 +13,7 @@ import Library from './pages/LoggedIn/Library';
 import UserProfile from './pages/LoggedIn/UserProfile';
 import UserProfileSettings from './pages/LoggedIn/UserProfileEditSettings';
 import Support from './pages/LoggedIn/Support';
+import BookView from './components/Books/BookView';
 
 const App = () => {
 	return (
@@ -30,6 +31,7 @@ const App = () => {
 						<Route path='account' element={<UserProfile />} />
 						<Route path='settings' element={<UserProfileSettings />} />
 						<Route path='support' element={<Support />} />
+			
 						{/* Skyddad rutt för Home-sidan */}
 						<Route
 							path='home'
@@ -63,6 +65,16 @@ const App = () => {
 								</ProtectedRoute>
 							}
 						/>
+
+						<Route
+							path='book/:id'
+							element={
+								<ProtectedRoute>
+									<BookView/>
+								</ProtectedRoute>
+							}
+						/>
+
 						<Route
 							path='account'
 							element={
