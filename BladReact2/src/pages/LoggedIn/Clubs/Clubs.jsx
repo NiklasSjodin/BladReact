@@ -4,10 +4,12 @@ import ScrollableContainer from '@/components/Sections/ScrollableContainer';
 import ClubCard from '@/components/ClubCard';
 import { CardSkeleton } from '../../../components/CardSkeleton';
 import HeroSection from '../../../components/Sections/HeroSection';
+import { useNavigate } from 'react-router-dom';
 
 export default function Clubs() {
 	const [popularClubs, setPopularClubs] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const fetchPopularClubs = async () => {
@@ -28,6 +30,10 @@ export default function Clubs() {
 		fetchPopularClubs();
 	}, []);
 
+	const handleClubClick = (clubId) => {
+		navigate(`/clubs/${clubId}`);
+	};
+
 	return (
 		<PageContainer>
 			<HeroSection />
@@ -46,7 +52,11 @@ export default function Clubs() {
 						? Array.from({ length: 8 }).map((_, index) => (
 								<CardSkeleton key={index} />
 						  ))
-						: popularClubs.map((club) => <ClubCard key={club.id} {...club} />)}
+						: popularClubs.map((club) => (
+								<div onClick={() => handleClubClick(club.id)} key={club.id}>
+									<ClubCard {...club} />
+								</div>
+						  ))}
 				</ScrollableContainer>
 			</div>
 		</PageContainer>
