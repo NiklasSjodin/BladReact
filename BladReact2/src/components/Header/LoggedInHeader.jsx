@@ -3,7 +3,7 @@ import { Button } from '../ui/button';
 import { Link } from 'react-router-dom';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
 import logo from '../../images/books.png';
-import { fetchBooksThroughSearchbar } from '../../services/SearchbarService';
+import { searchBooks } from '../../services/BooksService';
 
 const SearchResultsItem = ({ book }) => (
 	<div className='flex items-center space-x-4 p-2 border-b'>
@@ -27,8 +27,13 @@ export default function LoggedInHeader() {
 
 	const handleSearch = async (event) => {
 		if (event.key === 'Enter') {
-			const results = await fetchBooksThroughSearchbar(searchQuery);
-			setSearchResults(results);
+			try {
+				const results = await searchBooks(searchQuery, { limit: 5 });
+				setSearchResults(results);
+			} catch (error) {
+				console.error('Search error:', error);
+				// Handle error appropriately
+			}
 		}
 	};
 
