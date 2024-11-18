@@ -7,13 +7,15 @@ import FAQPage from './pages/FAQpage';
 import PrivacyPolicy from './pages/PrivacyPage';
 import ContactUs from './pages/ContactUsPage';
 import TermsOfService from './pages/TermsOfServicePage';
-import Home from './pages/LoggedIn/Home';
+import Home from './pages/LoggedIn/Home/Home';
 import ProtectedRoute from './components/layout/ProtectedRoute';
-import Library from './pages/LoggedIn/Library';
 import UserProfile from './pages/LoggedIn/UserProfile';
 import UserProfileSettings from './pages/LoggedIn/UserProfileEditSettings';
 import Support from './pages/LoggedIn/Support';
-import Clubs from './pages/LoggedIn/Clubs';
+import Clubs from './pages/LoggedIn/Clubs/Clubs';
+import Explore from './pages/LoggedIn/Explore/Explore';
+import Library from './pages/LoggedIn/LibraryPage/Library';
+import LibraryBookList from './pages/LoggedIn/LibraryPage/LibraryBookList';
 
 const App = () => {
 	return (
@@ -52,7 +54,7 @@ const App = () => {
 							path='explore'
 							element={
 								<ProtectedRoute>
-									{/* <Explore /> */}
+									<Explore />
 								</ProtectedRoute>
 							}
 						/>
@@ -66,9 +68,21 @@ const App = () => {
 						/>
 						<Route
 							path='account'
+							element={<ProtectedRoute>{/* <Account /> */}</ProtectedRoute>}
+						/>
+						<Route
+							path='booklist'
 							element={
 								<ProtectedRoute>
-									{/* <Account /> */}
+									<Library />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='booklist/:id'
+							element={
+								<ProtectedRoute>
+									<LibraryBookList />
 								</ProtectedRoute>
 							}
 						/>
