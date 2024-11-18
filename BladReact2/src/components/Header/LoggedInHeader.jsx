@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
 import logo from '../../images/books.png';
 import { searchBooks } from '../../services/BooksService';
+import {jwtDecode} from "jwt-decode";
 
 const SearchResultsItem = ({ book }) => (
 	<div className='flex items-center space-x-4 p-2 border-b'>
@@ -24,6 +25,17 @@ const SearchResultsItem = ({ book }) => (
 export default function LoggedInHeader() {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [searchResults, setSearchResults] = useState([]);
+	const [userName, setUserName] = useState('');
+
+	useEffect(() => {
+		const token = localStorage.getItem("token"); // Hämtar token från local storage
+		if (token) {
+		  const decoded = jwtDecode(token); // Tar ut userid från token
+		  setUserName(
+			decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]
+		  );
+		}
+	  }, []);
 
 	const handleSearch = async (event) => {
 		if (event.key === 'Enter') {
@@ -69,7 +81,7 @@ export default function LoggedInHeader() {
 						<AvatarImage src='/path/to/avatar.jpg' alt='User Avatar' />
 						<AvatarFallback>U</AvatarFallback>
 					</Avatar>
-					<Link to='/account'>Username</Link>
+					<Link to='/account'>{userName}</Link>
 				</div>
 			</div>
 
