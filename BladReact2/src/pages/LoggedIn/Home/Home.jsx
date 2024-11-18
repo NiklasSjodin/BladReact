@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { PageContainer } from '../../components/layout/PageContainer';
+import { PageContainer } from '../../../components/layout/PageContainer';
 import { Skeleton } from '@/components/ui/skeleton';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useBookCover } from '../../hooks/useBookCover';
-import { CardSkeleton } from '../../components/CardSkeleton';
-import BookCard from '../../components/BookCard';
-import { SectionHeader } from '../../components/Sections/SectionHeader';
-import { fetchBooks } from '../../services/BooksService';
-import ScrollableContainer from '../../components/Sections/ScrollableContainer';
-import HeroSection from '../../components/Sections/HeroSection';
+import { useBookCover } from '../../../hooks/useBookCover';
+import { CardSkeleton } from '../../../components/CardSkeleton';
+import BookCard from '../../../components/BookCard';
+import { SectionHeader } from '../../../components/Sections/SectionHeader';
+import { fetchBooks } from '../../../services/BooksService';
+import ScrollableContainer from '../../../components/Sections/ScrollableContainer';
+import HeroSection from '../../../components/Sections/HeroSection';
 
 /**
  * Main Home Component

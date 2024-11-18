@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { PageContainer } from '../../components/layout/PageContainer';
+import { PageContainer } from '../../../components/layout/PageContainer';
 import ScrollableContainer from '@/components/Sections/ScrollableContainer';
 import ClubCard from '@/components/ClubCard';
-import { CardSkeleton } from '../../components/CardSkeleton';
-import HeroSection from '../../components/Sections/HeroSection';
+import { CardSkeleton } from '../../../components/CardSkeleton';
+import HeroSection from '../../../components/Sections/HeroSection';
 
 export default function Clubs() {
 	const [popularClubs, setPopularClubs] = useState([]);
