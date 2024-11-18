@@ -16,6 +16,7 @@ import Clubs from './pages/LoggedIn/Clubs/Clubs';
 import Explore from './pages/LoggedIn/Explore/Explore';
 import Library from './pages/LoggedIn/LibraryPage/Library';
 import LibraryBookList from './pages/LoggedIn/LibraryPage/LibraryBookList';
+import BookClubDetail from './pages/LoggedIn/Clubs/BookClubDetail';
 
 const App = () => {
 	return (
@@ -86,6 +87,7 @@ const App = () => {
 								</ProtectedRoute>
 							}
 						/>
+						<Route path="/clubs/:id" element={<BookClubDetail />} />
 					</Route>
 				</Routes>
 			</Router>
