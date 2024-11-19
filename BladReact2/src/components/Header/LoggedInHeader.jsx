@@ -40,14 +40,14 @@ export default function LoggedInHeader() {
 	return (
 		<header className='pt-1 pb-1 bg-slate-600'>
 			<div className='px-4 h-12 flex items-center'>
-				<Link to='/home'>
+				<Link to='/'>
 					<img
 						src={logo}
 						alt='Description of image'
 						className='h-8 w-auto object-contain pr-1'
 					/>
 				</Link>
-				<Link to='/home' className='flex-1 font-comico'>
+				<Link to='/' className='flex-1 font-comico'>
 					blad.
 				</Link>
 				<div className='flex items-center space-x-4 ml-auto px-2'>
