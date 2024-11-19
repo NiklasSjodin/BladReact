@@ -21,6 +21,7 @@ import LandingPageHandler from './components/LandingPageHandler';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import BookView from './pages/LoggedIn/BookView';
 import ForumView from './pages/LoggedIn/Clubs/ForumView';
+import ProfilePage from './pages/LoggedIn/Profile/Profile';
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,11 @@ const App = () => {
 							<Route path='account' element={
 								<ProtectedRoute>
 									<UserProfile />
+								</ProtectedRoute>
+							} />
+							<Route path='profile' element={
+								<ProtectedRoute>
+									<ProfilePage />
 								</ProtectedRoute>
 							} />
 							<Route path='settings' element={
