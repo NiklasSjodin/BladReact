@@ -11,7 +11,7 @@ import {
 
 const MobileNavbar = () => {
 	const navItems = [
-		{ to: 'home', title: 'Home', icon: <Home className='h-5 w-5' /> },
+		{ to: '/', title: 'Home', icon: <Home className='h-5 w-5' /> },
 		{ to: 'clubs', title: 'Clubs', icon: <Users className='h-5 w-5' /> },
 		{
 			to: 'explore',
