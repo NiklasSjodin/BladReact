@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import MainPage from './pages/MainPage/MainPage';
 import LogInPage from './pages/LogInPage';
@@ -17,6 +17,7 @@ import Explore from './pages/LoggedIn/Explore/Explore';
 import Library from './pages/LoggedIn/LibraryPage/Library';
 import LibraryBookList from './pages/LoggedIn/LibraryPage/LibraryBookList';
 import BookClubDetail from './pages/LoggedIn/Clubs/BookClubDetail';
+import LandingPageHandler from './components/LandingPageHandler';
 
 const App = () => {
 	return (
@@ -24,7 +25,7 @@ const App = () => {
 			<Router>
 				<Routes>
 					<Route path='/' element={<Layout />}>
-						<Route index element={<MainPage />} />
+						<Route index element={<LandingPageHandler />} />
 						<Route path='login' element={<LogInPage />} />
 						<Route path='signup' element={<SignUpPage />} />
 						<Route path='faq' element={<FAQPage />} />
@@ -34,15 +35,6 @@ const App = () => {
 						<Route path='account' element={<UserProfile />} />
 						<Route path='settings' element={<UserProfileSettings />} />
 						<Route path='support' element={<Support />} />
-						{/* Skyddad rutt för Home-sidan */}
-						<Route
-							path='home'
-							element={
-								<ProtectedRoute>
-									<Home />
-								</ProtectedRoute>
-							}
-						/>
 						<Route
 							path='clubs'
 							element={
@@ -87,7 +79,7 @@ const App = () => {
 								</ProtectedRoute>
 							}
 						/>
-						<Route path="/clubs/:id" element={<BookClubDetail />} />
+						<Route path='/clubs/:id' element={<BookClubDetail />} />
 					</Route>
 				</Routes>
 			</Router>
