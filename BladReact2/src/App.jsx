@@ -32,54 +32,51 @@ const App = () => {
 						<Route path='privacy' element={<PrivacyPolicy />} />
 						<Route path='termsofservice' element={<TermsOfService />} />
 						<Route path='contact' element={<ContactUs />} />
-						<Route path='account' element={<UserProfile />} />
-						<Route path='settings' element={<UserProfileSettings />} />
-						<Route path='support' element={<Support />} />
-						<Route
-							path='clubs'
-							element={
-								<ProtectedRoute>
-									<Clubs />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							path='explore'
-							element={
-								<ProtectedRoute>
-									<Explore />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							path='library'
-							element={
-								<ProtectedRoute>
-									<Library />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							path='account'
-							element={<ProtectedRoute>{/* <Account /> */}</ProtectedRoute>}
-						/>
-						<Route
-							path='booklist'
-							element={
-								<ProtectedRoute>
-									<Library />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							path='booklist/:id'
-							element={
-								<ProtectedRoute>
-									<LibraryBookList />
-								</ProtectedRoute>
-							}
-						/>
-						<Route path='/clubs/:id' element={<BookClubDetail />} />
+						<Route path='account' element={
+							<ProtectedRoute>
+								<UserProfile />
+							</ProtectedRoute>
+						} />
+						<Route path='settings' element={
+							<ProtectedRoute>
+								<UserProfileSettings />
+							</ProtectedRoute>
+						} />
+						<Route path='support' element={
+							<ProtectedRoute>
+								<Support />
+							</ProtectedRoute>
+						} />
+						<Route path='clubs' element={
+							<ProtectedRoute>
+								<Clubs />
+							</ProtectedRoute>
+						} />
+						<Route path='explore' element={
+							<ProtectedRoute>
+								<Explore />
+							</ProtectedRoute>
+						} />
+						<Route path='library' element={
+							<ProtectedRoute>
+								<Library />
+							</ProtectedRoute>
+						} />
+						<Route path='booklist' element={
+							<ProtectedRoute>
+								<Library />
+							</ProtectedRoute>
+						} />
+						<Route path='booklist/:id' element={
+							<ProtectedRoute>
+								<LibraryBookList />
+							</ProtectedRoute>
+						} />
+						<Route path='/clubs/:id' element={
+							<ProtectedRoute>
+								<BookClubDetail />
+							</ProtectedRoute>
+						} />
 					</Route>
 				</Routes>
 			</Router>
