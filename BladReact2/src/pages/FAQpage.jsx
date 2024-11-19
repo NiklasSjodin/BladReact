@@ -2,7 +2,7 @@ import React from 'react';
 
 const FAQPage = () => {
   return (
-    <div className="max-auto mx-auto p-6 text-gray-200  bg-gray-800">
+    <div className="max-auto mx-auto p-6 text-bladLightTextColor  bg-bladLightBackground">
       <h1 className="text-2xl font-bold mb-4">Support för blad</h1>
       <p className="mb-6">
         Välkommen till supportsidan för blad! Här finner du information och resurser som hjälper dig med frågor eller problem som kan uppstå när du använder vår bokklubbsapplikation. Vi finns här för att assistera dig!
