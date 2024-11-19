@@ -17,6 +17,16 @@ module.exports = {
 			colors: {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				bladLightBackground: 'rgb(247, 249, 249)',
+				bladLightFields: '#f3f4f6',
+				bladLightFields2: '#fafafa',
+				bladLightTextColor: '#020617',
+				bladLightHover: '#d1d5db',
+				bladDarkBackground: '#111827',
+				bladDarkFields: '#374151',
+				bladDarkFields2: '#6b7280',
+				bladDarkTextColor: '#f9fafb',
+				bladDarkHover: '#374151',
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))',
