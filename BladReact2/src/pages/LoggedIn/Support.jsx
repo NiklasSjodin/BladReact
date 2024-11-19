@@ -1,21 +1,24 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 const Support = () => {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen bg-bladLightBackground text-bladLightTextColor px-4 py-6">
-      {/* Header */}
-      {/* Menu Links */}
-      <div className="space-y-2">
-        <MenuLink text="FAQ" href="faq" />
-        <MenuLink text="Support" href="contact" />
-        <MenuLink text="Privacy & Policy" href="privacy" />
-        <MenuLink text="Report bugs" href="/" />
+    <PageContainer>
+      <div className="min-h-screen bg-bladLightBackground text-bladLightTextColor px-4 py-6">
+        {/* Header */}
+        {/* Menu Links */}
+        <div className="space-y-2">
+          <MenuLink text="FAQ" href="faq" />
+          <MenuLink text="Support" href="contact" />
+          <MenuLink text="Privacy & Policy" href="privacy" />
+          <MenuLink text="Report bugs" href="/" />
 
-        <hr className="my-4 border-gray-700" />
+          <hr className="my-4 border-gray-700" />
+        </div>
       </div>
-    </div>
+    </PageContainer>
   );
 };
 
