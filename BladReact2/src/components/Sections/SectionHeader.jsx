@@ -22,8 +22,8 @@ export const SectionHeader = ({
     variant = 'default'
 }) => {
     const titleClasses = {
-        default: 'text-xl font-bold text-white',
-        large: 'text-2xl font-bold text-white'
+        default: 'text-xl font-bold text-bladLightTextColor',
+        large: 'text-2xl font-bold text-bladLightTextColor'
     };
 
     return (
@@ -33,7 +33,7 @@ export const SectionHeader = ({
                 {viewAllLink && (
                     <Link 
                         to={viewAllLink}
-                        className='text-blue-400 hover:text-blue-300 
+                        className='text-bladLightTextColor hover:text-bladLightHover
                                  transition-colors duration-200
                                  flex items-center gap-2'
                     >
@@ -43,7 +43,7 @@ export const SectionHeader = ({
                 )}
             </div>
             {description && (
-                <p className='text-gray-400 text-sm'>{description}</p>
+                <p className='text-bladLightTextColor text-sm'>{description}</p>
             )}
         </div>
     );
