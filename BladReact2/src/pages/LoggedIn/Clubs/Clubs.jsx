@@ -9,6 +9,10 @@ import { debounce } from 'lodash';
 
 export default function Clubs() {
 	const [popularClubs, setPopularClubs] = useState([]);
+	// const [userClubs, setUserClubs] = useState([]);
+	// const [friendsClubs, setFriendsClubs] = useState([]);
+	// const [searchTerm, setSearchTerm] = useState('');
+	// const [searchResults, setSearchResults] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const navigate = useNavigate();
 
@@ -44,7 +48,31 @@ export default function Clubs() {
 			}
 		};
 
-		fetchPopularClubs();
+		// const fetchUserClubs = async () => {
+		// 	try {
+		// 		const response = await fetch('https://localhost:7076/api/bookclubs/user');
+		// 		const result = await response.json();
+		// 		setUserClubs(result.data);
+		// 	} catch (error) {
+		// 		console.error('Error fetching user clubs:', error);
+		// 	}
+		// };
+
+		// const fetchFriendsClubs = async () => {
+		// 	try {
+		// 		const response = await fetch('https://localhost:7076/api/bookclubs/friends');
+		// 		const result = await response.json();
+		// 		setFriendsClubs(result.data);
+		// 	} catch (error) {
+		// 		console.error('Error fetching friends clubs:', error);
+		// 	}
+		// };
+
+		// Promise.all([
+		// 	fetchPopularClubs(),
+		// 	fetchUserClubs(),
+		// 	fetchFriendsClubs()
+		// ]).finally(() => setIsLoading(false));
 	}, []);
 
 	const handleClubClick = (clubId) => {
