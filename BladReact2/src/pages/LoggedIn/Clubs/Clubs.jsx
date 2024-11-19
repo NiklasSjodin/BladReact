@@ -95,6 +95,7 @@ export default function Clubs() {
 							debouncedSearch(e.target.value);
 						}}
 					/>
+
 				</div>
 
 				<ScrollableContainer
