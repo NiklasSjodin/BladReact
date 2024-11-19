@@ -5,11 +5,28 @@ import ClubCard from '@/components/ClubCard';
 import { CardSkeleton } from '../../../components/CardSkeleton';
 import HeroSection from '../../../components/Sections/HeroSection';
 import { useNavigate } from 'react-router-dom';
+import { debounce } from 'lodash';
 
 export default function Clubs() {
 	const [popularClubs, setPopularClubs] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const navigate = useNavigate();
+
+	const debouncedSearch = debounce(async (term) => {
+		if (!term) {
+			setSearchResults([]);
+			return;
+		}
+		try {
+			const response = await fetch(
+				`https://localhost:7076/api/bookclubs?searchterm=${term}&currentpage=1&itemsperpage=10`
+			);
+			const result = await response.json();
+			setSearchResults(result);
+		} catch (error) {
+			console.error('Error searching clubs:', error);
+		}
+	}, 300);
 
 	useEffect(() => {
 		const fetchPopularClubs = async () => {
@@ -40,7 +57,15 @@ export default function Clubs() {
 			<div className='space-y-8 pb-24'>
 				<div className='pt-6 space-y-4'>
 					<h1 className='text-3xl font-bold text-white'>Book Clubs</h1>
-					<p className='text-gray-400'>Join a community of readers</p>
+					<input
+						type="text"
+						placeholder="Search book clubs..."
+						className="w-full p-4 rounded-lg"
+						onChange={(e) => {
+							setSearchTerm(e.target.value);
+							debouncedSearch(e.target.value);
+						}}
+					/>
 				</div>
 
 				<ScrollableContainer
