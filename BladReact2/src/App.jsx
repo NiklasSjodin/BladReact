@@ -16,6 +16,7 @@ import Clubs from './pages/LoggedIn/Clubs/Clubs';
 import Explore from './pages/LoggedIn/Explore/Explore';
 import Library from './pages/LoggedIn/LibraryPage/Library';
 import LibraryBookList from './pages/LoggedIn/LibraryPage/LibraryBookList';
+import ProfilePage from './pages/LoggedIn/Profile/Profile';
 
 const App = () => {
 	return (
@@ -33,6 +34,7 @@ const App = () => {
 						<Route path='account' element={<UserProfile />} />
 						<Route path='settings' element={<UserProfileSettings />} />
 						<Route path='support' element={<Support />} />
+						<Route path='profile' element={<ProfilePage />} />
 						{/* Skyddad rutt för Home-sidan */}
 						<Route
 							path='home'
