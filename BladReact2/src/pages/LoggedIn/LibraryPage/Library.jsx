@@ -64,7 +64,7 @@ export default function Library() {
 		<PageContainer>
 			<div className='space-y-8 pb-24'>
 				<div className='pt-6 space-y-4'>
-					<h1 className='text-3xl font-bold text-white'>My Library</h1>
+					<h1 className='text-3xl font-bold text-bladLightTextColor'>My Library</h1>
 					<div className='flex mb-4'>
 						<div className='flex items-center border rounded-l-md border-r-0 border-gray-200 bg-white'>
 							<div className='p-2'>

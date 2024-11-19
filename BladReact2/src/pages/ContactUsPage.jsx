@@ -2,7 +2,7 @@ import React from 'react';
 
 const ContactUs = () => {
   return (
-    <div className="max-auto mx-auto p-6 text-gray-200 bg-gray-800">
+    <div className="max-auto mx-auto p-6 text-bladLightTextColor bg-bladLightBackground">
       <h1 className="text-2xl font-bold mb-4">Kontakta oss</h1>
       <p className="mb-6">
         Vi på blad. vill gärna höra från dig! Oavsett om du har frågor, kommentarer eller feedback, tveka inte att kontakta oss. Vårt team är här för att hjälpa dig.
@@ -73,7 +73,7 @@ const ContactUs = () => {
         </div>
         <button
           type="submit"
-          className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
         >
           Skicka meddelande
         </button>

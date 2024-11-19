@@ -54,7 +54,7 @@ export default function Home() {
 			<HeroSection />
 			<div className='space-y-8 pb-24'>
 				<div className='pt-6 space-y-4'>
-					<h1 className='text-3xl font-bold text-white'>
+					<h1 className='text-3xl font-bold text-bladLightTextColor'>
 						Welcome to Your Library
 					</h1>
 					<p className='text-gray-400'>Discover your next favorite book</p>

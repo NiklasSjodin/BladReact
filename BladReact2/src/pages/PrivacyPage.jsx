@@ -2,7 +2,7 @@ import React from 'react';
 
 const PrivacyPolicy = () => {
     return (
-        <div className="max-auto mx-auto p-6 text-gray-200 bg-gray-800">
+        <div className="max-auto mx-auto p-6 text-bladLightTextColor bg-bladLightBackground">
             <h1 className="text-2xl font-bold mb-4">Integritetspolicy för blad.</h1>
             <p className="mb-4">
                 Denna integritetspolicy (”Policy”) beskriver hur blad. (”vi”, ”oss”, ”vår”) samlar in, använder, lagrar och skyddar dina personuppgifter när du använder vår bokklubbsapplikation och webbplats (”Tjänsten”). Genom att använda blad. godkänner du insamlingen och användningen av dina uppgifter enligt denna Policy.
