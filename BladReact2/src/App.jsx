@@ -18,69 +18,82 @@ import Library from './pages/LoggedIn/LibraryPage/Library';
 import LibraryBookList from './pages/LoggedIn/LibraryPage/LibraryBookList';
 import BookClubDetail from './pages/LoggedIn/Clubs/BookClubDetail';
 import LandingPageHandler from './components/LandingPageHandler';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import BookView from './pages/LoggedIn/BookView';
+import ForumView from './pages/LoggedIn/Clubs/ForumView';
+
+const queryClient = new QueryClient();
 
 const App = () => {
 	return (
-		<>
-			<Router>
-				<Routes>
-					<Route path='/' element={<Layout />}>
-						<Route index element={<LandingPageHandler />} />
-						<Route path='login' element={<LogInPage />} />
-						<Route path='signup' element={<SignUpPage />} />
-						<Route path='faq' element={<FAQPage />} />
-						<Route path='privacy' element={<PrivacyPolicy />} />
-						<Route path='termsofservice' element={<TermsOfService />} />
-						<Route path='contact' element={<ContactUs />} />
-						<Route path='account' element={
-							<ProtectedRoute>
-								<UserProfile />
-							</ProtectedRoute>
-						} />
-						<Route path='settings' element={
-							<ProtectedRoute>
-								<UserProfileSettings />
-							</ProtectedRoute>
-						} />
-						<Route path='support' element={
-							<ProtectedRoute>
-								<Support />
-							</ProtectedRoute>
-						} />
-						<Route path='clubs' element={
-							<ProtectedRoute>
-								<Clubs />
-							</ProtectedRoute>
-						} />
-						<Route path='explore' element={
-							<ProtectedRoute>
-								<Explore />
-							</ProtectedRoute>
-						} />
-						<Route path='library' element={
-							<ProtectedRoute>
-								<Library />
-							</ProtectedRoute>
-						} />
-						<Route path='booklist' element={
-							<ProtectedRoute>
-								<Library />
-							</ProtectedRoute>
-						} />
-						<Route path='booklist/:id' element={
-							<ProtectedRoute>
-								<LibraryBookList />
-							</ProtectedRoute>
-						} />
-						<Route path='/clubs/:id' element={
-							<ProtectedRoute>
-								<BookClubDetail />
-							</ProtectedRoute>
-						} />
-					</Route>
-				</Routes>
-			</Router>
-		</>
+		<QueryClientProvider client={queryClient}>
+			<>
+				<Router>
+					<Routes>
+						<Route path='/' element={<Layout />}>
+							<Route index element={<LandingPageHandler />} />
+							<Route path='login' element={<LogInPage />} />
+							<Route path='signup' element={<SignUpPage />} />
+							<Route path='faq' element={<FAQPage />} />
+							<Route path='privacy' element={<PrivacyPolicy />} />
+							<Route path='termsofservice' element={<TermsOfService />} />
+							<Route path='contact' element={<ContactUs />} />
+							<Route path='account' element={
+								<ProtectedRoute>
+									<UserProfile />
+								</ProtectedRoute>
+							} />
+							<Route path='settings' element={
+								<ProtectedRoute>
+									<UserProfileSettings />
+								</ProtectedRoute>
+							} />
+							<Route path='support' element={
+								<ProtectedRoute>
+									<Support />
+								</ProtectedRoute>
+							} />
+							<Route path='clubs' element={
+								<ProtectedRoute>
+									<Clubs />
+								</ProtectedRoute>
+							} />
+							<Route path='explore' element={
+								<ProtectedRoute>
+									<Explore />
+								</ProtectedRoute>
+							} />
+							<Route path='library' element={
+								<ProtectedRoute>
+									<Library />
+								</ProtectedRoute>
+							} />
+							<Route path='booklist' element={
+								<ProtectedRoute>
+									<Library />
+								</ProtectedRoute>
+							} />
+							<Route path='booklist/:id' element={
+								<ProtectedRoute>
+									<LibraryBookList />
+								</ProtectedRoute>
+							} />
+							<Route path='/clubs/:bookClubId' element={
+								<ProtectedRoute>
+									<BookClubDetail />
+								</ProtectedRoute>
+							} />
+							<Route path="/books/:bookId" element={<BookView />} />
+							<Route path="/clubs/:bookClubId/forums/:forumId" element={
+								<ProtectedRoute>
+									<ForumView />
+								</ProtectedRoute>
+							} />
+						</Route>
+					</Routes>
+				</Router>
+			</>
+		</QueryClientProvider>
 	);
 };
 
