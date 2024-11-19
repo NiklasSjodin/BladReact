@@ -33,11 +33,12 @@ export default function Clubs() {
 	}, 300);
 
 	useEffect(() => {
+		const API_URL = 'https://localhost:7076';
 		const fetchPopularClubs = async () => {
 			setIsLoading(true);
 			try {
 				const response = await fetch(
-					'https://localhost:7076/api/bookclubs/popular'
+					`${API_URL}/api/bookclubs/popular`
 				);
 				const result = await response.json();
 				setPopularClubs(result.data);
