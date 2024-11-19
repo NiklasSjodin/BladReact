@@ -1,14 +1,14 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('token');
+  const location = useLocation();
 
-  // Om token saknas, omdirigera till inloggningssidan
   if (!token) {
-    return <Navigate to="/login" />;
+    // If not authenticated, redirect to root where LandingPageHandler will show MainPage
+    return <Navigate to="/" state={{ from: location }} />;
   }
 
-  // Om token finns, rendera barnkomponenten (den skyddade sidan)
   return children;
 };
 

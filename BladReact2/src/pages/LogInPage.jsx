@@ -54,7 +54,7 @@ function LogInPage() {
 				localStorage.setItem('token', data.token);
 				// localStorage.setItem('userEmail', data.email) // Används om vi vill visa upp email adressen på accounts settings
 				// Redirect to dashboard or home page
-				navigate('/home');
+				navigate('/');
 			} else if (response.status === 423) {
 				setError(data.message);
 				handleBack(); // Reset to email step when account is locked
