@@ -33,7 +33,7 @@ export default function Clubs() {
 			<HeroSection />
 			<div className='space-y-8 pb-24'>
 				<div className='pt-6 space-y-4'>
-					<h1 className='text-3xl font-bold text-white'>Book Clubs</h1>
+					<h1 className='text-3xl font-bold text-bladLightTextColor'>Book Clubs</h1>
 					<p className='text-gray-400'>Join a community of readers</p>
 				</div>
 
