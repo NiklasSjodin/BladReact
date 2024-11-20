@@ -135,3 +135,19 @@
   font-weight: normal;
   font-style: normal;
 }
+
+.container {
+  max-width: 1200px;
+}
+
+img {
+  transition: transform 0.3s ease-in-out;
+}
+
+img:hover {
+  transform: scale(1.05);
+}
+
+.alert {
+  max-width: 600px;
+}
