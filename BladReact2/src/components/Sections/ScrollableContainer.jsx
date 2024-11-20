@@ -78,8 +78,8 @@ const ScrollableContainer = ({ children, itemWidth, title, viewAllLink }) => {
 				bg-black/50 hover:bg-black/70 text-white p-4 
 				backdrop-blur-sm transition-all duration-300
 				${direction === 'left' 
-					? 'left-2 rounded-l-xl' 
-					: 'right-2 rounded-r-xl'}`}
+					? '-left-16 rounded-l-xl' 
+					: '-right-16 rounded-r-xl'}`}
 		>
 			{direction === 'left' ? <ChevronLeft size={24} /> : <ChevronRight size={24} />}
 		</button>
