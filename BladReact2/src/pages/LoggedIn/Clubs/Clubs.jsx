@@ -9,10 +9,14 @@ import { debounce } from 'lodash';
 
 export default function Clubs() {
 	const [popularClubs, setPopularClubs] = useState([]);
-	// const [userClubs, setUserClubs] = useState([]);
-	// const [friendsClubs, setFriendsClubs] = useState([]);
-	// const [searchTerm, setSearchTerm] = useState('');
-	// const [searchResults, setSearchResults] = useState([]);
+	const [pagination, setPagination] = useState({
+		totalCount: 0,
+		totalPages: 0,
+		currentPage: 1,
+		itemsPerPage: 10,
+		hasNextPage: false,
+		hasPreviousPage: false
+	});
 	const [isLoading, setIsLoading] = useState(true);
 	const navigate = useNavigate();
 
@@ -23,7 +27,7 @@ export default function Clubs() {
 		}
 		try {
 			const response = await fetch(
-				`https://localhost:7076/api/bookclubs?searchterm=${term}&currentpage=1&itemsperpage=10`
+				`https://localhost:7076/api/bookclubs?searchterm=${term}&PageIndex=1&PageSize=10`
 			);
 			const result = await response.json();
 			setSearchResults(result);
@@ -38,10 +42,18 @@ export default function Clubs() {
 			setIsLoading(true);
 			try {
 				const response = await fetch(
-					`${API_URL}/api/bookclubs/popular`
+					`${API_URL}/api/bookclubs/popular?PageSize=10&PageIndex=1`
 				);
 				const result = await response.json();
 				setPopularClubs(result.data);
+				setPagination({
+					totalCount: result.totalCount,
+					totalPages: result.totalPages,
+					currentPage: result.currentPage,
+					itemsPerPage: result.itemsPerPage,
+					hasNextPage: result.hasNextPage,
+					hasPreviousPage: result.hasPreviousPage
+				});
 			} catch (error) {
 				console.error('Error fetching clubs:', error);
 			} finally {
@@ -49,31 +61,7 @@ export default function Clubs() {
 			}
 		};
 
-		// const fetchUserClubs = async () => {
-		// 	try {
-		// 		const response = await fetch('https://localhost:7076/api/bookclubs/user');
-		// 		const result = await response.json();
-		// 		setUserClubs(result.data);
-		// 	} catch (error) {
-		// 		console.error('Error fetching user clubs:', error);
-		// 	}
-		// };
-
-		// const fetchFriendsClubs = async () => {
-		// 	try {
-		// 		const response = await fetch('https://localhost:7076/api/bookclubs/friends');
-		// 		const result = await response.json();
-		// 		setFriendsClubs(result.data);
-		// 	} catch (error) {
-		// 		console.error('Error fetching friends clubs:', error);
-		// 	}
-		// };
-
-		// Promise.all([
-		// 	fetchPopularClubs(),
-		// 	fetchUserClubs(),
-		// 	fetchFriendsClubs()
-		// ]).finally(() => setIsLoading(false));
+		fetchPopularClubs();
 	}, []);
 
 	const handleClubClick = (clubId) => {
@@ -108,7 +96,11 @@ export default function Clubs() {
 								<CardSkeleton key={index} />
 						  ))
 						: popularClubs.map((club) => (
-								<div onClick={() => handleClubClick(club.id)} key={club.id}>
+								<div 
+									onClick={() => handleClubClick(club.id)} 
+									key={club.id}
+									className="py-4 px-2"
+								>
 									<ClubCard {...club} />
 								</div>
 						  ))}
