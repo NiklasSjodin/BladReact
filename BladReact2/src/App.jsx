@@ -28,77 +28,109 @@ const queryClient = new QueryClient();
 const App = () => {
 	return (
 		<QueryClientProvider client={queryClient}>
-			<>
-				<Router>
-					<Routes>
-						<Route path='/' element={<Layout />}>
-							<Route index element={<LandingPageHandler />} />
-							<Route path='login' element={<LogInPage />} />
-							<Route path='signup' element={<SignUpPage />} />
-							<Route path='faq' element={<FAQPage />} />
-							<Route path='privacy' element={<PrivacyPolicy />} />
-							<Route path='termsofservice' element={<TermsOfService />} />
-							<Route path='contact' element={<ContactUs />} />
-							<Route path='account' element={
+			<Router>
+				<Routes>
+					<Route path='/' element={<Layout />}>
+						<Route index element={<LandingPageHandler />} />
+						<Route path='login' element={<LogInPage />} />
+						<Route path='signup' element={<SignUpPage />} />
+						<Route path='faq' element={<FAQPage />} />
+						<Route path='privacy' element={<PrivacyPolicy />} />
+						<Route path='termsofservice' element={<TermsOfService />} />
+						<Route path='contact' element={<ContactUs />} />
+						<Route
+							path='account'
+							element={
 								<ProtectedRoute>
 									<UserProfile />
 								</ProtectedRoute>
-							} />
-							<Route path='profile' element={
+							}
+						/>
+						<Route
+							path='profile'
+							element={
 								<ProtectedRoute>
 									<ProfilePage />
 								</ProtectedRoute>
-							} />
-							<Route path='settings' element={
+							}
+						/>
+						<Route
+							path='settings'
+							element={
 								<ProtectedRoute>
 									<UserProfileSettings />
 								</ProtectedRoute>
-							} />
-							<Route path='support' element={
+							}
+						/>
+						<Route
+							path='support'
+							element={
 								<ProtectedRoute>
 									<Support />
 								</ProtectedRoute>
-							} />
-							<Route path='clubs' element={
+							}
+						/>
+						<Route
+							path='clubs'
+							element={
 								<ProtectedRoute>
 									<Clubs />
 								</ProtectedRoute>
-							} />
-							<Route path='explore' element={
-								<ProtectedRoute>
-									<Explore />
-								</ProtectedRoute>
-							} />
-							<Route path='library' element={
-								<ProtectedRoute>
-									<Library />
-								</ProtectedRoute>
-							} />
-							<Route path='booklist' element={
-								<ProtectedRoute>
-									<Library />
-								</ProtectedRoute>
-							} />
-							<Route path='booklist/:id' element={
-								<ProtectedRoute>
-									<LibraryBookList />
-								</ProtectedRoute>
-							} />
-							<Route path='/clubs/:bookClubId' element={
+							}
+						/>
+						<Route
+							path='/clubs/:id'
+							element={
 								<ProtectedRoute>
 									<BookClubDetail />
 								</ProtectedRoute>
-							} />
-							<Route path="/books/:bookId" element={<BookView />} />
-							<Route path="/clubs/:bookClubId/forums/:forumId" element={
+							}
+						/>
+						<Route
+							path='explore'
+							element={
+								<ProtectedRoute>
+									<Explore />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='library'
+							element={
+								<ProtectedRoute>
+									<Library />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='booklist'
+							element={
+								<ProtectedRoute>
+									<Library />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='booklist/:id'
+							element={
+								<ProtectedRoute>
+									<LibraryBookList />
+								</ProtectedRoute>
+							}
+						/>
+
+						<Route path='/books/:bookId' element={<BookView />} />
+						<Route
+							path='/clubs/:bookClubId/forums/:forumId'
+							element={
 								<ProtectedRoute>
 									<ForumView />
 								</ProtectedRoute>
-							} />
-						</Route>
-					</Routes>
-				</Router>
-			</>
+							}
+						/>
+					</Route>
+				</Routes>
+			</Router>
 		</QueryClientProvider>
 	);
 };
