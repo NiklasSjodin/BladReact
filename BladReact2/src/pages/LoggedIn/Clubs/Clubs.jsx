@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { PageContainer } from '../../../components/layout/PageContainer';
 import ScrollableContainer from '@/components/Sections/ScrollableContainer';
 import ClubCard from '@/components/ClubCard';
@@ -6,6 +6,7 @@ import { CardSkeleton } from '../../../components/CardSkeleton';
 import HeroSection from '../../../components/Sections/HeroSection';
 import { useNavigate } from 'react-router-dom';
 import { debounce } from 'lodash';
+import { Searchbar } from '@/components/Searchbar';
 
 export default function Clubs() {
 	const [popularClubs, setPopularClubs] = useState([]);
@@ -19,22 +20,46 @@ export default function Clubs() {
 	});
 	const [isLoading, setIsLoading] = useState(true);
 	const navigate = useNavigate();
+	const [searchResults, setSearchResults] = useState([]);
+	const [searchTerm, setSearchTerm] = useState('');
 
-	const debouncedSearch = debounce(async (term) => {
-		if (!term) {
-			setSearchResults([]);
-			return;
-		}
-		try {
-			const response = await fetch(
-				`https://localhost:7076/api/bookclubs?searchterm=${term}&PageIndex=1&PageSize=10`
-			);
-			const result = await response.json();
-			setSearchResults(result);
-		} catch (error) {
-			console.error('Error searching clubs:', error);
-		}
-	}, 300);
+	const debouncedSearch = useCallback(
+		debounce(async (term) => {
+			if (!term) {
+				setSearchResults([]);
+				return;
+			}
+			try {
+				console.log('Searching for:', term);
+				const response = await fetch(
+					`https://localhost:7076/api/bookclubs/search?bookClubQuery=${term}`
+				);
+				
+				// Check if response is ok and is JSON
+				if (!response.ok) {
+					console.log('Search response status:', response.status);
+					setSearchResults([]);
+					return;
+				}
+
+				// Check content type
+				const contentType = response.headers.get("content-type");
+				if (!contentType || !contentType.includes("application/json")) {
+					console.log('Invalid content type:', contentType);
+					setSearchResults([]);
+					return;
+				}
+
+				const result = await response.json();
+				console.log('Results:', result);
+				setSearchResults(Array.isArray(result) ? result : []);
+			} catch (error) {
+				console.error('Error searching clubs:', error);
+				setSearchResults([]);
+			}
+		}, 300),
+		[]
+	);
 
 	useEffect(() => {
 		const API_URL = 'https://localhost:7076';
@@ -68,22 +93,21 @@ export default function Clubs() {
 		navigate(`/clubs/${clubId}`);
 	};
 
+	const handleSelectClub = (club) => {
+		handleClubClick(club.id);
+	}
+
 	return (
 		<PageContainer>
 			<HeroSection />
 			<div className='space-y-8 pb-24'>
 				<div className='pt-6 space-y-4'>
 					<h1 className='text-3xl font-bold text-white'>Book Clubs</h1>
-					<input
-						type="text"
-						placeholder="Search book clubs..."
-						className="w-full p-4 rounded-lg"
-						onChange={(e) => {
-							setSearchTerm(e.target.value);
-							debouncedSearch(e.target.value);
-						}}
+					<Searchbar 
+						onSearch={debouncedSearch}
+						searchResults={searchResults}
+						onSelectClub={handleSelectClub}
 					/>
-
 				</div>
 
 				<ScrollableContainer
