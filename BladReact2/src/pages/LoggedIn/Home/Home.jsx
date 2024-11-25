@@ -52,7 +52,7 @@ export default function Home() {
 	return (
 		<PageContainer>
 			<HeroSection />
-			<div className='space-y-8 pb-24'>
+			<div className='space-y-8 pb-24 pt-16'>
 				<div className='pt-6 space-y-4'>
 					<h1 className='text-3xl font-bold text-bladLightTextColor'>
 						Welcome to Your Library
