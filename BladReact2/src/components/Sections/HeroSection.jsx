@@ -28,7 +28,7 @@ const HeroSection = () => {
             <div className="absolute inset-0 bg-[url('/hero-pattern.png')] opacity-10" />
             <div className="relative h-full flex items-center px-8">
                 <div className="max-w-2xl">
-                    <h1 className="text-4xl font-bold text-white mb-4">
+                    <h1 className="font-heading text-4xl font-bold text-white mb-4">
                         Welcome to Your Digital Library
                     </h1>
                     <p className="text-lg text-gray-200 mb-6">
