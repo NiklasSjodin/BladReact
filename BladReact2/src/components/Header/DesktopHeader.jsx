@@ -12,7 +12,7 @@ export default function Header() {
 					alt='Description of image'
 					className='h-8 w-auto object-contain pr-1'
 				/>
-				<div className='flex-1 font-comico'>blad.</div>
+				<div className='flex-1 font-general text-xl'>blad.</div>
 				
 				<div>
 					<Button variant='outline'>
