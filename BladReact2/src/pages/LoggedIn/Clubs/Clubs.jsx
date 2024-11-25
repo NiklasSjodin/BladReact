@@ -23,6 +23,8 @@ export default function Clubs() {
 	const [searchResults, setSearchResults] = useState([]);
 	const [searchTerm, setSearchTerm] = useState('');
 
+	const API_URL = 'https://blad-api.azurewebsites.net/api/';
+
 	const debouncedSearch = useCallback(
 		debounce(async (term) => {
 			if (!term) {
@@ -32,7 +34,7 @@ export default function Clubs() {
 			try {
 				console.log('Searching for:', term);
 				const response = await fetch(
-					`https://localhost:7076/api/bookclubs/search?bookClubQuery=${term}`
+					`${API_URL}bookclubs/search?bookClubQuery=${term}`
 				);
 				
 				// Check if response is ok and is JSON
@@ -62,12 +64,11 @@ export default function Clubs() {
 	);
 
 	useEffect(() => {
-		const API_URL = 'https://localhost:7076';
 		const fetchPopularClubs = async () => {
 			setIsLoading(true);
 			try {
 				const response = await fetch(
-					`${API_URL}/api/bookclubs/popular?PageSize=10&PageIndex=1`
+					`${API_URL}bookclubs/popular?PageSize=10&PageIndex=1`
 				);
 				const result = await response.json();
 				setPopularClubs(result.data);

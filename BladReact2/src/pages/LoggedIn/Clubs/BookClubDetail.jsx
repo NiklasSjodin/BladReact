@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { PageContainer } from '../../../components/layout/PageContainer';
 import { format } from 'date-fns';
+import placeholder from '../../../images/placeholder.gif'
 
 export default function BookClubDetail() {
     const params = useParams();
@@ -15,6 +16,8 @@ export default function BookClubDetail() {
     const [error, setError] = useState(null);
     const [bookDetails, setBookDetails] = useState({});
     const [memberDetails, setMemberDetails] = useState({});
+
+    const API_URL = 'https://blad-api.azurewebsites.net/api/';
 
     useEffect(() => {
         const fetchClubDetails = async () => {
@@ -30,7 +33,7 @@ export default function BookClubDetail() {
             setError(null);
 
             try {
-                const response = await fetch(`https://localhost:7076/api/bookclubs/${params.id}`);
+                const response = await fetch(`${API_URL}bookclubs/${params.id}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -53,7 +56,7 @@ export default function BookClubDetail() {
 
             try {
                 const bookPromises = clubDetails.books.map(async (book) => {
-                    const response = await fetch(`https://localhost:7076/api/books/${book.bookReferenceId}`);
+                    const response = await fetch(`${API_URL}books/${book.bookReferenceId}`);
                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                     const data = await response.json();
                     return { ...book, details: data };
@@ -80,7 +83,7 @@ export default function BookClubDetail() {
 
             try {
                 const memberPromises = clubDetails.members.map(async (member) => {
-                    const response = await fetch(`https://localhost:7076/api/users/${member.userId}`);
+                    const response = await fetch(`${API_URL}users/${member.userId}`);
                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                     const data = await response.json();
                     return { userId: member.userId, details: data, role: member.role };
@@ -237,12 +240,12 @@ export default function BookClubDetail() {
                     {/* Left Column */}
                     <div className="space-y-4">
                         <img
-                            src={clubDetails.imageUrl || '/default-club-image.jpg'}
+                            src={clubDetails.imageUrl || placeholder}
                             alt={clubDetails.name}
                             className="w-full h-64 object-cover rounded-lg shadow-lg"
                             onError={(e) => {
                                 e.target.onerror = null;
-                                e.target.src = '/default-club-image.jpg';
+                                e.target.src = placeholder;
                             }}
                         />
                         <h1 className="text-3xl font-bold text-white">{clubDetails.name}</h1>
