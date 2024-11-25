@@ -29,6 +29,14 @@ export default function LoggedInHeader() {
   const [userName, setUserName] = useState('');
   const [isOpen, setIsOpen] = useState(false); // Dropdown state
   const [isSearchOpen, setIsSearchOpen] = useState(false); // Search dropdown state
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Check localStorage first, then system preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      return savedTheme === 'dark';
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
 
   useEffect(() => {
     const token = localStorage.getItem('token'); // Retrieve token from local storage
@@ -37,6 +45,28 @@ export default function LoggedInHeader() {
       setUserName(decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']);
     }
   }, []);
+
+  // Effect to handle theme changes
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode]);
+
+  // Add click outside handler
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isOpen && !event.target.closest('.dropdown-container')) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
 
   const handleSearch = async (event) => {
     if (event.key === 'Enter') {
@@ -141,6 +171,15 @@ export default function LoggedInHeader() {
                 >
                   Logga ut
                 </a>
+								<div className='flex items-center justify-between px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white'>
+									<span>Dark Mode</span>
+									<Switch
+										checked={isDarkMode}
+										onCheckedChange={(checked) => {
+											setIsDarkMode(checked);
+										}}
+									/>
+								</div>
               </div>
             )}
           </div>

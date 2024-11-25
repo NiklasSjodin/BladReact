@@ -5,7 +5,7 @@ const flattenColorPalette =
 	require('tailwindcss/lib/util/flattenColorPalette').default;
 
 module.exports = {
-	darkMode: ['class'],
+	darkMode: 'class',
 	content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
 	theme: {
 		extend: {
