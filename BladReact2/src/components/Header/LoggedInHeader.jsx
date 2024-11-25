@@ -58,7 +58,7 @@ export default function LoggedInHeader() {
   };
 
   return (
-    <header className="pt-1 pb-1 bg-slate-600">
+    <header className="pt-1 pb-1 bg-bladtheme border-b-2 border-bladthemedetail">
       <div className="px-4 h-12 flex items-center">
         <Link to="/">
           <img
@@ -67,13 +67,13 @@ export default function LoggedInHeader() {
             className="h-8 w-auto object-contain pr-1"
           />
         </Link>
-        <Link to="/" className="flex-1 font-comico">
+        <Link to="/" className="flex-1 font-general text-xl text-white">
           blad.
         </Link>
         <div className="flex items-center space-x-4 ml-auto px-2">
-          <Link to="/clubs">Clubs</Link>
-          <Link to="/explore">Explore</Link>
-          <Link to="/library">Bibliotek</Link>
+          <Link to="/clubs" className="transition-transform hover:border-b-2 hover:border-white">Clubs</Link>
+          <Link to="/explore" className="transition-transform hover:border-b-2 hover:border-white">Explore</Link>
+          <Link to="/library" className="transition-transform hover:border-b-2 hover:border-white">Bibliotek</Link>
         </div>
 
         <div className="flex items-center space-x-4 ml-auto pl-2">

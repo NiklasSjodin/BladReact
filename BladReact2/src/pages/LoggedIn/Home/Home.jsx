@@ -72,29 +72,6 @@ export default function Home() {
 						: popularBooks.map((book) => <BookCard key={book.id} {...book} />)}
 				</ScrollableContainer>
 
-				<ScrollableContainer
-					title='Science Fiction'
-					viewAllLink='/books/scifi'
-					itemWidth={192}
-				>
-					{isLoading
-						? Array.from({ length: 10 }).map((_, index) => (
-								<CardSkeleton key={index} />
-						  ))
-						: scifiBooks.map((book) => <BookCard key={book.id} {...book} />)}
-				</ScrollableContainer>
-
-				<ScrollableContainer
-					title='Fantasy'
-					viewAllLink='/books/fantasy'
-					itemWidth={192}
-				>
-					{isLoading
-						? Array.from({ length: 10 }).map((_, index) => (
-								<CardSkeleton key={index} />
-						  ))
-						: fantasyBooks.map((book) => <BookCard key={book.id} {...book} />)}
-				</ScrollableContainer>
 			</div>
 		</PageContainer>
 	);
