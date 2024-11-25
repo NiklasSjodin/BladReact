@@ -12,6 +12,7 @@ import ProtectedRoute from './components/layout/ProtectedRoute';
 import UserProfile from './pages/LoggedIn/UserProfile';
 import UserProfileSettings from './pages/LoggedIn/UserProfileEditSettings';
 import Support from './pages/LoggedIn/Support';
+import BookView from './components/Books/BookView';
 import Clubs from './pages/LoggedIn/Clubs/Clubs';
 import Explore from './pages/LoggedIn/Explore/Explore';
 import Library from './pages/LoggedIn/LibraryPage/Library';
@@ -19,7 +20,6 @@ import LibraryBookList from './pages/LoggedIn/LibraryPage/LibraryBookList';
 import BookClubDetail from './pages/LoggedIn/Clubs/BookClubDetail';
 import LandingPageHandler from './components/LandingPageHandler';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import BookView from './pages/LoggedIn/BookView';
 import ForumView from './pages/LoggedIn/Clubs/ForumView';
 import ProfilePage from './pages/LoggedIn/Profile/Profile';
 
@@ -38,6 +38,8 @@ const App = () => {
 						<Route path='privacy' element={<PrivacyPolicy />} />
 						<Route path='termsofservice' element={<TermsOfService />} />
 						<Route path='contact' element={<ContactUs />} />
+			
+						{/* Skyddad rutt för Home-sidan */}
 						<Route
 							path='account'
 							element={
@@ -102,6 +104,16 @@ const App = () => {
 								</ProtectedRoute>
 							}
 						/>
+
+						<Route
+							path='book/:isbn'
+							element={
+								<ProtectedRoute>
+									<BookView/>
+								</ProtectedRoute>
+							}
+						/>
+
 						<Route
 							path='booklist'
 							element={
