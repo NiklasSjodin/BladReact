@@ -67,7 +67,7 @@ const App = () => {
 						/>
 
 						<Route
-							path='book/:id'
+							path='book/:isbn'
 							element={
 								<ProtectedRoute>
 									<BookView/>

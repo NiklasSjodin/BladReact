@@ -1,91 +1,137 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
+import AddToBookListModal from '../Modal/AddToListModal';
 
 const BookView = () => {
-  const { id } = useParams(); // Hämta bok-ID från URL:en
+  const { isbn } = useParams(); // Get the isbn from the URL
   const [book, setBook] = useState(null);
   const [bookClubs, setBookClubs] = useState([]);
   const [bookReviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userId, setUserId] = useState(null); 
+  const [bookLists, setBookLists] = useState([]);
 
-  console.log('ID från URL:', id); //Logga för att säkerställa att id hämtas från URL
 
   useEffect(() => {
     const fetchBookData = async () => {
       try {
         setLoading(true);
+    
+        let bookData;
+        let bookReferenceId;
+      
 
-        // Hämta bokinfo från OpenLibrary
-        const bookResponse = await fetch(`https://openlibrary.org/works/${id}.json`);
-        if (!bookResponse.ok) throw new Error('Boken kunde inte hämtas');
-        const bookData = await bookResponse.json();
+        console.log(bookData);
+    
+        // Step 1: Check the backend for bookreferenceId
+        const backendResponse = await fetch(`https://localhost:7076/api/book/isbn/${isbn}/bookreferenceId`);
+        if (backendResponse.ok) {
+          const backendData = await backendResponse.json();
+          bookReferenceId = backendData.bookReferenceId; 
+    
+          // Fetch bookdata using the bookReferenceId
+          const bookDetailsResponse = await fetch(`https://localhost:7076/api/bookdata/book/${bookReferenceId}`);
+          if (!bookDetailsResponse.ok) throw new Error('Failed to fetch book details from the backend');
+          bookData = await bookDetailsResponse.json();
+        } else if (backendResponse.status === 404) {
+          // Step 2: If book not found in backend, fetch from Google Books API
+          const googleResponse = await fetch(`https://localhost:7076/api/googlebooks/search/isbn?isbn=${isbn}`);
+          if (!googleResponse.ok) throw new Error('Failed to fetch book data from Google API');
+    
+          bookData = await googleResponse.json();
+        } else {
+          throw new Error('Unexpected error while checking backend for book');
+        }
+    
         setBook(bookData);
-
-
-        // Hämta bokklubbar från backend
-        // const bookReferenceId = book.id;
-        // const clubsResponse = await fetch(`http://localhost:7076/api/bookclubs/book/${bookReferenceId}`);
-        // if (!clubsResponse.ok) throw new Error('Kunde inte hämta bokklubbar');
-        // const clubsData = await clubsResponse.json();
-        // setBookClubs(clubsData);
-
-        // // Hämta recensioner och betyg från backend
-        // const reviewsResponse = await fetch(`http://localhost:7076/api/bookreview/book/${bookReferenceId}`);
-        // if (!reviewsResponse.ok) throw new Error('Kunde inte hämta recensioner');
-        // const reviewsData = await reviewsResponse.json();
-        // setReviews(reviewsData);
-
-      }catch (error) {
+    
+        // Fetch book clubs and reviews if bookReferenceId exists
+        if (bookReferenceId) {
+          await fetchRelatedData(bookReferenceId);
+        }
+      } catch (error) {
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
+    
+    const fetchRelatedData = async (bookReferenceId) => {
+      try {
+        // Fetch bookclubs
+        const clubsResponse = await fetch(`https://localhost:7076/api/bookclubs/book/${bookReferenceId}`);
+        if (clubsResponse.ok) {
+          const clubsData = await clubsResponse.json();
+          setBookClubs(clubsData);
+        }
+    
+        // Fetch reviews
+        const reviewsResponse = await fetch(`https://localhost:7076/api/bookreview/book/${bookReferenceId}`);
+        if (reviewsResponse.ok) {
+          const reviewsData = await reviewsResponse.json();
+          setReviews(reviewsData);
+        }
+      } catch (error) {
+        console.warn("Error fetching book clubs or reviews:", error.message);
+      }
+    };
+
     fetchBookData();
-  }, [id]);
+  }, [isbn]);
 
   if (loading) return <p className="text-center text-xl font-semibold">Laddar...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
-  if (!book) return <p className="text-center text-gray-500">Ingen bok hittades</p>;
+  if (!book) return <p className="text-center text-gray-500">Ingen bok hittades!</p>;
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-gray-50 rounded-md shadow-md">
       <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-        {book.covers && book.covers.length > 0 && (
+        {book.thumbnail && (
           <img
             className="w-48 h-auto rounded-lg shadow"
-            src={`https://covers.openlibrary.org/b/id/${book.covers[0]}-L.jpg`}
-            alt={`${book.title} omslag`}
+            src={book.thumbnail}
+            alt={`${book.title} Omslag`}
           />
         )}
         <div>
           <h1 className="text-3xl font-bold text-gray-800">{book.title}</h1>
-          <h2 className="text-lg text-gray-600 mt-2">
-            Författare:
-            <span className="block mt-1 text-gray-800 font-medium">
-              {book.authors &&
-                book.authors.map((author) => (
-                  <span key={author.key} className="inline-block">
-                    {author.name}
-                  </span>
-                ))}
-            </span>
-          </h2>
-        </div>
-      </div>
-      <p className="mt-6 text-gray-700">
-        <strong>Beskrivning:</strong>{' '}
-        {book.description
-          ? book.description.value || book.description
-          : 'Ingen beskrivning tillgänglig'}
-      </p>
-      <p className="mt-4 text-gray-600">
-        <strong>Publiceringsår:</strong>{' '}
-        {book.created ? new Date(book.created.value).getFullYear() : 'Ej tillgängligt'}
-      </p>
+          <p className="text-gray-800 mt-1">
+            <strong>Författare:</strong><span className='text-gray-600'> {book.author || 'Okänt'}</span>
+          </p>
+          <p className="text-gray-800 mt-1">
+            <strong>Publiceringsår:</strong> <span className="text-gray-600">{book.year || 'Okänt'}</span>
+          </p>
+          <p className="text-gray-800 mt-1">
+            <strong>Genre:</strong> <span className="text-gray-600">{book.genres || 'Okänd'}</span>
+          </p>
+          <Button
+            className="mt-5"
+            // variant="default"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Lägg till i lista
+          </Button>
+       </div>
+    </div>
 
-      {/* Bokklubbar */}
+       <p className="mt-6 text-gray-700">
+          <strong>Beskrivning:</strong> 
+          <span className='block mt'> {book.description || 'Ingen beskrivning hittades'}</span>
+        </p>
+
+        <AddToBookListModal
+        // userId={userId}
+        // bookId={bookReferenceId.id}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)} // Stäng modalen
+      />
+
+        
+
+      {/* Book Clubs */}
       <div className="mt-8">
         <h3 className="text-xl font-semibold text-gray-800">Bokklubbar som läser denna bok:</h3>
         <ul className="mt-4">
@@ -99,12 +145,12 @@ const BookView = () => {
               </li>
             ))
           ) : (
-            <p className="text-gray-500">Inga bokklubbar läser denna bok just nu.</p>
+            <p className="text-gray-500">Det finns ingen bokklubb som läser denna bok just nu.</p>
           )}
         </ul>
       </div>
 
-      {/* Recensioner och betyg */}
+      {/* Reviews */}
       <div className="mt-8">
         <h3 className="text-xl font-semibold text-gray-800">Användarrecensioner:</h3>
         <ul className="mt-4">
@@ -121,7 +167,7 @@ const BookView = () => {
               </li>
             ))
           ) : (
-            <p className="text-gray-500">Inga recensioner ännu. Var först med att recensera!</p>
+            <p className="text-gray-500">Ingen recensioner ännu. Var först med att recencera!</p>
           )}
         </ul>
       </div>
