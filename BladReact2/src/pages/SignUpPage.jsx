@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import BladLogo from '../Images/blad.png';
+import BladLogo from '../images/blad.png';
 import GoogleLogo from '../images/googlelogo.png'
 import AppleLogo from '../images/applelogo.png'
 import { Link, useNavigate } from 'react-router-dom';

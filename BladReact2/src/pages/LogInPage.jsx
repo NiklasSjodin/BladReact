@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import BladLogo from '../images/blad.png';
-import GoogleLogo from '../Images/googlelogo.png';
+import GoogleLogo from '../images/googlelogo.png';
 import { Link, useNavigate } from 'react-router-dom';
 
 function LogInPage() {
