@@ -1,10 +1,10 @@
 // src/components/Sections/TestMarquee.jsx
 import React from 'react';
-import Image1 from '../../Images/anjali-mehta-q7LqBzBG8rA-unsplash.jpg';
-import Image2 from '../../Images/charlesdeluvio-EV2Y6-NzDyU-unsplash.jpg';
-import Image3 from '../../Images/clay-banks-Z5vZCy8xDZU-unsplash.jpg';
-import Image4 from '../../Images/karolina-grabowska-H_eb_VfG2Ow-unsplash.jpg';
-import Image5 from '../../Images/olena-bohovyk-Ft_Wn-K5YH8-unsplash.jpg';
+import Image1 from '../../images/anjali-mehta-q7LqBzBG8rA-unsplash.jpg';
+import Image2 from '../../images/charlesdeluvio-EV2Y6-NzDyU-unsplash.jpg';
+import Image3 from '../../images/clay-banks-Z5vZCy8xDZU-unsplash.jpg';
+import Image4 from '../../images/karolina-grabowska-H_eb_VfG2Ow-unsplash.jpg';
+import Image5 from '../../images/olena-bohovyk-Ft_Wn-K5YH8-unsplash.jpg';
 import MarqueeComponent from './Marquee';
 
 const TestMarquee = ({ 
