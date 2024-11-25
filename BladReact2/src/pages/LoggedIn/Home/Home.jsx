@@ -52,7 +52,7 @@ export default function Home() {
 	return (
 		<PageContainer>
 			<HeroSection />
-			<div className='space-y-8 pb-24'>
+			<div className='space-y-8 pb-24 pt-16'>
 				<div className='pt-6 space-y-4'>
 					<h1 className='text-3xl font-bold text-bladLightTextColor'>
 						Welcome to Your Library
@@ -72,29 +72,6 @@ export default function Home() {
 						: popularBooks.map((book) => <BookCard key={book.id} {...book} />)}
 				</ScrollableContainer>
 
-				<ScrollableContainer
-					title='Science Fiction'
-					viewAllLink='/books/scifi'
-					itemWidth={192}
-				>
-					{isLoading
-						? Array.from({ length: 10 }).map((_, index) => (
-								<CardSkeleton key={index} />
-						  ))
-						: scifiBooks.map((book) => <BookCard key={book.id} {...book} />)}
-				</ScrollableContainer>
-
-				<ScrollableContainer
-					title='Fantasy'
-					viewAllLink='/books/fantasy'
-					itemWidth={192}
-				>
-					{isLoading
-						? Array.from({ length: 10 }).map((_, index) => (
-								<CardSkeleton key={index} />
-						  ))
-						: fantasyBooks.map((book) => <BookCard key={book.id} {...book} />)}
-				</ScrollableContainer>
 			</div>
 		</PageContainer>
 	);

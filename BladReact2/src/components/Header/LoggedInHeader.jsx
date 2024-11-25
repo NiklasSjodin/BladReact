@@ -5,7 +5,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
 import logo from '../../images/books.png';
 import { searchBooks } from '../../services/BooksService';
 import { jwtDecode } from 'jwt-decode';
-import DarkModeToggle from '../ui/Toggle';
+import { Switch } from "../ui/switch";
 
 const SearchResultsItem = ({ book }) => (
   <div className="flex items-center space-x-4 p-2 border-b">
@@ -29,6 +29,14 @@ export default function LoggedInHeader() {
   const [userName, setUserName] = useState('');
   const [isOpen, setIsOpen] = useState(false); // Dropdown state
   const [isSearchOpen, setIsSearchOpen] = useState(false); // Search dropdown state
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Check localStorage first, then system preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      return savedTheme === 'dark';
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
 
   useEffect(() => {
     const token = localStorage.getItem('token'); // Retrieve token from local storage
@@ -37,6 +45,28 @@ export default function LoggedInHeader() {
       setUserName(decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']);
     }
   }, []);
+
+  // Effect to handle theme changes
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode]);
+
+  // Add click outside handler
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isOpen && !event.target.closest('.dropdown-container')) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
 
   const handleSearch = async (event) => {
     if (event.key === 'Enter') {
@@ -58,112 +88,137 @@ export default function LoggedInHeader() {
   };
 
   return (
-    <header className="pt-1 pb-1 bg-slate-600">
-      <div className="px-4 h-12 flex items-center">
-        <Link to="/home">
-          <img
-            src={logo}
-            alt="Description of image"
-            className="h-8 w-auto object-contain pr-1"
-          />
-        </Link>
-        <Link to="/home" className="flex-1 font-comico">
-          blad.
-        </Link>
-        <div className="flex items-center space-x-4 ml-auto px-2">
-          <Link to="/clubs">Clubs</Link>
-          <Link to="/explore">Explore</Link>
-          <Link to="/library">Bibliotek</Link>
-        </div>
+		<header className='absolute w-full pt-1 pb-1 bg-bladtheme'>
+			<div className='px-4 h-12 flex items-center'>
+				<Link to='/'>
+					<img
+						src={logo}
+						alt='Description of image'
+						className='h-8 w-auto object-contain pr-1'
+					/>
+				</Link>
+				<Link to='/' className='flex-1 font-general text-xl text-white'>
+					blad.
+				</Link>
+				<div className='flex items-center space-x-4 ml-auto px-2'>
+					<Link
+						to='/clubs'
+						className='transition-transform hover:border-b-2 hover:border-white'
+					>
+						Clubs
+					</Link>
+					<Link
+						to='/explore'
+						className='transition-transform hover:border-b-2 hover:border-white'
+					>
+						Explore
+					</Link>
+					<Link
+						to='/library'
+						className='transition-transform hover:border-b-2 hover:border-white'
+					>
+						Bibliotek
+					</Link>
+				</div>
 
-        <div className="flex items-center space-x-4 ml-auto pl-2">
-          <input
-            type="text"
-            placeholder="Sökbar för allt?"
-            className="border rounded-md px-2 py-1 w-64"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={handleSearch}
-          />
-          <div className="relative">
-            <Avatar onClick={() => setIsOpen(!isOpen)}>
-              <AvatarImage src="/path/to/avatar.jpg" alt="User Avatar" />
-              <AvatarFallback>U</AvatarFallback>
-            </Avatar>
-            {/* Dropdown menu */}
-            {isOpen && (
-              <div
-                className="absolute right-0 w-48 mt-2 origin-top-right bg-white rounded-md shadow-xl dark:bg-gray-800"
-                onClick={(e) => e.stopPropagation()} // Prevent click from closing the dropdown
-              >
-                <Link
-                  to="/profile" // Use Link for navigation
-                  onClick={() => setIsOpen(false)} // Close dropdown on link click
-                  className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  Profil
-                </Link>
-                <a
-                  href="#"
-                  className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  Klubbar
-                </a>
-                <a
-                  href="#"
-                  className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  Bokhylla
-                </a>
-                <a
-                  href="#"
-                  className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  Recensioner
-                </a>
-                <Link
-                  to="/account" // Use Link for navigation
-                  onClick={() => setIsOpen(false)} // Close dropdown on link click
-                  className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  Inställningar
-                </Link>
-                <Link
-                  to="/support" // Use Link for navigation
-                  onClick={() => setIsOpen(false)} // Close dropdown on link click
-                  className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  Support
-                </Link>
-                <a
-                  href="#"
-                  className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-                >
-                  Logga ut
-                </a>
-              </div>
-            )}
-          </div>
-          <Link to="/account">{userName}</Link>
-          <DarkModeToggle/>
-        </div>
-      </div>
+				<div className='flex items-center space-x-4 ml-auto pl-2'>
+					<input
+						type='text'
+						placeholder='Sökbar för allt?'
+						className='border rounded-md px-2 py-1 w-64'
+						value={searchQuery}
+						onChange={(e) => setSearchQuery(e.target.value)}
+						onKeyDown={handleSearch}
+					/>
+					<div className='relative dropdown-container'>
+						<div
+							className='flex items-center space-x-2 cursor-pointer'
+							onClick={() => setIsOpen(!isOpen)}
+						>
+							<Avatar>
+								<AvatarImage src='/path/to/avatar.jpg' alt='User Avatar' />
+								<AvatarFallback>U</AvatarFallback>
+							</Avatar>
+							<span className='transition-transform hover:border-b-2 hover:border-white'>
+								{userName}
+							</span>
+						</div>
+						{/* Dropdown menu */}
+						{isOpen && (
+							<div className='absolute right-0 w-48 mt-2 origin-top-right bg-white rounded-b-md shadow-xl dark:bg-gray-800 z-50 -mr-4'>
+								<Link
+									to='/profile' // Use Link for navigation
+									onClick={() => setIsOpen(false)} // Close dropdown on link click
+									className='block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white'
+								>
+									Profil
+								</Link>
+								<a
+									href='#'
+									className='block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white'
+								>
+									Klubbar
+								</a>
+								<a
+									href='#'
+									className='block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white'
+								>
+									Bokhylla
+								</a>
+								<a
+									href='#'
+									className='block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white'
+								>
+									Recensioner
+								</a>
+								<Link
+									to='/account' // Use Link for navigation
+									onClick={() => setIsOpen(false)} // Close dropdown on link click
+									className='block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white'
+								>
+									Inställningar
+								</Link>
+								<Link
+									to='/support' // Use Link for navigation
+									onClick={() => setIsOpen(false)} // Close dropdown on link click
+									className='block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white'
+								>
+									Support
+								</Link>
+								<a
+									href='#'
+									className='block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white'
+								>
+									Logga ut
+								</a>
+								<div className='flex items-center justify-between px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white'>
+									<span>Dark Mode</span>
+									<Switch
+										checked={isDarkMode}
+										onCheckedChange={(checked) => {
+											setIsDarkMode(checked);
+										}}
+									/>
+								</div>
+							</div>
+						)}
+					</div>
+				</div>
+			</div>
 
-      {isSearchOpen && searchResults.length > 0 && (
-        <div className="px-4 mt-2">
-          <h2 className="text-lg font-medium mb-2">Search Results</h2>
-          <button 
-            onClick={handleCloseSearch} 
-            className="text-red-500 mb-2">
-            Close Search
-          </button>
-          <div className="border rounded-md overflow-hidden">
-            {searchResults.map((book) => (
-              <SearchResultsItem key={book.id} book={book} />
-            ))}
-          </div>
-        </div>
-      )}
-    </header>
-  );
+			{isSearchOpen && searchResults.length > 0 && (
+				<div className='px-4 mt-2'>
+					<h2 className='text-lg font-medium mb-2'>Search Results</h2>
+					<button onClick={handleCloseSearch} className='text-red-500 mb-2'>
+						Close Search
+					</button>
+					<div className='border rounded-md overflow-hidden'>
+						{searchResults.map((book) => (
+							<SearchResultsItem key={book.id} book={book} />
+						))}
+					</div>
+				</div>
+			)}
+		</header>
+	);
 }

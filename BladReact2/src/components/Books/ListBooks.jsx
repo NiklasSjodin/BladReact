@@ -1,32 +1,28 @@
 export default ListBooks;
 
 import { useEffect, useState } from 'react';
-import { fetchBooks } from '../../services/BooksService';
+import { useAuthFetch } from '../../hooks/useAuthFetch';
 import ScrollableContainer from '../Sections/ScrollableContainer';
 import { SectionHeader } from '../Sections/SectionHeader';
 import BookCard from '../BookCard';
 
 export const ListBooks = () => {
+	const { authFetch, isLoading } = useAuthFetch();
 	const [books, setBooks] = useState([]);
-	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const loadBooks = async () => {
-			setIsLoading(true);
 			try {
-				const fetchedBooks = await fetchBooks({ 
-					searchQuery: 'trending',
-					limit: 10 
-				});
+				const fetchedBooks = await authFetch(
+					`https://localhost:7076/api/OpenLibraryAPI/search?query=trending&limit=10`
+				);
 				setBooks(fetchedBooks);
 			} catch (error) {
 				console.error('Error loading books:', error);
-			} finally {
-				setIsLoading(false);
 			}
 		};
 		loadBooks();
-	}, []);
+	}, [authFetch]);
 
 	return (
 		<div className='mt-8 max-w-7xl'>

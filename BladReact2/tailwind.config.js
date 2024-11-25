@@ -5,7 +5,7 @@ const flattenColorPalette =
 	require('tailwindcss/lib/util/flattenColorPalette').default;
 
 module.exports = {
-	darkMode: ['class'],
+	darkMode: 'class',
 	content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
 	theme: {
 		extend: {
@@ -17,7 +17,10 @@ module.exports = {
 			colors: {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				bladtheme: '#800020',
+				bladthemedetail: '#A64C62',
 				bladLightBackground: 'rgb(247, 249, 249)',
+				headerlight: '#DEE0E0',
 				bladLightFields: '#f3f4f6',
 				bladLightFields2: '#fafafa',
 				bladLightTextColor: '#020617',
@@ -69,10 +72,13 @@ module.exports = {
 			},
 			fontFamily: {
 				comico: ['Comico', 'sans-serif'],
+				general: ['General Sans', 'sans-serif'],
+				body: ['Synonym', 'sans-serif', defaultTheme.fontFamily.sans],
+				heading: ['Erode', 'sans-serif'],
 			},
 			backgroundImage: {
-				'hero-pattern': "url(/src/images/pexels-jessikaarraes-19561461.jpg)"
-			}
+				'hero-pattern': 'url(/src/images/pexels-jessikaarraes-19561461.jpg)',
+			},
 		},
 	},
 	plugins: [require('tailwindcss-animate'), addVariablesForColors],

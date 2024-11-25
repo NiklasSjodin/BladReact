@@ -1,45 +1,76 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { PageContainer } from '../../../components/layout/PageContainer';
-import { format } from 'date-fns'; // You'll need to install this: npm install date-fns
+import { format } from 'date-fns';
 
 export default function ForumView() {
-    const [forum, setForum] = useState(null);
-    const [posts, setPosts] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
     const { bookClubId, forumId } = useParams();
     const navigate = useNavigate();
+    const [forum, setForum] = useState(null);
+    const [comments, setComments] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isPosting, setIsPosting] = useState(false);
+    const [error, setError] = useState(null);
 
+    // Get auth token from localStorage with validation
+    const getAuthHeader = () => {
+        const token = localStorage.getItem('token');
+        console.log('Current token:', token); // Debug log
+        
+        if (!token) {
+            throw new Error('No authentication token found');
+        }
+
+        return {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        };
+    };
+
+    // Fetch forum details
     useEffect(() => {
-        const fetchForumDetails = async () => {
+        const fetchForumData = async () => {
             setIsLoading(true);
+            setError(null);
             try {
-                // Adjust the endpoint according to your API
-                const response = await fetch(
-                    `https://localhost:7076/api/bookclubs/${bookClubId}/forums/${forumId}`
+                // Fetch forum details
+                const forumResponse = await fetch(
+                    `https://localhost:7076/api/bookclubs/${bookClubId}/forums/${forumId}`,
+                    {
+                        headers: getAuthHeader()
+                    }
                 );
-                if (!response.ok) {
-                    throw new Error('Failed to fetch forum details');
-                }
-                const data = await response.json();
-                setForum(data);
-                setPosts(data.posts || []); // Assuming posts are included in the response
-            } catch (error) {
-                console.error('Error fetching forum details:', error);
-                setError(error.message);
+                if (!forumResponse.ok) throw new Error('Failed to fetch forum details');
+                const forumData = await forumResponse.json();
+                setForum(forumData);
+
+                // Fetch comments
+                const commentsResponse = await fetch(
+                    `https://localhost:7076/api/forums/${forumId}/comments`,
+                    {
+                        headers: getAuthHeader()
+                    }
+                );
+                if (!commentsResponse.ok) throw new Error('Failed to fetch comments');
+                const commentsData = await commentsResponse.json();
+                setComments(commentsData);
+            } catch (err) {
+                console.error('Error:', err);
+                setError(err.message);
             } finally {
                 setIsLoading(false);
             }
         };
 
-        fetchForumDetails();
+        fetchForumData();
     }, [bookClubId, forumId]);
 
-    const handleNewPost = async (content) => {
+    // Handle new comment submission
+    const handleNewComment = async (content) => {
+        setIsPosting(true);
         try {
             const response = await fetch(
-                `https://localhost:7076/api/bookclubs/${bookClubId}/forums/${forumId}/posts`,
+                `https://localhost:7076/api/forums/${forumId}/comments`,
                 {
                     method: 'POST',
                     headers: {
@@ -48,51 +79,59 @@ export default function ForumView() {
                     body: JSON.stringify({ content }),
                 }
             );
-            if (!response.ok) {
-                throw new Error('Failed to create post');
-            }
-            const newPost = await response.json();
-            setPosts(prevPosts => [newPost, ...prevPosts]); // Add new post at the top
-        } catch (error) {
-            console.error('Error creating post:', error);
+
+            if (!response.ok) throw new Error('Failed to post comment');
+            
+            const newComment = await response.json();
+            setComments(prevComments => [newComment, ...prevComments]);
+        } catch (err) {
+            console.error('Error posting comment:', err);
+            alert('Failed to post comment. Please try again.');
+        } finally {
+            setIsPosting(false);
         }
     };
 
-    if (isLoading) return (
-        <PageContainer>
-            <div className="p-6">
-                <div className="animate-pulse">Loading forum...</div>
-            </div>
-        </PageContainer>
-    );
+    if (isLoading) {
+        return (
+            <PageContainer>
+                <div className="animate-pulse p-6">
+                    <div className="h-8 bg-gray-700 rounded w-3/4 mb-4"></div>
+                    <div className="h-4 bg-gray-700 rounded w-1/2"></div>
+                </div>
+            </PageContainer>
+        );
+    }
 
-    if (error) return (
-        <PageContainer>
-            <div className="p-6 text-red-500">
-                Error: {error}
-            </div>
-        </PageContainer>
-    );
+    if (error) {
+        return (
+            <PageContainer>
+                <div className="p-6 text-red-500">Error: {error}</div>
+            </PageContainer>
+        );
+    }
 
     return (
         <PageContainer>
-            <div className="p-6 space-y-6">
+            <div className="max-w-4xl mx-auto px-4 py-8">
                 {/* Forum Header */}
-                <div className="bg-gray-800 rounded-lg p-6">
+                <div className="bg-gray-800 rounded-lg p-6 mb-8">
                     <h1 className="text-3xl font-bold text-white mb-2">{forum?.title}</h1>
-                    <p className="text-gray-400">{forum?.description}</p>
+                    <div className="flex items-center space-x-4 text-gray-400">
+                        <span>Type: {forum?.forumType}</span>
+                    </div>
                 </div>
 
-                {/* New Post Form */}
+                {/* New Comment Form */}
                 <div className="bg-gray-800 rounded-lg p-6">
-                    <h2 className="text-xl font-semibold text-white mb-4">Create New Post</h2>
-                    <NewPostForm onSubmit={handleNewPost} />
+                    <h2 className="text-xl font-semibold text-white mb-4">Create New Comment</h2>
+                    <NewCommentForm onSubmit={handleNewComment} />
                 </div>
 
-                {/* Posts List */}
+                {/* Comments List */}
                 <div className="space-y-4">
-                    {posts.map((post) => (
-                        <PostCard key={post.id} post={post} />
+                    {comments.map((comment) => (
+                        <CommentCard key={comment.id} comment={comment} />
                     ))}
                 </div>
             </div>
@@ -100,8 +139,8 @@ export default function ForumView() {
     );
 }
 
-// New Post Form Component
-function NewPostForm({ onSubmit }) {
+// New Comment Form Component
+function NewCommentForm({ onSubmit }) {
     const [content, setContent] = useState('');
 
     const handleSubmit = (e) => {
@@ -119,7 +158,7 @@ function NewPostForm({ onSubmit }) {
                 onChange={(e) => setContent(e.target.value)}
                 className="w-full p-4 rounded-lg bg-gray-700 text-white resize-none"
                 rows="4"
-                placeholder="Write your post..."
+                placeholder="Write your comment..."
             />
             <button
                 type="submit"
@@ -131,8 +170,8 @@ function NewPostForm({ onSubmit }) {
     );
 }
 
-// Post Card Component
-function PostCard({ post }) {
+// Comment Card Component
+function CommentCard({ comment }) {
     return (
         <div className="bg-gray-800 rounded-lg p-6">
             <div className="flex items-start justify-between mb-4">
@@ -141,15 +180,15 @@ function PostCard({ post }) {
                         {/* Add user avatar here if available */}
                     </div>
                     <div>
-                        <h3 className="font-medium text-white">{post.authorName}</h3>
+                        <h3 className="font-medium text-white">{comment.authorName}</h3>
                         <p className="text-sm text-gray-400">
-                            {format(new Date(post.createdAt), 'MMM d, yyyy h:mm a')}
+                            {format(new Date(comment.createdAt), 'MMM d, yyyy h:mm a')}
                         </p>
                     </div>
                 </div>
             </div>
             <div className="prose prose-invert max-w-none">
-                <p className="text-gray-300">{post.content}</p>
+                <p className="text-gray-300">{comment.content}</p>
             </div>
             <div className="mt-4 flex items-center space-x-4">
                 <button className="text-gray-400 hover:text-white transition-colors">
