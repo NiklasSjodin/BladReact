@@ -130,8 +130,6 @@ const App = () => {
 								</ProtectedRoute>
 							}
 						/>
-
-						<Route path='/books/:bookId' element={<BookView />} />
 						<Route
 							path='/clubs/:bookClubId/forums/:forumId'
 							element={
