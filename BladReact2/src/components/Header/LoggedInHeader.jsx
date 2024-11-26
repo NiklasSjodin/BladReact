@@ -115,13 +115,13 @@ export default function LoggedInHeader() {
 						to='/clubs'
 						className='text-white/70 transition-colors duration-200 hover:text-white'
 					>
-						Clubs
+						Bokklubbar
 					</Link>
 					<Link
 						to='/explore'
 						className='text-white/70 transition-colors duration-200 hover:text-white'
 					>
-						Explore
+						Utforska
 					</Link>
 					<Link
 						to='/library'
