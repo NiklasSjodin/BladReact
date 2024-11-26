@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
 import logo from '../../images/books.png';
 import { jwtDecode } from 'jwt-decode';
-import { Switch } from "../ui/switch";
+import { Switch } from '../ui/switch';
 import { Searchbar } from '../Searchbar';
 import { useNavigate } from 'react-router-dom';
 
@@ -93,6 +93,10 @@ export default function LoggedInHeader() {
 		navigate(`/clubs/${club.id}`);
 	};
 
+	const handleLogout = () => {
+		localStorage.removeItem('token');
+		// Perform logout functionality here
+	};
 	return (
 		<header className='absolute w-full pt-1 pb-1 bg-bladtheme'>
 			<div className='px-4 h-12 flex items-center'>
@@ -132,8 +136,8 @@ export default function LoggedInHeader() {
 						className='w-full max-w-xl bg-white rounded-full'
 						onSearch={handleSearch}
 						onSelectItem={handleSelectClub}
-						searchType="all"
-						placeholder="Search everything..."
+						searchType='all'
+						placeholder='Search everything...'
 					/>
 					<div className='relative dropdown-container'>
 						<div
@@ -183,15 +187,9 @@ export default function LoggedInHeader() {
 								>
 									Inställningar
 								</Link>
-								<Link
-									to='/support' // Use Link for navigation
-									onClick={() => setIsOpen(false)} // Close dropdown on link click
-									className='block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white'
-								>
-									Support
-								</Link>
 								<a
-									href='#'
+									href='/'
+									onClick={handleLogout}
 									className='block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white'
 								>
 									Logga ut
