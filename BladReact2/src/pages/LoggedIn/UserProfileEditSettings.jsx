@@ -1,49 +1,70 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar";
 import { useNavigate } from "react-router-dom";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
-const UserProfileSettings = () => {
+export default function UserProfileSettings(){
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [userId, setUserId] = useState(null);
-  const [userName, setUserName] = useState('');
-  const [name, setName] = useState('');
-  const [bio, setBio] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
-  const [privacyLevel, setPrivacyLevel] = useState(0); // Default value to Private (0)
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [userName, setUserName] = useState("");
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [privacyLevel, setPrivacyLevel] = useState(0); 
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    console.log("Token som skickas:", localStorage.getItem("token"));
     if (token) {
       const decoded = jwtDecode(token);
-      setUserId(decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]);
-      setUserName(decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]);
+      setUserId(
+        decoded[
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+        ]
+      );
+      setUserName(
+        decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]
+      );
       axios
-        .get(`https://localhost:7076/api/users/${decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
+        .get(
+          `https://localhost:7076/api/users/${decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
         .then((response) => {
+          console.log("User data fetched:", response.data);
           setName(response.data.name);
           setBio(response.data.bio);
           setImageUrl(response.data.imageUrl);
-          setPrivacyLevel(response.data.privacyLevel); // Ensure privacy level is correctly mapped (0, 1, or 2)
+          setPrivacyLevel(response.data.privacyLevel); 
         })
         .catch((error) => console.error("Error fetching user data:", error));
     }
   }, []);
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Formulär skickat"); 
     try {
-      const updatedUser = { name, bio, imageUrl, privacyLevel }; // Include all the values you want to update
+      const updatedUser = { name, bio, imageUrl, privacyLevel }; // Inkludera värden för att uppdatera
+      console.log("Data som skickas:", updatedUser); // Logga vad som skickas i updatedUser
       await axios.put(
         `https://localhost:7076/api/userprofile/${userId}`,
         updatedUser,
@@ -52,8 +73,17 @@ const UserProfileSettings = () => {
         }
       );
       console.log("Användarprofil uppdaterad.");
+      alert("Din profil har uppdaterats!");
+      window.location.reload()
     } catch (error) {
       console.error("Fel vid uppdatering av användarprofil:", error);
+      if (error.response) {
+        console.error("Response Error:", error.response);
+      } else if (error.request) {
+        console.error("Request Error:", error.request);
+      } else {
+        console.error("General Error:", error.message);
+      }
     }
   };
 
@@ -73,6 +103,8 @@ const UserProfileSettings = () => {
         }
       );
       setMessage("Lösenordet har uppdaterats.");
+      alert("Ditt lösenord har uppdaterats!")
+      window.location.reload()
     } catch (error) {
       if (error.response && error.response.data) {
         setMessage(error.response.data.message || "Något gick fel.");
@@ -108,7 +140,9 @@ const UserProfileSettings = () => {
         <span>Ändra inställningar</span>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-medium">Användarnamn</label>
+            <label htmlFor="name" className="block text-sm font-medium">
+              Användarnamn
+            </label>
             <input
               type="text"
               id="name"
@@ -121,7 +155,9 @@ const UserProfileSettings = () => {
 
           {/* Bio input */}
           <div className="mb-4">
-            <label htmlFor="bio" className="block text-sm font-medium">Bio</label>
+            <label htmlFor="bio" className="block text-sm font-medium">
+              Bio
+            </label>
             <textarea
               id="bio"
               value={bio}
@@ -132,7 +168,9 @@ const UserProfileSettings = () => {
 
           {/* Image URL input */}
           <div className="mb-4">
-            <label htmlFor="imageUrl" className="block text-sm font-medium">Image URL</label>
+            <label htmlFor="imageUrl" className="block text-sm font-medium">
+              Image URL
+            </label>
             <input
               type="url"
               id="imageUrl"
@@ -144,7 +182,9 @@ const UserProfileSettings = () => {
 
           {/* Privacy Level input */}
           <div className="mb-4">
-            <label htmlFor="privacyLevel" className="block text-sm font-medium">Integritetsnivå</label>
+            <label htmlFor="privacyLevel" className="block text-sm font-medium">
+              Integritetsnivå
+            </label>
             <select
               id="privacyLevel"
               value={privacyLevel}
@@ -157,14 +197,23 @@ const UserProfileSettings = () => {
             </select>
           </div>
 
-          <button type="submit" className="btn btn-primary">Spara</button>
+          <button type="submit" className="bg-gray-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Spara
+          </button>
         </form>
 
         {/* Ändra lösenord */}
-        <span className="flex items-center justify-between p-3 rounded-lg">Ändra lösenord</span>
+        <span className="flex items-center justify-between p-3 rounded-lg">
+          Ändra lösenord
+        </span>
         <form onSubmit={changePassword}>
           <div className="mb-4">
-            <label htmlFor="currentPassword" className="block text-sm font-medium">Nuvarande lösenord</label>
+            <label
+              htmlFor="currentPassword"
+              className="block text-sm font-medium"
+            >
+              Nuvarande lösenord
+            </label>
             <input
               type="password"
               id="currentPassword"
@@ -175,7 +224,9 @@ const UserProfileSettings = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="newPassword" className="block text-sm font-medium">Nytt lösenord</label>
+            <label htmlFor="newPassword" className="block text-sm font-medium">
+              Nytt lösenord
+            </label>
             <input
               type="password"
               id="newPassword"
@@ -185,7 +236,7 @@ const UserProfileSettings = () => {
               required
             />
           </div>
-          <button type="submit" disabled={loading} className="btn btn-primary">
+          <button type="submit" disabled={loading} className="bg-gray-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             {loading ? "Uppdaterar..." : "Spara"}
           </button>
         </form>
@@ -204,7 +255,8 @@ const UserProfileSettings = () => {
             <DialogHeader>
               <DialogTitle>Ta bort konto</DialogTitle>
               <DialogDescription>
-                Är du säker på att du vill ta bort ditt konto? Denna åtgärd kan inte ångras.
+                Är du säker på att du vill ta bort ditt konto? Denna åtgärd kan
+                inte ångras.
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
@@ -228,4 +280,4 @@ const UserProfileSettings = () => {
   );
 };
 
-export default UserProfileSettings;
+
