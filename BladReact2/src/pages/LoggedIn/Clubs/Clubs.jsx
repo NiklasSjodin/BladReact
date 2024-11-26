@@ -22,6 +22,10 @@ export default function Clubs() {
 	const navigate = useNavigate();
 	const [searchResults, setSearchResults] = useState([]);
 	const [searchTerm, setSearchTerm] = useState('');
+	const [userClubs, setUserClubs] = useState([]);
+	const [friendsClubs, setFriendsClubs] = useState([]);
+	const [isLoadingUserClubs, setIsLoadingUserClubs] = useState(true);
+	const [isLoadingFriendsClubs, setIsLoadingFriendsClubs] = useState(true);
 
 	const API_URL = 'https://blad-api.azurewebsites.net/api/';
 
@@ -64,30 +68,47 @@ export default function Clubs() {
 	);
 
 	useEffect(() => {
-		const fetchPopularClubs = async () => {
+		const fetchAllClubs = async () => {
 			setIsLoading(true);
+			setIsLoadingUserClubs(true);
+			setIsLoadingFriendsClubs(true);
+
 			try {
-				const response = await fetch(
+				// Fetch popular clubs
+				const popularResponse = await fetch(
 					`${API_URL}bookclubs/popular?PageSize=10&PageIndex=1`
 				);
-				const result = await response.json();
-				setPopularClubs(result.data);
+				const popularResult = await popularResponse.json();
+				setPopularClubs(popularResult.data);
 				setPagination({
-					totalCount: result.totalCount,
-					totalPages: result.totalPages,
-					currentPage: result.currentPage,
-					itemsPerPage: result.itemsPerPage,
-					hasNextPage: result.hasNextPage,
-					hasPreviousPage: result.hasPreviousPage
+					totalCount: popularResult.totalCount,
+					totalPages: popularResult.totalPages,
+					currentPage: popularResult.currentPage,
+					itemsPerPage: popularResult.itemsPerPage,
+					hasNextPage: popularResult.hasNextPage,
+					hasPreviousPage: popularResult.hasPreviousPage
 				});
+
+				// Fetch user's clubs
+				const userClubsResponse = await fetch(`${API_URL}bookclubs/user`);
+				const userClubsResult = await userClubsResponse.json();
+				setUserClubs(userClubsResult.data || []);
+
+				// Fetch friends' clubs
+				const friendsClubsResponse = await fetch(`${API_URL}bookclubs/friends`);
+				const friendsClubsResult = await friendsClubsResponse.json();
+				setFriendsClubs(friendsClubsResult.data || []);
+
 			} catch (error) {
 				console.error('Error fetching clubs:', error);
 			} finally {
 				setIsLoading(false);
+				setIsLoadingUserClubs(false);
+				setIsLoadingFriendsClubs(false);
 			}
 		};
 
-		fetchPopularClubs();
+		fetchAllClubs();
 	}, []);
 
 	const handleClubClick = (clubId) => {
@@ -121,6 +142,46 @@ export default function Clubs() {
 								<CardSkeleton key={index} />
 						  ))
 						: popularClubs.map((club) => (
+								<div 
+									onClick={() => handleClubClick(club.id)} 
+									key={club.id}
+									className="py-4 px-2"
+								>
+									<ClubCard {...club} />
+								</div>
+						  ))}
+				</ScrollableContainer>
+
+				<ScrollableContainer
+					title='Your Clubs'
+					viewAllLink='/clubs/my-clubs'
+					itemWidth={192}
+				>
+					{isLoadingUserClubs
+						? Array.from({ length: 8 }).map((_, index) => (
+								<CardSkeleton key={`user-${index}`} />
+						  ))
+						: userClubs.map((club) => (
+								<div 
+									onClick={() => handleClubClick(club.id)} 
+									key={club.id}
+									className="py-4 px-2"
+								>
+									<ClubCard {...club} />
+								</div>
+						  ))}
+				</ScrollableContainer>
+
+				<ScrollableContainer
+					title='Friends'
+					viewAllLink='/clubs/friends'
+					itemWidth={192}
+				>
+					{isLoadingFriendsClubs
+						? Array.from({ length: 8 }).map((_, index) => (
+								<CardSkeleton key={`friends-${index}`} />
+						  ))
+						: friendsClubs.map((club) => (
 								<div 
 									onClick={() => handleClubClick(club.id)} 
 									key={club.id}
