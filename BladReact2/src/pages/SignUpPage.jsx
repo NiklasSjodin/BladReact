@@ -32,7 +32,7 @@ export default function SignUpPage() {
             fullName, userName, email, password
         }
         console.log(newUser); // Log to see if all fields are correct
-            const response = await axios.post(`${API_URL}/api/accounts/register`, newUser) // POST förfrågan till vårt API
+            const response = await axios.post(`${API_URL}/accounts/register`, newUser) // POST förfrågan till vårt API
             console.log('New user created: ', response.data) // Loggar svaret om det fungerade
 
             if (response.status === 200) {

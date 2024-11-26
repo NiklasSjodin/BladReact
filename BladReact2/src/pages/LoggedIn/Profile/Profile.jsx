@@ -25,7 +25,7 @@ const ProfilePage = () => {
 
           // Hämta användarens profildata från API
           const profileResponse = await axios.get(
-            `${API_URL}/api/userprofile/${userId}`,
+            `${API_URL}/userprofile/${userId}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

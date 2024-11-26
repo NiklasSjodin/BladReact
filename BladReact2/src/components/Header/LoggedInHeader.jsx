@@ -55,19 +55,19 @@ export default function LoggedInHeader() {
 			let endpoint;
 			switch (type) {
 				case 'clubs':
-					endpoint = `bookclubs/search?bookClubQuery=${term}`;
+					endpoint = `/bookclubs/search?bookClubQuery=${term}`;
 					break;
 				case 'books':
-					endpoint = `books/search?query=${term}`;
+					endpoint = `/books/search?query=${term}`;
 					break;
 				case 'booklists':
-					endpoint = `booklists/search?query=${term}`;
+					endpoint = `/booklists/search?query=${term}`;
 					break;
 				case 'all':
 					const [clubs, books, lists] = await Promise.all([
-						fetch(`${API_URL}bookclubs/search?bookClubQuery=${term}`),
-						fetch(`${API_URL}books/search?query=${term}`),
-						fetch(`${API_URL}booklists/search?query=${term}`),
+						fetch(`${API_URL}/bookclubs/search?bookClubQuery=${term}`),
+						fetch(`${API_URL}/books/search?query=${term}`),
+						fetch(`${API_URL}/booklists/search?query=${term}`),
 					]);
 					// Combine and sort results
 					return {

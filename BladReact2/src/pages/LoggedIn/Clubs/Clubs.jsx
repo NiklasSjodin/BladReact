@@ -7,6 +7,7 @@ import HeroSection from '../../../components/Sections/HeroSection';
 import { useNavigate } from 'react-router-dom';
 import { Searchbar } from '@/components/Searchbar';
 import { useAuthFetch } from '../../../services/useAuthFetch';
+import { Production_API_URL } from '../../../services/api';
 
 export default function Clubs() {
 	const [popularClubs, setPopularClubs] = useState([]);
@@ -24,7 +25,7 @@ export default function Clubs() {
 	const navigate = useNavigate();
 	
 	const { authFetch, isLoading } = useAuthFetch();
-	const API_URL = 'https://blad-api.azurewebsites.net/api/';
+	const API_URL = Production_API_URL;
 
 	const handleSearch = async (term) => {
 		if (!term) {
@@ -33,7 +34,7 @@ export default function Clubs() {
 		}
 		try {
 			const result = await authFetch(
-				`${API_URL}bookclubs/search?bookClubQuery=${term}`
+				`${API_URL}/bookclubs/search?bookClubQuery=${term}`
 			);
 			const formattedResults = Array.isArray(result) ? result : [];
 			setSearchResults(formattedResults);
@@ -50,7 +51,7 @@ export default function Clubs() {
 			try {
 				// Fetch popular clubs
 				const popularResult = await authFetch(
-					`${API_URL}bookclubs/popular?PageSize=10&PageIndex=1`
+					`${API_URL}/bookclubs/popular?PageSize=10&PageIndex=1`
 				);
 				setPopularClubs(popularResult.data || []);
 				setPagination({
@@ -63,11 +64,11 @@ export default function Clubs() {
 				});
 
 				// Fetch user's clubs
-				const userClubsResult = await authFetch(`${API_URL}bookclubs/user`);
+				const userClubsResult = await authFetch(`${API_URL}/bookclubs/user`);
 				setUserClubs(userClubsResult.data || []);
 
 				// Fetch friends' clubs
-				const friendsClubsResult = await authFetch(`${API_URL}bookclubs/friends`);
+				const friendsClubsResult = await authFetch(`${API_URL}/bookclubs/friends`);
 				setFriendsClubs(friendsClubsResult.data || []);
 
 			} catch (error) {
