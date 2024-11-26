@@ -126,9 +126,11 @@ export default function Clubs() {
 				<div className='pt-6 space-y-4'>
 					<h1 className='text-3xl font-bold text-white'>Book Clubs</h1>
 					<Searchbar 
-						onSearch={debouncedSearch}
+						onSearch={handleSearch}
 						searchResults={searchResults}
-						onSelectClub={handleSelectClub}
+						onSelectItem={handleSelectClub}
+						searchType="clubs"
+						placeholder="Search clubs..."
 					/>
 				</div>
 

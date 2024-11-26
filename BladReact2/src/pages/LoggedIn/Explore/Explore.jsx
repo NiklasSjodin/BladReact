@@ -5,6 +5,7 @@ import BookCard from '../../../components/BookCard';
 import ScrollableContainer from '../../../components/Sections/ScrollableContainer';
 import { fetchBooks } from '../../../services/BooksService';
 import { BsSearch } from 'react-icons/bs';
+import { Searchbar } from '../../../components/Searchbar';
 
 export default function Explore() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -80,12 +81,12 @@ export default function Explore() {
                             <div className='p-2'>
                                 <BsSearch className='text-gray-400' />
                             </div>
-                            <input
-                                type='text'
-                                placeholder='Search books...'
-                                className='w-full border-0 focus:outline-none focus:ring-0 pl-2 pr-4 py-2 text-sm text-gray-900'
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
+                            <Searchbar 
+                                onSearch={handleSearch}
+                                searchResults={searchResults}
+                                onSelectItem={handleSelectBook}
+                                searchType="books"
+                                placeholder="Search books..."
                             />
                         </div>
                     </div>
