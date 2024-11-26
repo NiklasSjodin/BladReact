@@ -4,12 +4,13 @@ import GoogleLogo from '../images/googlelogo.png'
 import AppleLogo from '../images/applelogo.png'
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Production_API_URL } from '../services/api';
 
 export default function SignUpPage() {
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-  const API_URL = "https://localhost:7076/api/accounts/register";
+  const API_URL = Production_API_URL;
 
   const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);
@@ -19,6 +20,7 @@ export default function SignUpPage() {
   const[userName, setUserName] = useState('');
   const[email, setEmail] = useState('');
   const[password, setPassword] = useState('');
+
 
   async function handleSubmit(e)
     {
@@ -30,7 +32,7 @@ export default function SignUpPage() {
             fullName, userName, email, password
         }
         console.log(newUser); // Log to see if all fields are correct
-            const response = await axios.post('https://localhost:7076/api/accounts/register', newUser) // POST förfrågan till vårt API
+            const response = await axios.post(`${API_URL}/api/accounts/register`, newUser) // POST förfrågan till vårt API
             console.log('New user created: ', response.data) // Loggar svaret om det fungerade
 
             if (response.status === 200) {
@@ -58,14 +60,10 @@ export default function SignUpPage() {
 
   return (
     <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-black">
+      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-bladtheme">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <Link to="/">
-          <img
-            alt="Your Company"
-            src={BladLogo}
-            className="mx-auto h-40 w-auto"
-          />
+          <Link to="/" className='flex items-center justify-center font-general text-8xl pb-2'>
+          blad.
           </Link>
           <h2 className="mt-10 text-left text-2xl font-bold leading-9 tracking-tight text-white">
             Sign up

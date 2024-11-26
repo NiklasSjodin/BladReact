@@ -12,30 +12,93 @@ import {
   CommandList,
 } from "@/components/ui/command"
 
-export function Searchbar({ className, onSearch, searchResults = [], onSelectClub, ...props }) {
+export function Searchbar({ 
+  className, 
+  onSearch, 
+  searchResults = [], 
+  onSelectItem,
+  searchType = 'all', // Can be 'all', 'clubs', 'books', 'booklists'
+  placeholder = "Search...",
+  ...props 
+}) {
   const [query, setQuery] = React.useState("")
   const [open, setOpen] = React.useState(false)
 
   React.useEffect(() => {
     if (query) {
-      onSearch(query);
+      onSearch(query, searchType);
       setOpen(true);
     } else {
       setOpen(false);
     }
-  }, [query, onSearch]);
+  }, [query, onSearch, searchType]);
 
   const handleSubmit = (event) => {
     event.preventDefault()
   }
 
+  const renderSearchResult = (item) => {
+    switch (searchType) {
+      case 'clubs':
+        return (
+          <div className="flex items-center">
+            {item.imageUrl && (
+              <img 
+                src={item.imageUrl} 
+                alt={item.name} 
+                className="w-6 h-6 rounded-full mr-2"
+              />
+            )}
+            <span>{item.name}</span>
+            <span className="ml-2 text-sm text-muted-foreground">
+              ({item.memberCount} members)
+            </span>
+          </div>
+        )
+      case 'books':
+        return (
+          <div className="flex items-center">
+            {item.imageUrl && (
+              <img 
+                src={item.imageUrl} 
+                alt={item.name} 
+                className="w-6 h-6 rounded-full mr-2"
+              />
+            )}
+            <span>{item.name}</span>
+            <span className="ml-2 text-sm text-muted-foreground">
+              ({item.author})
+            </span>
+          </div>
+        )
+      case 'booklists':
+        return (
+          <div className="flex items-center">
+            {item.imageUrl && (
+              <img 
+                src={item.imageUrl} 
+                alt={item.name} 
+                className="w-6 h-6 rounded-full mr-2"
+              />
+            )}
+            <span>{item.name}</span>
+            <span className="ml-2 text-sm text-muted-foreground">
+              ({item.bookCount} books)
+            </span>
+          </div>
+        )
+      default:
+        return null
+    }
+  }
+
   return (
-    <div className={cn("relative w-full max-w-xl", className)}>
+    <div className={cn("relative w-full max-w-xl rounded-[20px]", className)}>
       <form onSubmit={handleSubmit}>
         <Input
           type="search"
-          placeholder="Search book clubs..."
-          className="pr-10"
+          placeholder={placeholder}
+          className="pr-10 rounded-[20px]"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           {...props}
@@ -54,29 +117,17 @@ export function Searchbar({ className, onSearch, searchResults = [], onSelectClu
         <div className="absolute w-full z-[9999]">
           <Command className="w-full mt-1 shadow-md border border-border">
             <CommandList className="max-h-[300px] overflow-y-auto">
-              <CommandEmpty>No book clubs found.</CommandEmpty>
-              {searchResults.map((club) => (
+              <CommandEmpty>No {searchType} found.</CommandEmpty>
+              {searchResults.map((item) => (
                 <CommandItem
-                  key={club.id}
+                  key={item.id}
                   onSelect={() => {
-                    setQuery(club.name);
+                    setQuery(item.name);
                     setOpen(false);
-                    if (onSelectClub) onSelectClub(club);
+                    if (onSelectItem) onSelectItem(item);
                   }}
                 >
-                  <div className="flex items-center">
-                    {club.imageUrl && (
-                      <img 
-                        src={club.imageUrl} 
-                        alt={club.name} 
-                        className="w-6 h-6 rounded-full mr-2"
-                      />
-                    )}
-                    <span>{club.name}</span>
-                    <span className="ml-2 text-sm text-muted-foreground">
-                      ({club.memberCount} members)
-                    </span>
-                  </div>
+                  {renderSearchResult(item)}
                 </CommandItem>
               ))}
             </CommandList>

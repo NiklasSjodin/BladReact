@@ -1,10 +1,16 @@
 // src/components/Sections/TestMarquee.jsx
 import React from 'react';
-import Image1 from '../../images/anjali-mehta-q7LqBzBG8rA-unsplash.jpg';
-import Image2 from '../../images/charlesdeluvio-EV2Y6-NzDyU-unsplash.jpg';
-import Image3 from '../../images/clay-banks-Z5vZCy8xDZU-unsplash.jpg';
-import Image4 from '../../images/karolina-grabowska-H_eb_VfG2Ow-unsplash.jpg';
-import Image5 from '../../images/olena-bohovyk-Ft_Wn-K5YH8-unsplash.jpg';
+import image1 from '../../images/marqueeImages/acotar.jpg';
+import image2 from '../../images/marqueeImages/alskade-betty.jpg';
+import image3 from '../../images/marqueeImages/benadaren.jpg';
+import image4 from '../../images/marqueeImages/den-som-foljer-en-stjarna-vander-inte-om.jpg';
+import image5 from '../../images/marqueeImages/doda-kvinnor-forlater-inte.jpg';
+import image6 from '../../images/marqueeImages/dune.jpg';
+import image7 from '../../images/marqueeImages/en-lyckligare-tid.jpg';
+import image8 from '../../images/marqueeImages/fourth-wing.jpg';
+import image9 from '../../images/marqueeImages/grand-final.jpg';
+import image10 from '../../images/marqueeImages/hercule-poirots-stilla-natt.png';
+
 import MarqueeComponent from './Marquee';
 
 const TestMarquee = ({ 
@@ -16,11 +22,16 @@ const TestMarquee = ({
   imageWidth = "auto"
 }) => {
   const images = [
-    { src: Image1, alt: 'Image 1' },
-    { src: Image2, alt: 'Image 2' },
-    { src: Image3, alt: 'Image 3' },
-    { src: Image4, alt: 'Image 4' },
-    { src: Image5, alt: 'Image 5' },
+    { src: image1, alt: 'bookcover for marquee 1' },
+    { src: image2, alt: 'bookcover for marquee 2' },
+    { src: image3, alt: 'bookcover for marquee 3' },
+    { src: image4, alt: 'bookcover for marquee 4' },
+    { src: image5, alt: 'bookcover for marquee 5' },
+    { src: image6, alt: 'bookcover for marquee 6' },
+    { src: image7, alt: 'bookcover for marquee 7' },
+    { src: image8, alt: 'bookcover for marquee 8' },
+    { src: image9, alt: 'bookcover for marquee 9' },
+    { src: image10, alt: 'bookcover for marquee 10' },
   ];
 
   return (

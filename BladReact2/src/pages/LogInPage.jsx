@@ -1,7 +1,8 @@
 import { useState } from "react";
 import BladLogo from "../images/blad.png";
 import GoogleLogo from "../images/googlelogo.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
+import { Production_API_URL } from '../services/api';
 
 function LogInPage() {
   const navigate = useNavigate();
@@ -11,11 +12,11 @@ function LogInPage() {
   const [emailLocked, setEmailLocked] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const API_URL = "https://blad-api.azurewebsites.net/";
-  const handleNext = async () => {
-    if (!email) {
-      setError("Please enter an email address");
-      return;
+  const API_URL = Production_API_URL;
+	const handleNext = async () => {
+		if (!email) {
+			setError('Please enter an email address');
+			return;
     }
 
     setError("");
@@ -35,7 +36,7 @@ function LogInPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}api/accounts/login`, {
+      const response = await fetch(`${API_URL}/accounts/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -70,18 +71,13 @@ function LogInPage() {
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-red-900">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <Link to="/">
-          <img
-            alt="Your Company"
-            src={BladLogo}
-            className="mx-auto h-40 w-auto"
-          />
+        <Link to="/" className="flex items-center justify-center font-general text-8xl pb-2">
+          blad.
         </Link>
         <h2 className="mt-10 text-left text-2xl font-bold leading-9 tracking-tight text-white">
           Log in
         </h2>
       </div>
-
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && (

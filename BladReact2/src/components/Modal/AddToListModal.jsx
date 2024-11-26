@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import axios from 'axios';
+import { Production_API_URL } from '../../services/api';
 
 const AddToBookListModal = ({ userId, bookId, isOpen, onClose }) => {
   const [bookLists, setBookLists] = useState([]);
@@ -10,7 +11,7 @@ const AddToBookListModal = ({ userId, bookId, isOpen, onClose }) => {
   useEffect(() => {
     if (isOpen) {
       setLoading(true);
-      axios.get(`https://localhost:7076/api/user/${userId}/booklist`, {
+      axios.get(`${API_URL}/api/user/${userId}/booklist`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -33,7 +34,7 @@ const AddToBookListModal = ({ userId, bookId, isOpen, onClose }) => {
     }
 
     axios.post(
-      `https://localhost:7076//api/booklist/${bookListId}/book`,
+      `${API_URL}/api/booklist/${bookListId}/book`,
       {bookId},
       {
         headers: {
