@@ -26,24 +26,15 @@ export const ListBooks = () => {
 
 	return (
 		<div className='mt-8 max-w-7xl'>
-			<SectionHeader 
-				title='Trendande' 
-				viewAllLink='#'
-				variant='large'
-			/>
+			<SectionHeader title='Trendande' viewAllLink='#' variant='large' />
 			<ScrollableContainer itemWidth={208}>
-				{isLoading ? (
-					Array.from({ length: 10 }).map((_, index) => (
-						<BookCardSkeleton key={index} />
-					))
-				) : books.map((book) => (
-					<BookCard
-						key={book.id}
-						{...book}
-						interactive={true}
-						size="md"
-					/>
-				))}
+				{isLoading
+					? Array.from({ length: 10 }).map((_, index) => (
+							<BookCardSkeleton key={index} />
+					  ))
+					: books.map((book) => (
+							<BookCard key={book.id} {...book} interactive={true} size='md' />
+					  ))}
 			</ScrollableContainer>
 		</div>
 	);
