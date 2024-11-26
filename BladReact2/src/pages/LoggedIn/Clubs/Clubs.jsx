@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageContainer } from '../../../components/layout/PageContainer';
 import ScrollableContainer from '@/components/Sections/ScrollableContainer';
 import ClubCard from '@/components/ClubCard';
 import { CardSkeleton } from '../../../components/CardSkeleton';
 import HeroSection from '../../../components/Sections/HeroSection';
 import { useNavigate } from 'react-router-dom';
-import { debounce } from 'lodash';
 import { Searchbar } from '@/components/Searchbar';
+import { useAuthFetch } from '../../../services/useAuthFetch';
 
 export default function Clubs() {
 	const [popularClubs, setPopularClubs] = useState([]);
@@ -18,98 +18,65 @@ export default function Clubs() {
 		hasNextPage: false,
 		hasPreviousPage: false
 	});
-	const [isLoading, setIsLoading] = useState(true);
-	const navigate = useNavigate();
 	const [searchResults, setSearchResults] = useState([]);
-	const [searchTerm, setSearchTerm] = useState('');
 	const [userClubs, setUserClubs] = useState([]);
 	const [friendsClubs, setFriendsClubs] = useState([]);
-	const [isLoadingUserClubs, setIsLoadingUserClubs] = useState(true);
-	const [isLoadingFriendsClubs, setIsLoadingFriendsClubs] = useState(true);
-
+	const navigate = useNavigate();
+	
+	const { authFetch, isLoading } = useAuthFetch();
 	const API_URL = 'https://blad-api.azurewebsites.net/api/';
 
-	const debouncedSearch = useCallback(
-		debounce(async (term) => {
-			if (!term) {
-				setSearchResults([]);
-				return;
-			}
-			try {
-				console.log('Searching for:', term);
-				const response = await fetch(
-					`${API_URL}bookclubs/search?bookClubQuery=${term}`
-				);
-				
-				// Check if response is ok and is JSON
-				if (!response.ok) {
-					console.log('Search response status:', response.status);
-					setSearchResults([]);
-					return;
-				}
-
-				// Check content type
-				const contentType = response.headers.get("content-type");
-				if (!contentType || !contentType.includes("application/json")) {
-					console.log('Invalid content type:', contentType);
-					setSearchResults([]);
-					return;
-				}
-
-				const result = await response.json();
-				console.log('Results:', result);
-				setSearchResults(Array.isArray(result) ? result : []);
-			} catch (error) {
-				console.error('Error searching clubs:', error);
-				setSearchResults([]);
-			}
-		}, 300),
-		[]
-	);
+	const handleSearch = async (term) => {
+		if (!term) {
+			setSearchResults([]);
+			return [];
+		}
+		try {
+			const result = await authFetch(
+				`${API_URL}bookclubs/search?bookClubQuery=${term}`
+			);
+			const formattedResults = Array.isArray(result) ? result : [];
+			setSearchResults(formattedResults);
+			return formattedResults;
+		} catch (error) {
+			console.error('Error searching clubs:', error);
+			setSearchResults([]);
+			return [];
+		}
+	};
 
 	useEffect(() => {
 		const fetchAllClubs = async () => {
-			setIsLoading(true);
-			setIsLoadingUserClubs(true);
-			setIsLoadingFriendsClubs(true);
-
 			try {
 				// Fetch popular clubs
-				const popularResponse = await fetch(
+				const popularResult = await authFetch(
 					`${API_URL}bookclubs/popular?PageSize=10&PageIndex=1`
 				);
-				const popularResult = await popularResponse.json();
-				setPopularClubs(popularResult.data);
+				setPopularClubs(popularResult.data || []);
 				setPagination({
-					totalCount: popularResult.totalCount,
-					totalPages: popularResult.totalPages,
-					currentPage: popularResult.currentPage,
-					itemsPerPage: popularResult.itemsPerPage,
-					hasNextPage: popularResult.hasNextPage,
-					hasPreviousPage: popularResult.hasPreviousPage
+					totalCount: popularResult.totalCount || 0,
+					totalPages: popularResult.totalPages || 0,
+					currentPage: popularResult.currentPage || 1,
+					itemsPerPage: popularResult.itemsPerPage || 10,
+					hasNextPage: popularResult.hasNextPage || false,
+					hasPreviousPage: popularResult.hasPreviousPage || false
 				});
 
 				// Fetch user's clubs
-				const userClubsResponse = await fetch(`${API_URL}bookclubs/user`);
-				const userClubsResult = await userClubsResponse.json();
+				const userClubsResult = await authFetch(`${API_URL}bookclubs/user`);
 				setUserClubs(userClubsResult.data || []);
 
 				// Fetch friends' clubs
-				const friendsClubsResponse = await fetch(`${API_URL}bookclubs/friends`);
-				const friendsClubsResult = await friendsClubsResponse.json();
+				const friendsClubsResult = await authFetch(`${API_URL}bookclubs/friends`);
 				setFriendsClubs(friendsClubsResult.data || []);
 
 			} catch (error) {
 				console.error('Error fetching clubs:', error);
-			} finally {
-				setIsLoading(false);
-				setIsLoadingUserClubs(false);
-				setIsLoadingFriendsClubs(false);
 			}
 		};
 
 		fetchAllClubs();
-	}, []);
+	}, [authFetch]);
 
 	const handleClubClick = (clubId) => {
 		navigate(`/clubs/${clubId}`);
@@ -159,7 +126,7 @@ export default function Clubs() {
 					viewAllLink='/clubs/my-clubs'
 					itemWidth={192}
 				>
-					{isLoadingUserClubs
+					{isLoading
 						? Array.from({ length: 8 }).map((_, index) => (
 								<CardSkeleton key={`user-${index}`} />
 						  ))
@@ -179,7 +146,7 @@ export default function Clubs() {
 					viewAllLink='/clubs/friends'
 					itemWidth={192}
 				>
-					{isLoadingFriendsClubs
+					{isLoading
 						? Array.from({ length: 8 }).map((_, index) => (
 								<CardSkeleton key={`friends-${index}`} />
 						  ))
