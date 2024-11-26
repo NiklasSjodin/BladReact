@@ -20,8 +20,8 @@ const MobileNavbar = () => {
 		},
 		{ to: 'library', title: 'Library', icon: <BookOpen className='h-5 w-5' /> },
 		{
-			to: 'account',
-			title: 'Account',
+			to: 'profile',
+			title: 'Profile',
 			icon: (
 				<Avatar className='h-6 w-6'>
 					<AvatarImage src='/path/to/your/avatar.jpg' alt='Profile' />
