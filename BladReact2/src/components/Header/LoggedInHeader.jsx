@@ -109,19 +109,19 @@ export default function LoggedInHeader() {
 				<div className='flex items-center space-x-4 ml-auto px-2'>
 					<Link
 						to='/clubs'
-						className='transition-transform hover:border-b-2 hover:border-white'
+						className='text-white/70 transition-colors duration-200 hover:text-white'
 					>
 						Clubs
 					</Link>
 					<Link
 						to='/explore'
-						className='transition-transform hover:border-b-2 hover:border-white'
+						className='text-white/70 transition-colors duration-200 hover:text-white'
 					>
 						Explore
 					</Link>
 					<Link
 						to='/library'
-						className='transition-transform hover:border-b-2 hover:border-white'
+						className='text-white/70 transition-colors duration-200 hover:text-white'
 					>
 						Bibliotek
 					</Link>
@@ -144,7 +144,7 @@ export default function LoggedInHeader() {
 								<AvatarImage src='/path/to/avatar.jpg' alt='User Avatar' />
 								<AvatarFallback>U</AvatarFallback>
 							</Avatar>
-							<span className='transition-transform hover:border-b-2 hover:border-white'>
+							<span className='text-white/70 transition-colors duration-200 hover:text-white'>
 								{userName}
 							</span>
 						</div>

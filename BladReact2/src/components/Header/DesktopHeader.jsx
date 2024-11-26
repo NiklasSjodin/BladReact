@@ -15,7 +15,7 @@ export default function Header() {
 				<div className='flex-1 font-general text-xl'>blad.</div>
 				
 				<div>
-					<Button variant='outline'>
+					<Button variant='outline' className='bg-white text-bladtheme'>
 						<Link to='/login'>Login</Link>
 					</Button>
 				</div>
