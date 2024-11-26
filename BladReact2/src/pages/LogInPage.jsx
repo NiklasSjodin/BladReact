@@ -11,7 +11,7 @@ function LogInPage() {
 	const [emailLocked, setEmailLocked] = useState(false);
 	const [error, setError] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
- 	const API_URL = 'https://localhost:7076/';
+ 	const API_URL = 'https://blad-api.azurewebsites.net/';
 
 	const handleNext = async () => {
 		if (!email) {
@@ -71,12 +71,8 @@ function LogInPage() {
 	return (
 		<div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-red-900'>
 			<div className='sm:mx-auto sm:w-full sm:max-w-sm'>
-				<Link to='/'>
-					<img
-						alt='Your Company'
-						src={BladLogo}
-						className='mx-auto h-40 w-auto'
-					/>
+				<Link to='/' className='flex items-center justify-center font-general text-8xl pb-2'>
+					blad.
 				</Link>
 				<h2 className='mt-10 text-left text-2xl font-bold leading-9 tracking-tight text-white'>
 					Log in
