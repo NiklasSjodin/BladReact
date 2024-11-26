@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { HubConnectionBuilder } from '@microsoft/signalr';
-import { Production_API_URL } from './api';
+import { Production_API_URL } from '../services/api';
 
 export const useNotificationService = () => {
   const [hubConnection, setHubConnection] = useState(null);
