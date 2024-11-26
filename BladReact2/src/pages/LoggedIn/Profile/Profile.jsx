@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import {jwtDecode} from "jwt-decode";
 import axios from "axios";
+import { Production_API_URL } from '../../../services/api';
 
 const ProfilePage = () => {
   const [userProfile, setUserProfile] = useState(null); // För att lagra användarens profil
+  const API_URL = Production_API_URL;
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -23,7 +25,7 @@ const ProfilePage = () => {
 
           // Hämta användarens profildata från API
           const profileResponse = await axios.get(
-            `https://localhost:7076/api/userprofile/${userId}`,
+            `${API_URL}/api/userprofile/${userId}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
