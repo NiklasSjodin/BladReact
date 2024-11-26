@@ -9,12 +9,12 @@ import BookCard from '../BookCard';
 export const ListBooks = () => {
 	const { authFetch, isLoading } = useAuthFetch();
 	const [books, setBooks] = useState([]);
-
+	const API_URL = 'https://blad-api.azurewebsites.net/api/';
 	useEffect(() => {
 		const loadBooks = async () => {
 			try {
 				const fetchedBooks = await authFetch(
-					`https://localhost:7076/api/OpenLibraryAPI/search?query=trending&limit=10`
+					`${API_URL}OpenLibraryAPI/search?query=trending&limit=10`
 				);
 				setBooks(fetchedBooks);
 			} catch (error) {

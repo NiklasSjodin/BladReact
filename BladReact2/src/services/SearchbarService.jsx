@@ -1,10 +1,10 @@
-const API_URL = 'https://localhost:7076/';
+const API_URL = 'https://blad-api.azurewebsites.net/api/';
 
 export const fetchBooksThroughSearchbar = async (query) => {
 	try {
 		const query = 'javascript'; // Replace 'javascript' with your variable
 		const response = await fetch(
-			`${API_URL}api/OpenLibraryAPI/search?query=${query}`
+			`${API_URL}OpenLibraryAPI/search?query=${query}`
 		);
 		const data = await response.json();
 		return data.docs.map((book) => ({

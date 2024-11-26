@@ -22,23 +22,17 @@ import HeroSection from '../../../components/Sections/HeroSection';
  */
 export default function Home() {
 	const [popularBooks, setPopularBooks] = useState([]);
-	const [scifiBooks, setScifiBooks] = useState([]);
-	const [fantasyBooks, setFantasyBooks] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const loadBooks = async () => {
 			setIsLoading(true);
 			try {
-				const [popular, scifi, fantasy] = await Promise.all([
+				const [popular] = await Promise.all([
 					fetchBooks({ searchQuery: 'popular', limit: 10 }),
-					fetchBooks({ searchQuery: 'science fiction', limit: 10 }),
-					fetchBooks({ searchQuery: 'fantasy', limit: 10 }),
 				]);
 
 				setPopularBooks(popular);
-				setScifiBooks(scifi);
-				setFantasyBooks(fantasy);
 			} catch (error) {
 				console.error('Error loading books:', error);
 			} finally {
