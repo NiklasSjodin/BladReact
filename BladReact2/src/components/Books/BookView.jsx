@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import AddToBookListModal from '../Modal/AddToListModal';
 import { jwtDecode } from "jwt-decode";
+import { Production_API_URL } from '../../services/api';
 
 const BookView = () => {
   const { isbn } = useParams(); // Get the isbn from the URL
@@ -14,6 +15,7 @@ const BookView = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState(null); 
   const [bookLists, setBookLists] = useState([]);
+  const API_URL = Production_API_URL;
   
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -34,7 +36,7 @@ const BookView = () => {
     if (userId) {
       const fetchBookLists = async () => {
         try {
-          const response = await fetch(`https://localhost:7076/api/user/${userId}/booklist`, {
+          const response = await fetch(`${API_URL}/user/${userId}/booklist`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
           });
           if (!response.ok) throw new Error("Failed to fetch book lists");
@@ -63,18 +65,18 @@ const BookView = () => {
         console.log(bookData);
     
         // Step 1: Check the backend for bookreferenceId
-        const backendResponse = await fetch(`https://localhost:7076/api/book/isbn/${isbn}/bookreferenceId`);
+        const backendResponse = await fetch(`${API_URL}/book/isbn/${isbn}/bookreferenceId`);
         if (backendResponse.ok) {
           const backendData = await backendResponse.json();
           bookReferenceId = backendData.bookReferenceId; 
     
           // Fetch bookdata using the bookReferenceId
-          const bookDetailsResponse = await fetch(`https://localhost:7076/api/bookdata/book/${bookReferenceId}`);
+          const bookDetailsResponse = await fetch(`${API_URL}/bookdata/book/${bookReferenceId}`);
           if (!bookDetailsResponse.ok) throw new Error('Failed to fetch book details from the backend');
           bookData = await bookDetailsResponse.json();
         } else if (backendResponse.status === 404) {
           // Step 2: If book not found in backend, fetch from Google Books API
-          const googleResponse = await fetch(`https://localhost:7076/api/googlebooks/search/isbn?isbn=${isbn}`);
+          const googleResponse = await fetch(`${API_URL}/googlebooks/search/isbn?isbn=${isbn}`);
           if (!googleResponse.ok) throw new Error('Failed to fetch book data from Google API');
     
           bookData = await googleResponse.json();
@@ -98,14 +100,14 @@ const BookView = () => {
     const fetchRelatedData = async (bookReferenceId) => {
       try {
         // Fetch bookclubs
-        const clubsResponse = await fetch(`https://localhost:7076/api/bookclubs/book/${bookReferenceId}`);
+        const clubsResponse = await fetch(`${API_URL}/bookclubs/book/${bookReferenceId}`);
         if (clubsResponse.ok) {
           const clubsData = await clubsResponse.json();
           setBookClubs(clubsData);
         }
     
         // Fetch reviews
-        const reviewsResponse = await fetch(`https://localhost:7076/api/bookreview/book/${bookReferenceId}`);
+        const reviewsResponse = await fetch(`${API_URL}/bookreview/book/${bookReferenceId}`);
         if (reviewsResponse.ok) {
           const reviewsData = await reviewsResponse.json();
           setReviews(reviewsData);

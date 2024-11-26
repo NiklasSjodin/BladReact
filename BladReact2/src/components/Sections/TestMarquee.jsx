@@ -1,5 +1,6 @@
 // src/components/Sections/TestMarquee.jsx
 import React from 'react';
+
 import Cover1 from '../../images/bookCoversMainPage/Cover1.jpg';
 import Cover2 from '../../images/bookCoversMainPage/Cover2.jpg';
 import Cover3 from '../../images/bookCoversMainPage/Cover3.jpg';
@@ -8,6 +9,8 @@ import Cover6 from '../../images/bookCoversMainPage/Cover6.jpg';
 import Cover7 from '../../images/bookCoversMainPage/Cover7.jpg';
 import Cover8 from '../../images/bookCoversMainPage/Cover8.jpg';
 import Cover9 from '../../images/bookCoversMainPage/Cover9.jpg';
+
+
 import MarqueeComponent from './Marquee';
 
 const TestMarquee = ({ 
@@ -26,6 +29,7 @@ const TestMarquee = ({
     { src: Cover7, alt: 'Image 5' },
     { src: Cover8, alt: 'Image 5' },
     { src: Cover9, alt: 'Image 5' },
+
   ];
 
   return (

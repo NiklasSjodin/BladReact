@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageContainer } from '../../../components/layout/PageContainer';
 import ScrollableContainer from '@/components/Sections/ScrollableContainer';
 import ClubCard from '@/components/ClubCard';
 import { CardSkeleton } from '../../../components/CardSkeleton';
 import HeroSection from '../../../components/Sections/HeroSection';
 import { useNavigate } from 'react-router-dom';
-import { debounce } from 'lodash';
 import { Searchbar } from '@/components/Searchbar';
+import { useAuthFetch } from '../../../services/useAuthFetch';
+import { Production_API_URL } from '../../../services/api';
 
 export default function Clubs() {
 	const [popularClubs, setPopularClubs] = useState([]);
@@ -18,77 +19,65 @@ export default function Clubs() {
 		hasNextPage: false,
 		hasPreviousPage: false
 	});
-	const [isLoading, setIsLoading] = useState(true);
-	const navigate = useNavigate();
 	const [searchResults, setSearchResults] = useState([]);
-	const [searchTerm, setSearchTerm] = useState('');
+	const [userClubs, setUserClubs] = useState([]);
+	const [friendsClubs, setFriendsClubs] = useState([]);
+	const navigate = useNavigate();
+	
+	const { authFetch, isLoading } = useAuthFetch();
+	const API_URL = Production_API_URL;
 
-	const API_URL = 'https://blad-api.azurewebsites.net/api/';
-
-	const debouncedSearch = useCallback(
-		debounce(async (term) => {
-			if (!term) {
-				setSearchResults([]);
-				return;
-			}
-			try {
-				console.log('Searching for:', term);
-				const response = await fetch(
-					`${API_URL}bookclubs/search?bookClubQuery=${term}`
-				);
-				
-				// Check if response is ok and is JSON
-				if (!response.ok) {
-					console.log('Search response status:', response.status);
-					setSearchResults([]);
-					return;
-				}
-
-				// Check content type
-				const contentType = response.headers.get("content-type");
-				if (!contentType || !contentType.includes("application/json")) {
-					console.log('Invalid content type:', contentType);
-					setSearchResults([]);
-					return;
-				}
-
-				const result = await response.json();
-				console.log('Results:', result);
-				setSearchResults(Array.isArray(result) ? result : []);
-			} catch (error) {
-				console.error('Error searching clubs:', error);
-				setSearchResults([]);
-			}
-		}, 300),
-		[]
-	);
+	const handleSearch = async (term) => {
+		if (!term) {
+			setSearchResults([]);
+			return [];
+		}
+		try {
+			const result = await authFetch(
+				`${API_URL}/bookclubs/search?bookClubQuery=${term}`
+			);
+			const formattedResults = Array.isArray(result) ? result : [];
+			setSearchResults(formattedResults);
+			return formattedResults;
+		} catch (error) {
+			console.error('Error searching clubs:', error);
+			setSearchResults([]);
+			return [];
+		}
+	};
 
 	useEffect(() => {
-		const fetchPopularClubs = async () => {
-			setIsLoading(true);
+		const fetchAllClubs = async () => {
 			try {
-				const response = await fetch(
-					`${API_URL}bookclubs/popular?PageSize=10&PageIndex=1`
+				// Fetch popular clubs
+				const popularResult = await authFetch(
+					`${API_URL}/bookclubs/popular?PageSize=10&PageIndex=1`
 				);
-				const result = await response.json();
-				setPopularClubs(result.data);
+				setPopularClubs(popularResult.data || []);
 				setPagination({
-					totalCount: result.totalCount,
-					totalPages: result.totalPages,
-					currentPage: result.currentPage,
-					itemsPerPage: result.itemsPerPage,
-					hasNextPage: result.hasNextPage,
-					hasPreviousPage: result.hasPreviousPage
+					totalCount: popularResult.totalCount || 0,
+					totalPages: popularResult.totalPages || 0,
+					currentPage: popularResult.currentPage || 1,
+					itemsPerPage: popularResult.itemsPerPage || 10,
+					hasNextPage: popularResult.hasNextPage || false,
+					hasPreviousPage: popularResult.hasPreviousPage || false
 				});
+
+				// Fetch user's clubs
+				const userClubsResult = await authFetch(`${API_URL}/bookclubs/user`);
+				setUserClubs(userClubsResult.data || []);
+
+				// Fetch friends' clubs
+				const friendsClubsResult = await authFetch(`${API_URL}/bookclubs/friends`);
+				setFriendsClubs(friendsClubsResult.data || []);
+
 			} catch (error) {
 				console.error('Error fetching clubs:', error);
-			} finally {
-				setIsLoading(false);
 			}
 		};
 
-		fetchPopularClubs();
-	}, []);
+		fetchAllClubs();
+	}, [authFetch]);
 
 	const handleClubClick = (clubId) => {
 		navigate(`/clubs/${clubId}`);
@@ -105,9 +94,11 @@ export default function Clubs() {
 				<div className='pt-6 space-y-4'>
 					<h1 className='text-3xl font-bold text-white'>Book Clubs</h1>
 					<Searchbar 
-						onSearch={debouncedSearch}
+						onSearch={handleSearch}
 						searchResults={searchResults}
-						onSelectClub={handleSelectClub}
+						onSelectItem={handleSelectClub}
+						searchType="clubs"
+						placeholder="Search clubs..."
 					/>
 				</div>
 
@@ -121,6 +112,46 @@ export default function Clubs() {
 								<CardSkeleton key={index} />
 						  ))
 						: popularClubs.map((club) => (
+								<div 
+									onClick={() => handleClubClick(club.id)} 
+									key={club.id}
+									className="py-4 px-2"
+								>
+									<ClubCard {...club} />
+								</div>
+						  ))}
+				</ScrollableContainer>
+
+				<ScrollableContainer
+					title='Your Clubs'
+					viewAllLink='/clubs/my-clubs'
+					itemWidth={192}
+				>
+					{isLoading
+						? Array.from({ length: 8 }).map((_, index) => (
+								<CardSkeleton key={`user-${index}`} />
+						  ))
+						: userClubs.map((club) => (
+								<div 
+									onClick={() => handleClubClick(club.id)} 
+									key={club.id}
+									className="py-4 px-2"
+								>
+									<ClubCard {...club} />
+								</div>
+						  ))}
+				</ScrollableContainer>
+
+				<ScrollableContainer
+					title='Friends'
+					viewAllLink='/clubs/friends'
+					itemWidth={192}
+				>
+					{isLoading
+						? Array.from({ length: 8 }).map((_, index) => (
+								<CardSkeleton key={`friends-${index}`} />
+						  ))
+						: friendsClubs.map((club) => (
 								<div 
 									onClick={() => handleClubClick(club.id)} 
 									key={club.id}

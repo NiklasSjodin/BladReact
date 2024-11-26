@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BsSearch, BsGrid, BsListUl } from 'react-icons/bs';
 import { PageContainer } from '../../../components/layout/PageContainer';
+import { Production_API_URL } from '../../../services/api';
 
 export default function Library() {
 	const [bookLists, setBookLists] = useState([]);
@@ -11,12 +12,13 @@ export default function Library() {
 	const [isGridView, setIsGridView] = useState(true);
 	const [searchTerm, setSearchTerm] = useState('');
 	const userId = '8ea44371-291d-4dc9-27f8-08dd03e02487';
+	const API_URL = Production_API_URL;
 
 	useEffect(() => {
 		const fetchBookLists = async () => {
 			try {
 				setIsLoading(true);
-				const response = await fetch(`https://localhost:7076/user/${userId}/booklist`);
+				const response = await fetch(`${API_URL}/user/${userId}/booklist`);
 				if (!response.ok) {
 					throw new Error('Failed to fetch booklists');
 				}
