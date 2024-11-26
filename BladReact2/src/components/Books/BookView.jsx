@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import AddToBookListModal from '../Modal/AddToListModal';
+import { jwtDecode } from "jwt-decode";
 
 const BookView = () => {
   const { isbn } = useParams(); // Get the isbn from the URL
@@ -13,6 +14,41 @@ const BookView = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState(null); 
   const [bookLists, setBookLists] = useState([]);
+  
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    console.log("token:", token);
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        const extractedUserId = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+        setUserId(extractedUserId);
+        console.log("Extracted userId:", extractedUserId); // Debugging
+      } catch (error) {
+        console.error("Error decoding token:", error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userId) {
+      const fetchBookLists = async () => {
+        try {
+          const response = await fetch(`https://localhost:7076/api/user/${userId}/booklist`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          });
+          if (!response.ok) throw new Error("Failed to fetch book lists");
+          const data = await response.json();
+          setBookLists(data); // Spara boklistorna i state
+        } catch (error) {
+          console.error("Error fetching book lists:", error.message);
+        }
+      };
+  
+      fetchBookLists();
+    }
+  }, [userId]);
+
 
 
   useEffect(() => {
@@ -123,8 +159,8 @@ const BookView = () => {
         </p>
 
         <AddToBookListModal
-        // userId={userId}
-        // bookId={bookReferenceId.id}
+        userId={userId}
+        bookId={bookReferenceId.id}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)} // Stäng modalen
       />

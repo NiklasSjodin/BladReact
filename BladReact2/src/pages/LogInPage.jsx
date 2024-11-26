@@ -11,7 +11,8 @@ function LogInPage() {
 	const [emailLocked, setEmailLocked] = useState(false);
 	const [error, setError] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
- 	const API_URL = 'https://localhost:7076/';
+ 	const API_URL = 'https://blad-api.azurewebsites.net/';
+;
 
 	const handleNext = async () => {
 		if (!email) {
