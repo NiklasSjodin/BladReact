@@ -5,11 +5,11 @@ import { useAuthFetch } from '../../hooks/useAuthFetch';
 import ScrollableContainer from '../Sections/ScrollableContainer';
 import { SectionHeader } from '../Sections/SectionHeader';
 import BookCard from '../BookCard';
-import { Production_API_URL } from '../../services/api';
+import { VITE_AZURE_API_URL } from '../../services/api';
 export const ListBooks = () => {
 	const { authFetch, isLoading } = useAuthFetch();
 	const [books, setBooks] = useState([]);
-	const API_URL = Production_API_URL;
+	const API_URL = VITE_AZURE_API_URL;
 	useEffect(() => {
 		const loadBooks = async () => {
 			try {

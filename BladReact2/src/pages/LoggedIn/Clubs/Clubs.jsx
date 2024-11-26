@@ -7,7 +7,7 @@ import HeroSection from '../../../components/Sections/HeroSection';
 import { useNavigate } from 'react-router-dom';
 import { Searchbar } from '@/components/Searchbar';
 import { useAuthFetch } from '../../../services/useAuthFetch';
-import { Production_API_URL } from '../../../services/api';
+import { VITE_AZURE_API_URL } from '../../../services/api';
 
 export default function Clubs() {
 	const [popularClubs, setPopularClubs] = useState([]);
@@ -17,15 +17,15 @@ export default function Clubs() {
 		currentPage: 1,
 		itemsPerPage: 10,
 		hasNextPage: false,
-		hasPreviousPage: false
+		hasPreviousPage: false,
 	});
 	const [searchResults, setSearchResults] = useState([]);
 	const [userClubs, setUserClubs] = useState([]);
 	const [friendsClubs, setFriendsClubs] = useState([]);
 	const navigate = useNavigate();
-	
+
 	const { authFetch, isLoading } = useAuthFetch();
-	const API_URL = Production_API_URL;
+	const API_URL = VITE_AZURE_API_URL;
 
 	const handleSearch = async (term) => {
 		if (!term) {
@@ -60,7 +60,7 @@ export default function Clubs() {
 					currentPage: popularResult.currentPage || 1,
 					itemsPerPage: popularResult.itemsPerPage || 10,
 					hasNextPage: popularResult.hasNextPage || false,
-					hasPreviousPage: popularResult.hasPreviousPage || false
+					hasPreviousPage: popularResult.hasPreviousPage || false,
 				});
 
 				// Fetch user's clubs
@@ -68,9 +68,10 @@ export default function Clubs() {
 				setUserClubs(userClubsResult.data || []);
 
 				// Fetch friends' clubs
-				const friendsClubsResult = await authFetch(`${API_URL}/bookclubs/friends`);
+				const friendsClubsResult = await authFetch(
+					`${API_URL}/bookclubs/friends`
+				);
 				setFriendsClubs(friendsClubsResult.data || []);
-
 			} catch (error) {
 				console.error('Error fetching clubs:', error);
 			}
@@ -85,7 +86,7 @@ export default function Clubs() {
 
 	const handleSelectClub = (club) => {
 		handleClubClick(club.id);
-	}
+	};
 
 	return (
 		<PageContainer>
@@ -93,12 +94,12 @@ export default function Clubs() {
 			<div className='space-y-8 pb-24'>
 				<div className='pt-6 space-y-4'>
 					<h1 className='text-3xl font-bold text-white'>Book Clubs</h1>
-					<Searchbar 
+					<Searchbar
 						onSearch={handleSearch}
 						searchResults={searchResults}
 						onSelectItem={handleSelectClub}
-						searchType="clubs"
-						placeholder="Search clubs..."
+						searchType='clubs'
+						placeholder='Search clubs...'
 					/>
 				</div>
 
@@ -112,10 +113,10 @@ export default function Clubs() {
 								<CardSkeleton key={index} />
 						  ))
 						: popularClubs.map((club) => (
-								<div 
-									onClick={() => handleClubClick(club.id)} 
+								<div
+									onClick={() => handleClubClick(club.id)}
 									key={club.id}
-									className="py-4 px-2"
+									className='py-4 px-2'
 								>
 									<ClubCard {...club} />
 								</div>
@@ -132,10 +133,10 @@ export default function Clubs() {
 								<CardSkeleton key={`user-${index}`} />
 						  ))
 						: userClubs.map((club) => (
-								<div 
-									onClick={() => handleClubClick(club.id)} 
+								<div
+									onClick={() => handleClubClick(club.id)}
 									key={club.id}
-									className="py-4 px-2"
+									className='py-4 px-2'
 								>
 									<ClubCard {...club} />
 								</div>
@@ -152,10 +153,10 @@ export default function Clubs() {
 								<CardSkeleton key={`friends-${index}`} />
 						  ))
 						: friendsClubs.map((club) => (
-								<div 
-									onClick={() => handleClubClick(club.id)} 
+								<div
+									onClick={() => handleClubClick(club.id)}
 									key={club.id}
-									className="py-4 px-2"
+									className='py-4 px-2'
 								>
 									<ClubCard {...club} />
 								</div>

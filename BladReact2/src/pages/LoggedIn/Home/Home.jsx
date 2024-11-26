@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { PageContainer } from '../../../components/layout/PageContainer';
 import { Skeleton } from '@/components/ui/skeleton';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -11,6 +11,8 @@ import { fetchBooks } from '../../../services/BooksService';
 import ScrollableContainer from '../../../components/Sections/ScrollableContainer';
 import HeroSection from '../../../components/Sections/HeroSection';
 import { jwtDecode } from 'jwt-decode';
+import { useAuthFetch } from '@/services/useAuthFetch';
+import { Local_API_URL } from '@/services/api';
 
 /**
  * Main Home Component
@@ -25,16 +27,28 @@ export default function Home() {
 	const [popularBooks, setPopularBooks] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [userName, setUserName] = useState('');
+	const { authFetch } = useAuthFetch();
+	const popularQuery = 'a court';
 
 	useEffect(() => {
 		const loadBooks = async () => {
 			setIsLoading(true);
 			try {
-				const [popular] = await Promise.all([
-					fetchBooks({ searchQuery: 'popular', limit: 10 }),
-				]);
-
-				setPopularBooks(popular);
+				const response = await authFetch(
+					`${Local_API_URL}/googlebooks/search/General?SearchTerm=${popularQuery}`
+				);
+				const mappedBooks = response.data.map((book, index) => ({
+					id: book.externalId || `temp-id-${index}`,
+					isbn: book.isbn,
+					title: book.title || 'Untitled',
+					author: book.author || 'Unknown',
+					coverId: book.thumbnail,
+					publishYear: book.year,
+					language: book.language,
+					subjects: book.genres ? [book.genres] : []
+				}));
+				console.log('Mapped books:', mappedBooks);
+				setPopularBooks(mappedBooks);
 			} catch (error) {
 				console.error('Error loading books:', error);
 			} finally {
@@ -43,7 +57,7 @@ export default function Home() {
 		};
 
 		loadBooks();
-	}, []);
+	}, [authFetch]);
 
 	useEffect(() => {
 		const token = localStorage.getItem('token');
@@ -54,6 +68,12 @@ export default function Home() {
 			);
 		}
 	}, []);
+
+	// Create a stable array of skeleton items
+	const skeletonItems = useMemo(() => 
+		Array.from({ length: 10 }, (_, index) => index), 
+		[]
+	);
 
 	return (
 		<PageContainer>
@@ -71,11 +91,18 @@ export default function Home() {
 					viewAllLink='/books/popular'
 					itemWidth={192}
 				>
-					{isLoading
-						? Array.from({ length: 10 }).map((_, index) => (
-								<CardSkeleton key={index} />
-						  ))
-						: popularBooks.map((book) => <BookCard key={book.id} {...book} />)}
+					{isLoading ? (
+						skeletonItems.map((index) => (
+							<CardSkeleton key={`skeleton-${index}`} />
+						))
+					) : (
+						popularBooks.map((book, index) => (
+							<BookCard 
+								key={book.isbn || `fallback-${index}`} 
+								{...book} 
+							/>
+						))
+					)}
 				</ScrollableContainer>
 			</div>
 		</PageContainer>

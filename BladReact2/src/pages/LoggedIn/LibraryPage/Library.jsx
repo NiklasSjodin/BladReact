@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BsSearch, BsGrid, BsListUl } from 'react-icons/bs';
 import { PageContainer } from '../../../components/layout/PageContainer';
-import { Production_API_URL } from '../../../services/api';
+import { VITE_AZURE_API_URL } from '../../../services/api';
 
 export default function Library() {
 	const [bookLists, setBookLists] = useState([]);
@@ -12,7 +12,7 @@ export default function Library() {
 	const [isGridView, setIsGridView] = useState(true);
 	const [searchTerm, setSearchTerm] = useState('');
 	const userId = '8ea44371-291d-4dc9-27f8-08dd03e02487';
-	const API_URL = Production_API_URL;
+	const API_URL = VITE_AZURE_API_URL;
 
 	useEffect(() => {
 		const fetchBookLists = async () => {
@@ -35,15 +35,15 @@ export default function Library() {
 		fetchBookLists();
 	}, [userId]);
 
-	const filteredLists = bookLists.filter(list =>
+	const filteredLists = bookLists.filter((list) =>
 		list.name.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
 	if (isLoading) {
 		return (
 			<PageContainer>
-				<div className="flex justify-center items-center h-screen">
-					<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+				<div className='flex justify-center items-center h-screen'>
+					<div className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500'></div>
 				</div>
 			</PageContainer>
 		);
@@ -52,9 +52,9 @@ export default function Library() {
 	if (error) {
 		return (
 			<PageContainer>
-				<div className="flex justify-center items-center h-screen">
-					<div className="text-red-500 text-center">
-						<h2 className="text-xl font-bold mb-2">Error</h2>
+				<div className='flex justify-center items-center h-screen'>
+					<div className='text-red-500 text-center'>
+						<h2 className='text-xl font-bold mb-2'>Error</h2>
 						<p>{error}</p>
 					</div>
 				</div>
@@ -66,7 +66,9 @@ export default function Library() {
 		<PageContainer>
 			<div className='space-y-8 pb-24'>
 				<div className='pt-6 space-y-4'>
-					<h1 className='text-3xl font-bold text-bladLightTextColor'>My Library</h1>
+					<h1 className='text-3xl font-bold text-bladLightTextColor'>
+						My Library
+					</h1>
 					<div className='flex mb-4'>
 						<div className='flex items-center border rounded-l-md border-r-0 border-gray-200 bg-white'>
 							<div className='p-2'>
@@ -85,16 +87,31 @@ export default function Library() {
 								className='p-2 text-gray-600 hover:text-gray-800'
 								onClick={() => setIsGridView(!isGridView)}
 							>
-								{isGridView ? <BsGrid className='text-gray-400' /> : <BsListUl className='text-gray-400' />}
+								{isGridView ? (
+									<BsGrid className='text-gray-400' />
+								) : (
+									<BsListUl className='text-gray-400' />
+								)}
 							</button>
 						</div>
 					</div>
-					<div className={`grid ${isGridView ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'} gap-4`}>
+					<div
+						className={`grid ${
+							isGridView
+								? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+								: 'grid-cols-1'
+						} gap-4`}
+					>
 						{filteredLists.map((list) => (
-							<div key={list.id} className='p-4 border rounded-lg shadow bg-gray-800'>
-								<h2 className='text-xl font-semibold text-white'>{list.name}</h2>
-								<Link 
-									to={`/booklist/${list.id}`} 
+							<div
+								key={list.id}
+								className='p-4 border rounded-lg shadow bg-gray-800'
+							>
+								<h2 className='text-xl font-semibold text-white'>
+									{list.name}
+								</h2>
+								<Link
+									to={`/booklist/${list.id}`}
 									className='text-blue-400 hover:text-blue-300'
 								>
 									View Books →

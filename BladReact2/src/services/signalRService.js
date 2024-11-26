@@ -1,91 +1,93 @@
 import * as signalR from '@microsoft/signalr';
-import { Production_API_URL } from './api';
+import { VITE_AZURE_API_URL } from './api';
 
 class SignalRService {
-    constructor() {
-        this.connection = null;
-        this.API_URL = `${Production_API_URL}/notificationHub`;
-    }
+	constructor() {
+		this.connection = null;
+		this.API_URL = `${VITE_AZURE_API_URL}/notificationHub`;
+	}
 
-    async startConnection() {
-        try {
-            const token = localStorage.getItem('token');
-            
-            if (!token) {
-                throw new Error('No authentication token found');
-            }
+	async startConnection() {
+		try {
+			const token = localStorage.getItem('token');
 
-            console.log('🔌 Starting SignalR connection...');
+			if (!token) {
+				throw new Error('No authentication token found');
+			}
 
-            this.connection = new signalR.HubConnectionBuilder()
-                .withUrl(this.API_URL, {
-                    accessTokenFactory: () => token,
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    transport: signalR.HttpTransportType.WebSockets | signalR.HttpTransportType.LongPolling,
-                    withCredentials: true
-                })
-                .configureLogging(signalR.LogLevel.Information)
-                .withAutomaticReconnect()
-                .build();
+			console.log('🔌 Starting SignalR connection...');
 
-            this.connection.onclose((error) => {
-                console.log('🔴 SignalR Connection closed:', error);
-            });
+			this.connection = new signalR.HubConnectionBuilder()
+				.withUrl(this.API_URL, {
+					accessTokenFactory: () => token,
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'application/json',
+					},
+					transport:
+						signalR.HttpTransportType.WebSockets |
+						signalR.HttpTransportType.LongPolling,
+					withCredentials: true,
+				})
+				.configureLogging(signalR.LogLevel.Information)
+				.withAutomaticReconnect()
+				.build();
 
-            this.connection.onreconnecting((error) => {
-                console.log('🟡 SignalR Reconnecting:', error);
-            });
+			this.connection.onclose((error) => {
+				console.log('🔴 SignalR Connection closed:', error);
+			});
 
-            this.connection.onreconnected((connectionId) => {
-                console.log('🟢 SignalR Reconnected:', connectionId);
-            });
+			this.connection.onreconnecting((error) => {
+				console.log('🟡 SignalR Reconnecting:', error);
+			});
 
-            await this.connection.start();
-            console.log('✅ SignalR Connected!');
-            
-            this.connection.invoke('GetConnectionId')
-                .then(connectionId => {
-                    console.log('🆔 SignalR Connection ID:', connectionId);
-                })
-                .catch(err => {
-                    console.error('❌ Failed to get connection ID:', err);
-                });
+			this.connection.onreconnected((connectionId) => {
+				console.log('🟢 SignalR Reconnected:', connectionId);
+			});
 
-        } catch (err) {
-            console.error('❌ SignalR Connection Error: ', err);
-            throw err;
-        }
-    }
+			await this.connection.start();
+			console.log('✅ SignalR Connected!');
 
-    onReceiveNotification(callback) {
-        if (!this.connection) {
-            console.error('No SignalR connection');
-            return;
-        }
+			this.connection
+				.invoke('GetConnectionId')
+				.then((connectionId) => {
+					console.log('🆔 SignalR Connection ID:', connectionId);
+				})
+				.catch((err) => {
+					console.error('❌ Failed to get connection ID:', err);
+				});
+		} catch (err) {
+			console.error('❌ SignalR Connection Error: ', err);
+			throw err;
+		}
+	}
 
-        this.connection.on('ReceiveNotification', (notification) => {
-            console.log('Received notification:', notification);
-            callback(notification);
-        });
-    }
+	onReceiveNotification(callback) {
+		if (!this.connection) {
+			console.error('No SignalR connection');
+			return;
+		}
 
-    async stopConnection() {
-        if (this.connection) {
-            try {
-                await this.connection.stop();
-                console.log('SignalR Disconnected');
-            } catch (err) {
-                console.error('SignalR Disconnection Error: ', err);
-            }
-        }
-    }
+		this.connection.on('ReceiveNotification', (notification) => {
+			console.log('Received notification:', notification);
+			callback(notification);
+		});
+	}
 
-    isConnected() {
-        return this.connection?.state === signalR.HubConnectionState.Connected;
-    }
+	async stopConnection() {
+		if (this.connection) {
+			try {
+				await this.connection.stop();
+				console.log('SignalR Disconnected');
+			} catch (err) {
+				console.error('SignalR Disconnection Error: ', err);
+			}
+		}
+	}
+
+	isConnected() {
+		return this.connection?.state === signalR.HubConnectionState.Connected;
+	}
 }
 
-export default new SignalRService(); 
+export default new SignalRService();
