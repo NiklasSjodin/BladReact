@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { PageContainer } from '../../../components/layout/PageContainer';
 import { format } from 'date-fns';
 import { useAuthFetch } from '../../../services/useAuthFetch';
+import { Production_API_URL } from '../../../services/api';
 
 export default function ForumView() {
     const { bookClubId, forumId } = useParams();
@@ -13,7 +14,7 @@ export default function ForumView() {
     const [isPosting, setIsPosting] = useState(false);
     const [error, setError] = useState(null);
     const { authFetch } = useAuthFetch();
-    const API_URL = 'https://blad-api.azurewebsites.net/api/';
+    const API_URL = Production_API_URL;
 
     // Fetch forum details
     useEffect(() => {
@@ -23,7 +24,7 @@ export default function ForumView() {
             try {
                 // Fetch forums for the club
                 const forumsResponse = await authFetch(
-                    `${API_URL}bookclubs/${bookClubId}/forums`
+                    `${API_URL}/bookclubs/${bookClubId}/forums`
                 );
                 
                 console.log('Forums response:', forumsResponse); // Debug log
@@ -47,7 +48,7 @@ export default function ForumView() {
                 // Fetch comments
                 try {
                     const commentsData = await authFetch(
-                        `${API_URL}forums/${forumId}/comments`
+                        `${API_URL}/forums/${forumId}/comments`
                     );
                     setComments(Array.isArray(commentsData) ? commentsData : []);
                 } catch (commentErr) {
@@ -73,7 +74,7 @@ export default function ForumView() {
         setIsPosting(true);
         try {
             const newComment = await authFetch(
-                `${API_URL}forums/${forumId}/comments`,
+                `${API_URL}/forums/${forumId}/comments`,
                 {
                     method: 'POST',
                     body: JSON.stringify({ content }),

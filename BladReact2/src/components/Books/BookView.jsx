@@ -36,7 +36,7 @@ const BookView = () => {
     if (userId) {
       const fetchBookLists = async () => {
         try {
-          const response = await fetch(`${API_URL}/api/user/${userId}/booklist`, {
+          const response = await fetch(`${API_URL}/user/${userId}/booklist`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
           });
           if (!response.ok) throw new Error("Failed to fetch book lists");
@@ -65,18 +65,18 @@ const BookView = () => {
         console.log(bookData);
     
         // Step 1: Check the backend for bookreferenceId
-        const backendResponse = await fetch(`${API_URL}/api/book/isbn/${isbn}/bookreferenceId`);
+        const backendResponse = await fetch(`${API_URL}/book/isbn/${isbn}/bookreferenceId`);
         if (backendResponse.ok) {
           const backendData = await backendResponse.json();
           bookReferenceId = backendData.bookReferenceId; 
     
           // Fetch bookdata using the bookReferenceId
-          const bookDetailsResponse = await fetch(`${API_URL}/api/bookdata/book/${bookReferenceId}`);
+          const bookDetailsResponse = await fetch(`${API_URL}/bookdata/book/${bookReferenceId}`);
           if (!bookDetailsResponse.ok) throw new Error('Failed to fetch book details from the backend');
           bookData = await bookDetailsResponse.json();
         } else if (backendResponse.status === 404) {
           // Step 2: If book not found in backend, fetch from Google Books API
-          const googleResponse = await fetch(`${API_URL}/api/googlebooks/search/isbn?isbn=${isbn}`);
+          const googleResponse = await fetch(`${API_URL}/googlebooks/search/isbn?isbn=${isbn}`);
           if (!googleResponse.ok) throw new Error('Failed to fetch book data from Google API');
     
           bookData = await googleResponse.json();
@@ -100,14 +100,14 @@ const BookView = () => {
     const fetchRelatedData = async (bookReferenceId) => {
       try {
         // Fetch bookclubs
-        const clubsResponse = await fetch(`${API_URL}/api/bookclubs/book/${bookReferenceId}`);
+        const clubsResponse = await fetch(`${API_URL}/bookclubs/book/${bookReferenceId}`);
         if (clubsResponse.ok) {
           const clubsData = await clubsResponse.json();
           setBookClubs(clubsData);
         }
     
         // Fetch reviews
-        const reviewsResponse = await fetch(`${API_URL}/api/bookreview/book/${bookReferenceId}`);
+        const reviewsResponse = await fetch(`${API_URL}/bookreview/book/${bookReferenceId}`);
         if (reviewsResponse.ok) {
           const reviewsData = await reviewsResponse.json();
           setReviews(reviewsData);

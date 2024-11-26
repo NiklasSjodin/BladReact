@@ -5,16 +5,16 @@ import { useAuthFetch } from '../../hooks/useAuthFetch';
 import ScrollableContainer from '../Sections/ScrollableContainer';
 import { SectionHeader } from '../Sections/SectionHeader';
 import BookCard from '../BookCard';
-
+import { Production_API_URL } from '../../services/api';
 export const ListBooks = () => {
 	const { authFetch, isLoading } = useAuthFetch();
 	const [books, setBooks] = useState([]);
-	const API_URL = 'https://blad-api.azurewebsites.net/api/';
+	const API_URL = Production_API_URL;
 	useEffect(() => {
 		const loadBooks = async () => {
 			try {
 				const fetchedBooks = await authFetch(
-					`${API_URL}OpenLibraryAPI/search?query=trending&limit=10`
+					`${API_URL}/OpenLibraryAPI/search?query=trending&limit=10`
 				);
 				setBooks(fetchedBooks);
 			} catch (error) {

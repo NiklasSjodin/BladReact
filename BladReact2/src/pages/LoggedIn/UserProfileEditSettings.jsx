@@ -44,7 +44,7 @@ export default function UserProfileSettings(){
       );
       axios
         .get(
-          `${API_URL}/api/users/${decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]}`,
+          `${API_URL}/users/${decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -69,7 +69,7 @@ export default function UserProfileSettings(){
       const updatedUser = { name, bio, imageUrl, privacyLevel }; // Inkludera värden för att uppdatera
       console.log("Data som skickas:", updatedUser); // Logga vad som skickas i updatedUser
       await axios.put(
-        `${API_URL}/api/userprofile/${userId}`,
+        `${API_URL}/userprofile/${userId}`,
         updatedUser,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -96,7 +96,7 @@ export default function UserProfileSettings(){
     setMessage("");
     try {
       const response = await axios.put(
-        `${API_URL}/api/accounts/password`,
+        `${API_URL}/accounts/password`,
         { currentPassword, newPassword },
         {
           headers: {
@@ -122,7 +122,7 @@ export default function UserProfileSettings(){
   const handleDelete = async () => {
     if (!userId) return;
     try {
-      await axios.delete(`${API_URL}/api/users/${userId}`, {
+      await axios.delete(`${API_URL}/users/${userId}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

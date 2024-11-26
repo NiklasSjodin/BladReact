@@ -11,7 +11,7 @@ const AddToBookListModal = ({ userId, bookId, isOpen, onClose }) => {
   useEffect(() => {
     if (isOpen) {
       setLoading(true);
-      axios.get(`${API_URL}/api/user/${userId}/booklist`, {
+      axios.get(`${API_URL}/user/${userId}/booklist`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -34,7 +34,7 @@ const AddToBookListModal = ({ userId, bookId, isOpen, onClose }) => {
     }
 
     axios.post(
-      `${API_URL}/api/booklist/${bookListId}/book`,
+      `${API_URL}/booklist/${bookListId}/book`,
       {bookId},
       {
         headers: {

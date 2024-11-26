@@ -7,6 +7,7 @@ import { fetchBooks } from '../../../services/BooksService';
 import { BsSearch } from 'react-icons/bs';
 import { Searchbar } from '../../../components/Searchbar';
 import { useNavigate } from 'react-router-dom';
+import { Production_API_URL } from '../../../services/api';
 
 export default function Explore() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -15,6 +16,7 @@ export default function Explore() {
     const [isLoading, setIsLoading] = useState(true);
     const [selectedGenre, setSelectedGenre] = useState(null);
     const navigate = useNavigate();
+    const API_URL = Production_API_URL;
     
     // Create refs for each genre section
     const genreRefs = useRef({});
@@ -73,7 +75,7 @@ export default function Explore() {
     const handleSearch = async (term) => {
         try {
             const response = await fetch(
-                `https://blad-api.azurewebsites.net/api/books/search?query=${term}`
+                `${API_URL}/books/search?query=${term}`
             );
             if (!response.ok) return [];
             const result = await response.json();

@@ -1,12 +1,13 @@
 import { useState, useCallback, useEffect } from 'react';
 import { HubConnectionBuilder } from '@microsoft/signalr';
+import { Production_API_URL } from './api';
 
 export const useNotificationService = () => {
   const [hubConnection, setHubConnection] = useState(null);
   const [notifications, setNotifications] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
-  const hubUrl = 'https://localhost:7076/notificationHub';
+  const hubUrl = `${Production_API_URL}/notificationHub`;
 
   const createConnection = useCallback(() => {
     if (hubConnection) return;
@@ -75,7 +76,7 @@ export const useNotificationService = () => {
 
   const acceptFriendRequest = async (friendshipId) => {
     try {
-      const response = await fetch(`https://localhost:7076/api/friendship/accept/${friendshipId}`, {
+      const response = await fetch(`${Production_API_URL}/friendship/accept/${friendshipId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,

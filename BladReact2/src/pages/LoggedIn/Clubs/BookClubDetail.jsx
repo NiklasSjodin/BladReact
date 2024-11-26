@@ -4,6 +4,7 @@ import { PageContainer } from '../../../components/layout/PageContainer';
 import { format } from 'date-fns';
 import placeholder from '../../../images/placeholder.gif'
 import { useAuthFetch } from '../../../services/useAuthFetch';
+import { Production_API_URL } from '../../../services/api';
 
 export default function BookClubDetail() {
     const params = useParams();
@@ -20,7 +21,7 @@ export default function BookClubDetail() {
     const [memberDetails, setMemberDetails] = useState({});
     const [forums, setForums] = useState([]);
 
-    const API_URL = 'https://blad-api.azurewebsites.net/api/';
+    const API_URL = Production_API_URL;
 
     useEffect(() => {
         const fetchClubDetails = async () => {
@@ -32,7 +33,7 @@ export default function BookClubDetail() {
 
             try {
                 console.log('Fetching all clubs to find ID:', params.id);
-                const result = await authFetch(`${API_URL}bookclubs`, {
+                const result = await authFetch(`${API_URL}/bookclubs`, {
                     headers: {
                         'Accept': 'application/json'
                     }
@@ -75,7 +76,7 @@ export default function BookClubDetail() {
 
             try {
                 const bookPromises = clubDetails.books.map(book => 
-                    authFetch(`${API_URL}books/${book.bookReferenceId}`)
+                    authFetch(`${API_URL}/books/${book.bookReferenceId}`)
                 );
 
                 const books = await Promise.all(bookPromises);
@@ -99,7 +100,7 @@ export default function BookClubDetail() {
 
             try {
                 const memberPromises = clubDetails.members.map(async (member) => {
-                    const response = await fetch(`${API_URL}users/${member.userId}`);
+                    const response = await fetch(`${API_URL}/users/${member.userId}`);
                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                     const data = await response.json();
                     return { userId: member.userId, details: data, role: member.role };
@@ -123,7 +124,7 @@ export default function BookClubDetail() {
     useEffect(() => {
         const fetchForums = async () => {
             try {
-                const forumsData = await authFetch(`${API_URL}bookclubs/${params.id}/forums`);
+                const forumsData = await authFetch(`${API_URL}/bookclubs/${params.id}/forums`);
                 setForums(forumsData || []);
             } catch (error) {
                 console.error('Error fetching forums:', error);
