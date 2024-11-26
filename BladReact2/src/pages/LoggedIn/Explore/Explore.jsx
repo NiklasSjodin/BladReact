@@ -5,12 +5,16 @@ import BookCard from '../../../components/BookCard';
 import ScrollableContainer from '../../../components/Sections/ScrollableContainer';
 import { fetchBooks } from '../../../services/BooksService';
 import { BsSearch } from 'react-icons/bs';
+import { Searchbar } from '../../../components/Searchbar';
+import { useNavigate } from 'react-router-dom';
 
 export default function Explore() {
     const [searchTerm, setSearchTerm] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
     const [genreBooks, setGenreBooks] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [selectedGenre, setSelectedGenre] = useState(null);
+    const navigate = useNavigate();
     
     // Create refs for each genre section
     const genreRefs = useRef({});
@@ -65,6 +69,27 @@ export default function Explore() {
         loadBooks();
     }, []);
 
+    // Add handleSearch function
+    const handleSearch = async (term) => {
+        try {
+            const response = await fetch(
+                `https://blad-api.azurewebsites.net/api/books/search?query=${term}`
+            );
+            if (!response.ok) return [];
+            const result = await response.json();
+            setSearchResults(Array.isArray(result) ? result : []);
+            return result;
+        } catch (error) {
+            console.error('Error searching books:', error);
+            return [];
+        }
+    };
+
+    // Add handleSelectBook function
+    const handleSelectBook = (book) => {
+        navigate(`/books/${book.id}`);
+    };
+
     return (
         <PageContainer>
             <div className='space-y-8 pb-24'>
@@ -74,20 +99,15 @@ export default function Explore() {
                     </h1>
                     <p className='text-gray-400'>Discover books by genre</p>
 
-                    {/* Search Bar */}
+                    {/* Update Searchbar implementation */}
                     <div className='flex w-full max-w-md'>
-                        <div className='flex items-center w-full border rounded-md border-gray-200 bg-white'>
-                            <div className='p-2'>
-                                <BsSearch className='text-gray-400' />
-                            </div>
-                            <input
-                                type='text'
-                                placeholder='Search books...'
-                                className='w-full border-0 focus:outline-none focus:ring-0 pl-2 pr-4 py-2 text-sm text-gray-900'
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                        </div>
+                        <Searchbar 
+                            onSearch={handleSearch}
+                            searchResults={searchResults}
+                            onSelectItem={handleSelectBook}
+                            searchType="books"
+                            placeholder="Search books..."
+                        />
                     </div>
 
                     {/* Genre Buttons */}

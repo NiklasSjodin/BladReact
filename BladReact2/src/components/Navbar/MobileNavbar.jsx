@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/tooltip';
 
 const MobileNavbar = () => {
+	
   const { 
     unreadCount, 
     toggleNotifications, 
@@ -20,16 +21,18 @@ const MobileNavbar = () => {
     notifications, 
     clearNotifications
   } = useNotificationService();
-
+  
+  
+  
   const navItems = [
-    { to: '/', title: 'Home', icon: <Home className='h-5 w-5' /> },
-    { to: 'clubs', title: 'Clubs', icon: <Users className='h-5 w-5' /> },
-    {
-      to: 'explore',
-      title: 'Explore',
-      icon: <Lightbulb className='h-5 w-5' />,
-    },
-    { to: 'library', title: 'Library', icon: <BookOpen className='h-5 w-5' /> },
+		{ to: '/', title: 'Home', icon: <Home className='h-5 w-5' /> },
+		{ to: 'clubs', title: 'Clubs', icon: <Users className='h-5 w-5' /> },
+		{
+			to: 'explore',
+			title: 'Explore',
+			icon: <Lightbulb className='h-5 w-5' />,
+		},
+		{ to: 'library', title: 'Library', icon: <BookOpen className='h-5 w-5' /> },
     {
       type: 'notification',
       title: 'Notifications',
@@ -44,19 +47,19 @@ const MobileNavbar = () => {
         </div>
       ),
     },
-    {
-      to: 'account',
-      title: 'Account',
-      icon: (
-        <Avatar className='h-6 w-6'>
-          <AvatarImage src='/path/to/your/avatar.jpg' alt='Profile' />
-          <AvatarFallback>
-            <User className='h-4 w-4' />
-          </AvatarFallback>
-        </Avatar>
-      ),
-    },
-  ];
+		{
+			to: 'profile',
+			title: 'Profile',
+			icon: (
+				<Avatar className='h-6 w-6'>
+					<AvatarImage src='/path/to/your/avatar.jpg' alt='Profile' />
+					<AvatarFallback>
+						<User className='h-4 w-4' />
+					</AvatarFallback>
+				</Avatar>
+			),
+		},
+	];
 
   return (
     <>

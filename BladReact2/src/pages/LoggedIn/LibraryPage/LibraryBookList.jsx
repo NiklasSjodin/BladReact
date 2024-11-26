@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { BsGrid, BsListUl, BsSortDown, BsFilter } from 'react-icons/bs';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Production_API_URL } from '../../../services/api';
 
 export default function LibraryBookList() {
     const [books, setBooks] = useState([]);
@@ -11,13 +12,14 @@ export default function LibraryBookList() {
     const [sortBy, setSortBy] = useState('title'); // 'title', 'author', 'status'
     const [filterStatus, setFilterStatus] = useState('all'); // 'all', 'reading', 'completed', etc.
     const { id } = useParams();
+    const API_URL = Production_API_URL;
 
     useEffect(() => {
         const fetchBooks = async () => {
             try {
                 setIsLoading(true);
                 // Replace with your actual API endpoint
-                const response = await fetch(`https://localhost:7076/user/${id}/booklist/${id}`);
+                const response = await fetch(`${API_URL}/user/${id}/booklist/${id}`);
                 if (!response.ok) throw new Error('Failed to fetch books');
                 const data = await response.json();
                 setBooks(data.books || []);
