@@ -1,10 +1,13 @@
 // src/components/Sections/TestMarquee.jsx
 import React from 'react';
-import Image1 from '../../images/anjali-mehta-q7LqBzBG8rA-unsplash.jpg';
-import Image2 from '../../images/charlesdeluvio-EV2Y6-NzDyU-unsplash.jpg';
-import Image3 from '../../images/clay-banks-Z5vZCy8xDZU-unsplash.jpg';
-import Image4 from '../../images/karolina-grabowska-H_eb_VfG2Ow-unsplash.jpg';
-import Image5 from '../../images/olena-bohovyk-Ft_Wn-K5YH8-unsplash.jpg';
+import Cover1 from '../../images/bookCoversMainPage/Cover1.jpg';
+import Cover2 from '../../images/bookCoversMainPage/Cover2.jpg';
+import Cover3 from '../../images/bookCoversMainPage/Cover3.jpg';
+import Cover5 from '../../images/bookCoversMainPage/Cover5.jpg';
+import Cover6 from '../../images/bookCoversMainPage/Cover6.jpg';
+import Cover7 from '../../images/bookCoversMainPage/Cover7.jpg';
+import Cover8 from '../../images/bookCoversMainPage/Cover8.jpg';
+import Cover9 from '../../images/bookCoversMainPage/Cover9.jpg';
 import MarqueeComponent from './Marquee';
 
 const TestMarquee = ({ 
@@ -16,11 +19,13 @@ const TestMarquee = ({
   imageWidth = "auto"
 }) => {
   const images = [
-    { src: Image1, alt: 'Image 1' },
-    { src: Image2, alt: 'Image 2' },
-    { src: Image3, alt: 'Image 3' },
-    { src: Image4, alt: 'Image 4' },
-    { src: Image5, alt: 'Image 5' },
+    { src: Cover1, alt: 'Image 1' },
+    { src: Cover2, alt: 'Image 2' },
+    // { src: Cover3, alt: 'Image 3' },
+    // { src: Cover6, alt: 'Image 4' },
+    { src: Cover7, alt: 'Image 5' },
+    { src: Cover8, alt: 'Image 5' },
+    { src: Cover9, alt: 'Image 5' },
   ];
 
   return (
