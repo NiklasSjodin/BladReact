@@ -4,12 +4,13 @@ import GoogleLogo from '../images/googlelogo.png'
 import AppleLogo from '../images/applelogo.png'
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Production_API_URL } from '../services/api';
 
 export default function SignUpPage() {
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-  const API_URL = "https://localhost:7076/api/accounts/register";
+  const API_URL = Production_API_URL;
 
   const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);
@@ -19,6 +20,7 @@ export default function SignUpPage() {
   const[userName, setUserName] = useState('');
   const[email, setEmail] = useState('');
   const[password, setPassword] = useState('');
+
 
   async function handleSubmit(e)
     {
@@ -30,7 +32,7 @@ export default function SignUpPage() {
             fullName, userName, email, password
         }
         console.log(newUser); // Log to see if all fields are correct
-            const response = await axios.post('https://localhost:7076/api/accounts/register', newUser) // POST förfrågan till vårt API
+            const response = await axios.post(`${API_URL}/api/accounts/register`, newUser) // POST förfrågan till vårt API
             console.log('New user created: ', response.data) // Loggar svaret om det fungerade
 
             if (response.status === 200) {
