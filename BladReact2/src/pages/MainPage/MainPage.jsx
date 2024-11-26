@@ -15,17 +15,17 @@ export default function MainPage() {
 		<>
 			<div className='w-screen h-screen flex items-center bg-hero-pattern bg-cover bg-center bg-no-repeat px-20'>
 				<div className='w-1/2 lg: text-left pr-8'>
-					<h1 className='text-4xl font-bold tracking-tight text-white sm:text-6xl'>
+					<h1 className='text-4xl font-bold tracking-tight text-black sm:text-6xl'>
 						Skapa din perfekta bokhylla och dela dina favoriter
 					</h1>
-					<p className='mt-6 text-lg leading-8 text-white w-1/2'>
+					<p className='mt-6 text-lg leading-8 text-black w-1/2'>
 						Håll koll på din läsning och upptäck böcker som inspirerar. Med Blad
 						är varje sida ett nytt äventyr att dela.
 					</p>
 					<div className='mt-8 flex items-center gap-x-6'>
 						<Link
 							to='signup'
-							className='rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-600 transition duration-300 ease-in-out'
+							className='rounded-md bg-red-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-600 transition duration-300 ease-in-out'
 						>
 							Registrera dig nu
 						</Link>
@@ -46,6 +46,7 @@ export default function MainPage() {
 			<BouncyCardsFeatures />
 			<Information />
 			<TextParallaxContentExample />
+			{/* <Footer></Footer> */}
 		</>
 	);
 }
