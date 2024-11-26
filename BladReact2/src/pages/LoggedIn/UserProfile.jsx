@@ -23,17 +23,12 @@ const UserProfile = () => {
     }
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    // Perform logout functionality here
-  };
-
   return (
     <PageContainer>
       <div className="min-h-screen bg-bladLightBackground text-bladLightTextColor px-4 py-6">
         {/* Header */}
         <div className="flex items-center space-x-4 mb-6">
-          <h1 className="text-lg font-bold">Account</h1>
+          <h1 className="text-lg font-bold">Inställningar</h1>
         </div>
 
         {/* User Info */}
@@ -84,8 +79,6 @@ const UserProfile = () => {
           {activeTab === "reviews" && <div>Här kan du läsa och skriva recensioner.</div>}
           {activeTab === "support" && <div><Support /></div>}
         </div>
-
-        {/* Logout */}
       </div>
     </PageContainer>
   );
