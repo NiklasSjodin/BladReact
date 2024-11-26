@@ -1,9 +1,10 @@
 import * as signalR from '@microsoft/signalr';
+import { Production_API_URL } from './api';
 
 class SignalRService {
     constructor() {
         this.connection = null;
-        this.API_URL = 'https://blad-api.azurewebsites.net/notificationHub';
+        this.API_URL = `${Production_API_URL}/notificationHub`;
     }
 
     async startConnection() {
