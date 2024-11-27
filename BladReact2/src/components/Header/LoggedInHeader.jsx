@@ -95,18 +95,13 @@ export default function LoggedInHeader() {
 
 	const handleLogout = () => {
 		localStorage.removeItem('token');
+		localStorage.removeItem('hideHero');
 		// Perform logout functionality here
 	};
 	return (
 		<header className='absolute w-full pt-1 pb-1 bg-bladtheme'>
 			<div className='px-4 h-12 flex items-center'>
-				<Link to='/'>
-					<img
-						src={logo}
-						alt='Description of image'
-						className='h-8 w-auto object-contain pr-1'
-					/>
-				</Link>
+				
 				<Link to='/' className='flex-1 font-general text-xl text-white'>
 					blad.
 				</Link>

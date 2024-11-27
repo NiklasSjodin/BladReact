@@ -2,7 +2,7 @@ import { useState } from "react";
 import BladLogo from "../images/blad.png";
 import GoogleLogo from "../images/googlelogo.png";
 import { Link, useNavigate } from 'react-router-dom';
-import { Production_API_URL } from '../services/api';
+import { VITE_AZURE_API_URL } from '../services/api';
 
 function LogInPage() {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ function LogInPage() {
   const [emailLocked, setEmailLocked] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const API_URL = Production_API_URL;
+  const API_URL = VITE_AZURE_API_URL;
 	const handleNext = async () => {
 		if (!email) {
 			setError('Please enter an email address');
@@ -36,16 +36,19 @@ function LogInPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/accounts/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
+      const response = await fetch(
+				`${API_URL}/accounts/login`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						email,
+						password,
+					}),
+				}
+			);
 
       const data = await response.json();
 

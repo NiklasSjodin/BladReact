@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { PageContainer } from '../../../components/layout/PageContainer';
 import { Skeleton } from '@/components/ui/skeleton';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -11,6 +11,8 @@ import { fetchBooks } from '../../../services/BooksService';
 import ScrollableContainer from '../../../components/Sections/ScrollableContainer';
 import HeroSection from '../../../components/Sections/HeroSection';
 import { jwtDecode } from 'jwt-decode';
+import { useAuthFetch } from '@/services/useAuthFetch';
+import { VITE_AZURE_API_URL } from '@/services/api';
 
 /**
  * Main Home Component
@@ -25,16 +27,29 @@ export default function Home() {
 	const [popularBooks, setPopularBooks] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [userName, setUserName] = useState('');
+	const { authFetch } = useAuthFetch();
+	const query = 'earth';
+	const API_URL = VITE_AZURE_API_URL;
 
 	useEffect(() => {
 		const loadBooks = async () => {
 			setIsLoading(true);
 			try {
-				const [popular] = await Promise.all([
-					fetchBooks({ searchQuery: 'popular', limit: 10 }),
-				]);
-
-				setPopularBooks(popular);
+				const response = await authFetch(
+					`${API_URL}/googlebooks/search/General?SearchTerm=${query}&PageSize=10`
+				);
+				const mappedBooks = response.data.map((book, index) => ({
+					id: book.externalId || `temp-id-${index}`,
+					isbn: book.isbn,
+					title: book.title || 'Untitled',
+					author: book.author || 'Unknown',
+					coverId: book.thumbnail,
+					publishYear: book.year,
+					language: book.language,
+					subjects: book.genres ? [book.genres] : [],
+				}));
+				console.log('Mapped books:', mappedBooks);
+				setPopularBooks(mappedBooks);
 			} catch (error) {
 				console.error('Error loading books:', error);
 			} finally {
@@ -43,7 +58,7 @@ export default function Home() {
 		};
 
 		loadBooks();
-	}, []);
+	}, [authFetch]);
 
 	useEffect(() => {
 		const token = localStorage.getItem('token');
@@ -55,27 +70,60 @@ export default function Home() {
 		}
 	}, []);
 
+	// Create a stable array of skeleton items
+	const skeletonItems = useMemo(
+		() => Array.from({ length: 10 }, (_, index) => index),
+		[]
+	);
+
 	return (
 		<PageContainer>
 			<HeroSection />
 			<div className='space-y-8 pb-24 pt-16'>
 				<div className='pt-6 space-y-4'>
 					<h1 className='text-3xl font-bold text-bladLightTextColor'>
-						Welcome {userName}
+						{
+							[
+								`Hej ${userName}!`,
+								`Välkommen ${userName}!`,
+								`God dag ${userName}!`,
+								`Tjena ${userName}!`,
+								`Hallå ${userName}!`,
+							][Math.floor(Math.random() * 5)]
+						}
 					</h1>
-					<p className='text-gray-400'>Discover your next favorite book</p>
+					<p className='text-gray-1000'>
+						{
+							[
+								'Dags att hitta din nästa favoritbok!',
+								'Vad ska du läsa idag?',
+								'Nya bokäventyr väntar!',
+								'Redo för en ny läsupplevelse?',
+								'Låt oss utforska bokvärlden!',
+							][Math.floor(Math.random() * 5)]
+						}
+					</p>
 				</div>
 
 				<ScrollableContainer
-					title='Popular Now'
-					viewAllLink='/books/popular'
+					title='Trendande böcker'
+					viewAllLink={{
+						pathname: '/books/search',
+						search: `?query=${query}`,
+						state: {
+							apiUrl: `${API_URL}/googlebooks/search/General?SearchTerm=${query}&pageSize=25`,
+							searchQuery: query
+						}
+					}}
 					itemWidth={192}
 				>
 					{isLoading
-						? Array.from({ length: 10 }).map((_, index) => (
-								<CardSkeleton key={index} />
+						? skeletonItems.map((index) => (
+								<CardSkeleton key={`skeleton-${index}`} />
 						  ))
-						: popularBooks.map((book) => <BookCard key={book.id} {...book} />)}
+						: popularBooks.map((book, index) => (
+								<BookCard key={book.isbn || `fallback-${index}`} {...book} />
+						  ))}
 				</ScrollableContainer>
 			</div>
 		</PageContainer>

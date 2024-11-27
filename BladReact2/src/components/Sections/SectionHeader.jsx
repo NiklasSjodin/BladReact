@@ -37,7 +37,7 @@ export const SectionHeader = ({
                                  transition-colors duration-200
                                  flex items-center gap-2'
                     >
-                        View All
+                        Visa alla
                         <ChevronRight className="h-4 w-4" />
                     </Link>
                 )}

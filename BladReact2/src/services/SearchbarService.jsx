@@ -1,6 +1,6 @@
-import { Production_API_URL, Local_API_URL } from './api';
+import { VITE_AZURE_API_URL, VITE_Local_API_URL } from './api';
 
-const API_URL = Production_API_URL;
+const API_URL = VITE_AZURE_API_URL;
 
 export const fetchBooksThroughSearchbar = async (query) => {
 	try {
