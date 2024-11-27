@@ -63,7 +63,7 @@ export default function SignUpPage() {
 
 	return (
 		<>
-			<div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-bladtheme'>
+			<div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-bladLightBackground'>
 				<div className='sm:mx-auto sm:w-full sm:max-w-sm'>
 					<Link
 						to='/'
@@ -71,7 +71,7 @@ export default function SignUpPage() {
 					>
 						blad.
 					</Link>
-					<h2 className='mt-10 text-left text-2xl font-bold leading-9 tracking-tight text-white'>
+					<h2 className='mt-10 text-left text-2xl font-bold leading-9 tracking-tight text-bladLightTextColor'>
 						Sign up
 					</h2>
 				</div>
@@ -81,7 +81,7 @@ export default function SignUpPage() {
 						<div>
 							<label
 								htmlFor='fullName'
-								className='block text-sm font-medium leading-6 text-white'
+								className='block text-sm font-medium leading-6 text-bladLightTextColor'
 							>
 								Full Name
 							</label>
@@ -100,7 +100,7 @@ export default function SignUpPage() {
 						<div>
 							<label
 								htmlFor='userName'
-								className='block text-sm font-medium leading-6 text-white'
+								className='block text-sm font-medium leading-6 text-bladLightTextColor'
 							>
 								Username
 							</label>
@@ -119,7 +119,7 @@ export default function SignUpPage() {
 						<div>
 							<label
 								htmlFor='email'
-								className='block text-sm font-medium leading-6 text-white'
+								className='block text-sm font-medium leading-6 text-bladLightTextColor'
 							>
 								Email address
 							</label>
@@ -139,7 +139,7 @@ export default function SignUpPage() {
 							<div className='flex items-center justify-between'>
 								<label
 									htmlFor='password'
-									className='block text-sm font-medium leading-6 text-white'
+									className='block text-sm font-medium leading-6 text-bladLightTextColor'
 								>
 									Password
 								</label>
@@ -156,7 +156,7 @@ export default function SignUpPage() {
 							</div>
 						</div>
 
-						<div className='flex items-center space-x-3 text-white font-bold text-xs'>
+						<div className='flex items-center space-x-3 text-bladLightTextColor font-bold text-xs'>
 							<input
 								type='checkbox'
 								id='termsCheckbox'

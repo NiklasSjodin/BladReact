@@ -12,7 +12,7 @@ const Footer = () => {
 							<li>
 								<Link
 									to='/about'
-									className='transition-colors hover:text-foreground/80 text-foreground/60'
+									className='transition-colors hover:text-foreground/80 text-foreground/60 text-white'
 								>
 									About
 								</Link>
@@ -20,7 +20,7 @@ const Footer = () => {
 							<li>
 								<Link
 									to='/welcome'
-									className='transition-colors hover:text-foreground/80 text-foreground/60'
+									className='transition-colors hover:text-foreground/80 text-foreground/60 text-white'
 								>
 									Help
 								</Link>
@@ -28,7 +28,7 @@ const Footer = () => {
 							<li>
 								<Link
 									to='/privacy'
-									className='transition-colors hover:text-foreground/80 text-foreground/60'
+									className='transition-colors hover:text-foreground/80 text-foreground/60 text-white'
 								>
 									Privacy
 								</Link>
@@ -36,7 +36,7 @@ const Footer = () => {
 							<li>
 								<Link
 									to='/terms'
-									className='transition-colors hover:text-foreground/80 text-foreground/60'
+									className='transition-colors hover:text-foreground/80 text-foreground/60 text-white'
 								>
 									Terms
 								</Link>
@@ -44,7 +44,7 @@ const Footer = () => {
 							<li>
 								<Link
 									to='/contact'
-									className='transition-colors hover:text-foreground/80 text-foreground/60'
+									className='transition-colors hover:text-foreground/80 text-foreground/60 text-white'
 								>
 									Contact
 								</Link>
@@ -57,7 +57,7 @@ const Footer = () => {
 								href='https://github.com/yourusername'
 								target='_blank'
 								rel='noopener noreferrer'
-								className='text-foreground/60 hover:text-foreground/80 transition-colors'
+								className='text-foreground/60 hover:text-foreground/80 transition-colors text-white'
 							>
 								<Github size={20} />
 							</a>
@@ -65,21 +65,21 @@ const Footer = () => {
 								href='https://linkedin.com/in/yourusername'
 								target='_blank'
 								rel='noopener noreferrer'
-								className='text-foreground/60 hover:text-foreground/80 transition-colors'
+								className='text-foreground/60 hover:text-foreground/80 transition-colors text-white'
 							>
 								<Linkedin size={20} />
 							</a>
 							<a
 								href='mailto:your@email.com'
-								className='text-foreground/60 hover:text-foreground/80 transition-colors'
+								className='text-foreground/60 hover:text-foreground/80 transition-colors text-white'
 							>
 								<Mail size={20} />
 							</a>
 						</div>
 					</div>
 
-					{/* Copyright */}
-					<div className='mt-6 flex justify-center md:justify-between items-center text-sm text-foreground/60'>
+					{/* Copyright */} 
+					<div className='mt-6 flex justify-center md:justify-between items-center text-sm text-foreground/60 text-white'>
 						<p>&copy; 2024 blad. Group. All rights reserved.</p>
 						{/* <p className="hidden md:block">Made with ♥️ in Sweden</p> */}
 					</div>
