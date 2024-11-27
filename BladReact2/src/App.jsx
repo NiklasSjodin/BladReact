@@ -22,6 +22,8 @@ import LandingPageHandler from './components/LandingPageHandler';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ForumView from './pages/LoggedIn/Clubs/ForumView';
 import ProfilePage from './pages/LoggedIn/Profile/Profile';
+import SearchResults from './pages/LoggedIn/Books/SearchResults';
+import ClubResults from './pages/LoggedIn/Clubs/ClubResults';
 
 const queryClient = new QueryClient();
 
@@ -135,6 +137,22 @@ const App = () => {
 							element={
 								<ProtectedRoute>
 									<ForumView />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='/books/search'
+							element={
+								<ProtectedRoute>
+									<SearchResults />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='/clubs/search'
+							element={
+								<ProtectedRoute>
+									<ClubResults />
 								</ProtectedRoute>
 							}
 						/>
