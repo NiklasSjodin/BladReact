@@ -83,67 +83,67 @@ const ProfilePage = () => {
     return <div>Laddar...</div>;
   }
 
-  return (
-    <div className="flex flex-col items-center p-4 md:p-8 bg-bladLightBackground dark:bg-bladDarkBackground">
-      {/* Profilsektion */}
-      <div className="w-full max-w-4xl bg-bladLightFields2 dark:bg-bladDarkFields shadow-md rounded-lg p-6">
-        <div className="flex flex-col md:flex-row items-center gap-6">
-          {/* Profilbild */}
-          <div className="w-32 h-32 rounded-full bg-gray-300 overflow-hidden">
-            <img
-              src={userProfile.imageUrl || "https://via.placeholder.com/150"} // Använd profilbilden från API eller en fallback
-              alt="Profile"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          {/* Namn och bio */}
-          <div className="text-center md:text-left text-bladLightTextColor dark:text-bladDarkTextColor">
-            <h1 className="text-2xl font-bold dark  text-bladLightTextColor dark:text-bladDarkTextColor">
-              {userProfile.name}
-            </h1>{" "}
-            {/* Använd användarnamn från API */}
-            <p className="text-bladLightTextColor dark:text-bladDarkTextColor mt-2 ">
-              {userProfile.bio}
-            </p>{" "}
-            {/* Använd användarbio från API */}
-          </div>
-        </div>
-      </div>
+	return (
+		<div className='flex flex-col items-center p-4 md:p-8 bg-bladLightBackground dark:bg-bladDarkBackground'>
+			{/* Profilsektion */}
+			<div className='w-full max-w-4xl bg-bladLightFields2 dark:bg-bladDarkFields shadow-md rounded-lg p-6'>
+				<div className='flex flex-col md:flex-row items-center gap-6'>
+					{/* Profilbild */}
+					<div className='w-32 h-32 rounded-full bg-gray-300 overflow-hidden'>
+						<img
+							src={userProfile.imageUrl || 'https://via.placeholder.com/150'} // Använd profilbilden från API eller en fallback
+							alt='Profile'
+							className='w-full h-full object-cover'
+						/>
+					</div>
+					{/* Namn och bio */}
+					<div className='text-center md:text-left text-bladLightTextColor dark:text-bladDarkTextColor'>
+						<h1 className='text-2xl font-bold dark  text-bladLightTextColor dark:text-bladDarkTextColor'>
+							{userProfile.name}
+						</h1>{' '}
+						{/* Använd användarnamn från API */}
+						<p className='text-bladLightTextColor dark:text-bladDarkTextColor mt-2 '>
+							{userProfile.bio}
+						</p>{' '}
+						{/* Använd användarbio från API */}
+					</div>
+				</div>
+			</div>
 
-      {/* Boklistor */}
-      <div className="w-full max-w-4xl mt-6 bg-white dark:bg-bladDarkFields shadow-md rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-4">Mina Boklistor</h2>
-        <ul className="space-y-3">
-          <li className="bg-bladLightFields dark:bg-bladDarkFields2 text-bladLightTextColor dark:text-bladDarkTextColor p-3 rounded-md">
-            Vill läsa
-          </li>
-          <li className="bg-bladLightFields dark:bg-bladDarkFields2 text-bladLightTextColor dark:text-bladDarkTextColor p-3 rounded-md">
-            Läser just nu
-          </li>
-          <li className="bg-bladLightFields dark:bg-bladDarkFields2 text-bladLightTextColor dark:text-bladDarkTextColor p-3 rounded-md">
-            Har läst
-          </li>
-        </ul>
-      </div>
+			{/* Boklistor */}
+			<div className='w-full max-w-4xl mt-6 bg-white dark:bg-bladDarkFields shadow-md rounded-lg p-6'>
+				<h2 className='text-xl font-semibold mb-4'>Mina Boklistor</h2>
+				<ul className='space-y-3'>
+					<li className='bg-bladLightFields dark:bg-bladDarkFields2 text-bladLightTextColor dark:text-bladDarkTextColor p-3 rounded-md'>
+						Vill läsa
+					</li>
+					<li className='bg-bladLightFields dark:bg-bladDarkFields2 text-bladLightTextColor dark:text-bladDarkTextColor p-3 rounded-md'>
+						Läser just nu
+					</li>
+					<li className='bg-bladLightFields dark:bg-bladDarkFields2 text-bladLightTextColor dark:text-bladDarkTextColor p-3 rounded-md'>
+						Har läst
+					</li>
+				</ul>
+			</div>
 
-      {/* Vänner/Följare/Följer */}
-      <div className="w-full max-w-4xl mt-6 bg-bladLightFields2 dark:bg-bladDarkFields shadow-md rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-4">Följare</h2>
-        <div className="flex gap-8">
-          <div className="text-center">
-            <h3 className="text-2xl font-bold">{userProfile.followersCount}</h3>
-            <p className="text-bladLightTextColor dark:text-bladDarkTextColor">
-              Följer
-            </p>
-          </div>
-          <div className="text-center">
-            <h3 className="text-2xl font-bold">{userProfile.followersCount}</h3>
-            <p className="text-bladLightTextColor dark:text-bladDarkTextColor">
-              Följare
-            </p>
-          </div>
-        </div>
-      </div>
+			{/* Vänner/Följare/Följer */}
+			<div className='w-full max-w-4xl mt-6 bg-bladLightFields2 dark:bg-bladDarkFields shadow-md rounded-lg p-6'>
+				<h2 className='text-xl font-semibold mb-4'>Följare</h2>
+				<div className='flex gap-8'>
+					<div className='text-center'>
+						<h3 className='text-2xl font-bold'>{userProfile.followersCount}</h3>
+						<p className='text-bladLightTextColor dark:text-bladDarkTextColor'>
+							Följer
+						</p>
+					</div>
+					<div className='text-center'>
+						<h3 className='text-2xl font-bold'>{userProfile.followersCount}</h3>
+						<p className='text-bladLightTextColor dark:text-bladDarkTextColor'>
+							Följare
+						</p>
+					</div>
+				</div>
+			</div>
 
       {/* Recensioner */}
       <div className="w-full max-w-4xl mt-6 bg-bladLightFields2 dark:bg-bladDarkFields shadow-md rounded-lg p-6">

@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { PageContainer } from '../../../components/layout/PageContainer';
+import React, { useState, useEffect } from 'react';
+import { PageContainer } from '@/components/layout/PageContainer';
 import ScrollableContainer from '@/components/Sections/ScrollableContainer';
 import ClubCard from '@/components/ClubCard';
-import { CardSkeleton } from '../../../components/CardSkeleton';
-import HeroSection from '../../../components/Sections/HeroSection';
+import { CardSkeleton } from '@/components/CardSkeleton';
+import ClubHeroSection from '@/components/Sections/ClubHeroSection';
 import { useNavigate } from 'react-router-dom';
-import { debounce } from 'lodash';
 import { Searchbar } from '@/components/Searchbar';
+import { useAuthFetch } from '@/services/useAuthFetch';
+import { VITE_AZURE_API_URL } from '@/services/api';
+import BookClubCard from '@/components/Cards/BookClubCard';
 
 export default function Clubs() {
 	const [popularClubs, setPopularClubs] = useState([]);
@@ -16,79 +18,68 @@ export default function Clubs() {
 		currentPage: 1,
 		itemsPerPage: 10,
 		hasNextPage: false,
-		hasPreviousPage: false
+		hasPreviousPage: false,
 	});
-	const [isLoading, setIsLoading] = useState(true);
-	const navigate = useNavigate();
 	const [searchResults, setSearchResults] = useState([]);
-	const [searchTerm, setSearchTerm] = useState('');
+	const [userClubs, setUserClubs] = useState([]);
+	const [friendsClubs, setFriendsClubs] = useState([]);
+	const navigate = useNavigate();
 
-	const API_URL = 'https://blad-api.azurewebsites.net/api/';
+	const { authFetch, isLoading } = useAuthFetch();
+	const API_URL = VITE_AZURE_API_URL;
 
-	const debouncedSearch = useCallback(
-		debounce(async (term) => {
-			if (!term) {
-				setSearchResults([]);
-				return;
-			}
-			try {
-				console.log('Searching for:', term);
-				const response = await fetch(
-					`${API_URL}bookclubs/search?bookClubQuery=${term}`
-				);
-				
-				// Check if response is ok and is JSON
-				if (!response.ok) {
-					console.log('Search response status:', response.status);
-					setSearchResults([]);
-					return;
-				}
-
-				// Check content type
-				const contentType = response.headers.get("content-type");
-				if (!contentType || !contentType.includes("application/json")) {
-					console.log('Invalid content type:', contentType);
-					setSearchResults([]);
-					return;
-				}
-
-				const result = await response.json();
-				console.log('Results:', result);
-				setSearchResults(Array.isArray(result) ? result : []);
-			} catch (error) {
-				console.error('Error searching clubs:', error);
-				setSearchResults([]);
-			}
-		}, 300),
-		[]
-	);
+	const handleSearch = async (term) => {
+		if (!term) {
+			setSearchResults([]);
+			return [];
+		}
+		try {
+			const result = await authFetch(
+				`${API_URL}/bookclubs/search?bookClubQuery=${term}`
+			);
+			const formattedResults = Array.isArray(result) ? result : [];
+			setSearchResults(formattedResults);
+			return formattedResults;
+		} catch (error) {
+			console.error('Error searching clubs:', error);
+			setSearchResults([]);
+			return [];
+		}
+	};
 
 	useEffect(() => {
-		const fetchPopularClubs = async () => {
-			setIsLoading(true);
+		const fetchAllClubs = async () => {
 			try {
-				const response = await fetch(
-					`${API_URL}bookclubs/popular?PageSize=10&PageIndex=1`
+				// Fetch popular clubs
+				const popularResult = await authFetch(
+					`${API_URL}/bookclubs/popular?PageSize=10&PageIndex=1`
 				);
-				const result = await response.json();
-				setPopularClubs(result.data);
+				setPopularClubs(popularResult.data || []);
 				setPagination({
-					totalCount: result.totalCount,
-					totalPages: result.totalPages,
-					currentPage: result.currentPage,
-					itemsPerPage: result.itemsPerPage,
-					hasNextPage: result.hasNextPage,
-					hasPreviousPage: result.hasPreviousPage
+					totalCount: popularResult.totalCount || 0,
+					totalPages: popularResult.totalPages || 0,
+					currentPage: popularResult.currentPage || 1,
+					itemsPerPage: popularResult.itemsPerPage || 10,
+					hasNextPage: popularResult.hasNextPage || false,
+					hasPreviousPage: popularResult.hasPreviousPage || false,
 				});
+
+				// Fetch user's clubs
+				const userClubsResult = await authFetch(`${API_URL}/bookclubs/user`);
+				setUserClubs(userClubsResult.data || []);
+
+				// Fetch friends' clubs
+				const friendsClubsResult = await authFetch(
+					`${API_URL}/bookclubs/friends`
+				);
+				setFriendsClubs(friendsClubsResult.data || []);
 			} catch (error) {
 				console.error('Error fetching clubs:', error);
-			} finally {
-				setIsLoading(false);
 			}
 		};
 
-		fetchPopularClubs();
-	}, []);
+		fetchAllClubs();
+	}, [authFetch]);
 
 	const handleClubClick = (clubId) => {
 		navigate(`/clubs/${clubId}`);
@@ -96,35 +87,80 @@ export default function Clubs() {
 
 	const handleSelectClub = (club) => {
 		handleClubClick(club.id);
-	}
+	};
 
 	return (
 		<PageContainer>
-			<HeroSection />
-			<div className='space-y-8 pb-24'>
-				<div className='pt-6 space-y-4'>
-					<h1 className='text-3xl font-bold text-white'>Book Clubs</h1>
-					<Searchbar 
-						onSearch={debouncedSearch}
-						searchResults={searchResults}
-						onSelectClub={handleSelectClub}
-					/>
-				</div>
+			<ClubHeroSection />
+			<div className='space-y-12 py-8'>
+				<ScrollableContainer
+					title='Populära bokklubbar'
+					viewAllLink={{
+						pathname: '/clubs/all',
+						search: '?query=popular',
+						state: { 
+							apiUrl: `${API_URL}/bookclubs/popular?PageSize=20&PageIndex=1`,
+							searchQuery: 'popular',
+							pageSize: 20
+						}
+					}}
+					itemWidth={300}
+				>
+					<div className='flex gap-6'>
+						{isLoading ? (
+							Array.from({ length: 4 }).map((_, index) => (
+								<div key={index} className='w-[300px] flex-shrink-0'>
+									<CardSkeleton />
+								</div>
+							))
+						) : (
+							popularClubs.map((club) => (
+								<div 
+									key={club.id} 
+									className='w-[300px] flex-shrink-0'
+									onClick={() => handleClubClick(club.id)}
+								>
+									<BookClubCard {...club} />
+								</div>
+							))
+						)}
+					</div>
+				</ScrollableContainer>
 
 				<ScrollableContainer
-					title='Popular Clubs'
-					viewAllLink='/clubs/popular'
+					title='Your Clubs'
+					viewAllLink='/clubs/my-clubs'
 					itemWidth={192}
 				>
 					{isLoading
 						? Array.from({ length: 8 }).map((_, index) => (
-								<CardSkeleton key={index} />
+								<CardSkeleton key={`user-${index}`} />
 						  ))
-						: popularClubs.map((club) => (
-								<div 
-									onClick={() => handleClubClick(club.id)} 
+						: userClubs.map((club) => (
+								<div
+									onClick={() => handleClubClick(club.id)}
 									key={club.id}
-									className="py-4 px-2"
+									className='py-4 px-2'
+								>
+									<ClubCard {...club} />
+								</div>
+						  ))}
+				</ScrollableContainer>
+
+				<ScrollableContainer
+					title='Friends'
+					viewAllLink='/clubs/friends'
+					itemWidth={192}
+				>
+					{isLoading
+						? Array.from({ length: 8 }).map((_, index) => (
+								<CardSkeleton key={`friends-${index}`} />
+						  ))
+						: friendsClubs.map((club) => (
+								<div
+									onClick={() => handleClubClick(club.id)}
+									key={club.id}
+									className='py-4 px-2'
 								>
 									<ClubCard {...club} />
 								</div>

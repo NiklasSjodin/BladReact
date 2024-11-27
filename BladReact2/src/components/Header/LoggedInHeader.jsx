@@ -1,139 +1,138 @@
 import { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
-import { Link } from 'react-router-dom';  // Use Link for navigation
+import { Link } from 'react-router-dom';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
 import logo from '../../images/books.png';
-import { searchBooks } from '../../services/BooksService';
 import { jwtDecode } from 'jwt-decode';
-import { Switch } from "../ui/switch";
-
-const SearchResultsItem = ({ book }) => (
-  <div className="flex items-center space-x-4 p-2 border-b">
-    {book.coverId && (
-      <img
-        src={`https://covers.openlibrary.org/b/id/${book.coverId}-M.jpg`}
-        alt={book.title}
-        className="h-20 w-14 object-cover rounded"
-      />
-    )}
-    <div>
-      <h3 className="font-medium">{book.title}</h3>
-      <p className="text-gray-500">{book.author}</p>
-    </div>
-  </div>
-);
+import { Switch } from '../ui/switch';
+import { Searchbar } from '../Searchbar';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoggedInHeader() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const [userName, setUserName] = useState('');
-  const [isOpen, setIsOpen] = useState(false); // Dropdown state
-  const [isSearchOpen, setIsSearchOpen] = useState(false); // Search dropdown state
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Check localStorage first, then system preference
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      return savedTheme === 'dark';
-    }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
+	const [userName, setUserName] = useState('');
+	const [isOpen, setIsOpen] = useState(false);
+	const [isDarkMode, setIsDarkMode] = useState(() => {
+		const savedTheme = localStorage.getItem('theme');
+		if (savedTheme) {
+			return savedTheme === 'dark';
+		}
+		return window.matchMedia('(prefers-color-scheme: dark)').matches;
+	});
+	const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem('token'); // Retrieve token from local storage
-    if (token) {
-      const decoded = jwtDecode(token); // Decode token
-      setUserName(decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']);
-    }
-  }, []);
+	useEffect(() => {
+		const token = localStorage.getItem('token');
+		if (token) {
+			const decoded = jwtDecode(token);
+			setUserName(
+				decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']
+			);
+		}
+	}, []);
 
-  // Effect to handle theme changes
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
+	useEffect(() => {
+		if (isDarkMode) {
+			document.documentElement.classList.add('dark');
+		} else {
+			document.documentElement.classList.remove('dark');
+		}
+		localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+	}, [isDarkMode]);
 
-  // Add click outside handler
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (isOpen && !event.target.closest('.dropdown-container')) {
-        setIsOpen(false);
-      }
-    };
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (isOpen && !event.target.closest('.dropdown-container')) {
+				setIsOpen(false);
+			}
+		};
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isOpen]);
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => document.removeEventListener('mousedown', handleClickOutside);
+	}, [isOpen]);
 
-  const handleSearch = async (event) => {
-    if (event.key === 'Enter') {
-      try {
-        const results = await searchBooks(searchQuery, { limit: 5 });
-        setSearchResults(results);
-        setIsSearchOpen(true); // Open the search results
-      } catch (error) {
-        console.error('Search error:', error);
-        // Handle error appropriately
-      }
-    }
-  };
+	const handleSearch = async (term, type) => {
+		try {
+			let endpoint;
+			switch (type) {
+				case 'clubs':
+					endpoint = `/bookclubs/search?bookClubQuery=${term}`;
+					break;
+				case 'books':
+					endpoint = `/books/search?query=${term}`;
+					break;
+				case 'booklists':
+					endpoint = `/booklists/search?query=${term}`;
+					break;
+				case 'all':
+					const [clubs, books, lists] = await Promise.all([
+						fetch(`${API_URL}/bookclubs/search?bookClubQuery=${term}`),
+						fetch(`${API_URL}/books/search?query=${term}`),
+						fetch(`${API_URL}/booklists/search?query=${term}`),
+					]);
+					// Combine and sort results
+					return {
+						clubs: await clubs.json(),
+						books: await books.json(),
+						lists: await lists.json(),
+					};
+				default:
+					return [];
+			}
 
-  const handleCloseSearch = () => {
-    setIsSearchOpen(false); // Close the search
-    setSearchResults([]); // Clear search results
-    setSearchQuery(''); // Optionally clear search query
-  };
+			const response = await fetch(`${API_URL}${endpoint}`);
+			if (!response.ok) return [];
+			const result = await response.json();
+			return Array.isArray(result) ? result : [];
+		} catch (error) {
+			console.error('Error searching:', error);
+			return [];
+		}
+	};
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    // Perform logout functionality here
-  };
+	const handleSelectClub = (club) => {
+		navigate(`/clubs/${club.id}`);
+	};
 
-  return (
+	const handleLogout = () => {
+		localStorage.removeItem('token');
+		localStorage.removeItem('hideHero');
+		// Perform logout functionality here
+	};
+	return (
 		<header className='absolute w-full pt-1 pb-1 bg-bladtheme'>
 			<div className='px-4 h-12 flex items-center'>
-				<Link to='/'>
-					<img
-						src={logo}
-						alt='Description of image'
-						className='h-8 w-auto object-contain pr-1'
-					/>
-				</Link>
+				
 				<Link to='/' className='flex-1 font-general text-xl text-white'>
 					blad.
 				</Link>
 				<div className='flex items-center space-x-4 ml-auto px-2'>
 					<Link
 						to='/clubs'
-						className='transition-transform hover:border-b-2 hover:border-white'
+						className='text-white/70 transition-colors duration-200 hover:text-white'
 					>
-						Clubs
+						Bokklubbar
 					</Link>
 					<Link
 						to='/explore'
-						className='transition-transform hover:border-b-2 hover:border-white'
+						className='text-white/70 transition-colors duration-200 hover:text-white'
 					>
-						Explore
+						Utforska
 					</Link>
 					<Link
 						to='/library'
-						className='transition-transform hover:border-b-2 hover:border-white'
+						className='text-white/70 transition-colors duration-200 hover:text-white'
 					>
 						Bibliotek
 					</Link>
 				</div>
 
 				<div className='flex items-center space-x-4 ml-auto pl-2'>
-					<input
-						type='text'
-						placeholder='Sökbar för allt?'
-						className='border rounded-md px-2 py-1 w-64'
-						value={searchQuery}
-						onChange={(e) => setSearchQuery(e.target.value)}
-						onKeyDown={handleSearch}
+					<Searchbar
+						className='w-full max-w-xl bg-white rounded-full'
+						onSearch={handleSearch}
+						onSelectItem={handleSelectClub}
+						searchType='all'
+						placeholder='Search everything...'
 					/>
 					<div className='relative dropdown-container'>
 						<div
@@ -144,7 +143,7 @@ export default function LoggedInHeader() {
 								<AvatarImage src='/path/to/avatar.jpg' alt='User Avatar' />
 								<AvatarFallback>U</AvatarFallback>
 							</Avatar>
-							<span className='transition-transform hover:border-b-2 hover:border-white'>
+							<span className='text-white/70 transition-colors duration-200 hover:text-white'>
 								{userName}
 							</span>
 						</div>
@@ -204,20 +203,6 @@ export default function LoggedInHeader() {
 					</div>
 				</div>
 			</div>
-
-			{isSearchOpen && searchResults.length > 0 && (
-				<div className='px-4 mt-2'>
-					<h2 className='text-lg font-medium mb-2'>Search Results</h2>
-					<button onClick={handleCloseSearch} className='text-red-500 mb-2'>
-						Close Search
-					</button>
-					<div className='border rounded-md overflow-hidden'>
-						{searchResults.map((book) => (
-							<SearchResultsItem key={book.id} book={book} />
-						))}
-					</div>
-				</div>
-			)}
 		</header>
 	);
 }

@@ -77,7 +77,7 @@ module.exports = {
 				heading: ['Erode', 'sans-serif'],
 			},
 			backgroundImage: {
-				'hero-pattern': 'url(/src/images/pexels-jessikaarraes-19561461.jpg)',
+				'hero-pattern': 'url(/src/images/mainpageimages/BladBG2.png)',
 			},
 		},
 	},

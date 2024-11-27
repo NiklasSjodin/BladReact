@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import MainPage from './pages/MainPage/MainPage';
 import LogInPage from './pages/LogInPage';
@@ -22,6 +22,8 @@ import LandingPageHandler from './components/LandingPageHandler';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ForumView from './pages/LoggedIn/Clubs/ForumView';
 import ProfilePage from './pages/LoggedIn/Profile/Profile';
+import SearchResults from './pages/LoggedIn/Books/SearchResults';
+import ClubResults from './pages/LoggedIn/Clubs/ClubResults';
 
 const queryClient = new QueryClient();
 
@@ -38,7 +40,7 @@ const App = () => {
 						<Route path='privacy' element={<PrivacyPolicy />} />
 						<Route path='termsofservice' element={<TermsOfService />} />
 						<Route path='contact' element={<ContactUs />} />
-			
+
 						{/* Skyddad rutt för Home-sidan */}
 						<Route
 							path='account'
@@ -109,7 +111,7 @@ const App = () => {
 							path='book/:isbn'
 							element={
 								<ProtectedRoute>
-									<BookView/>
+									<BookView />
 								</ProtectedRoute>
 							}
 						/>
@@ -130,13 +132,27 @@ const App = () => {
 								</ProtectedRoute>
 							}
 						/>
-
-						<Route path='/books/:bookId' element={<BookView />} />
 						<Route
 							path='/clubs/:bookClubId/forums/:forumId'
 							element={
 								<ProtectedRoute>
 									<ForumView />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='/books/search'
+							element={
+								<ProtectedRoute>
+									<SearchResults />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='/clubs/search'
+							element={
+								<ProtectedRoute>
+									<ClubResults />
 								</ProtectedRoute>
 							}
 						/>

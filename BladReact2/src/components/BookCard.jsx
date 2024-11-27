@@ -21,6 +21,7 @@ import { CardSkeleton } from './CardSkeleton';
  */
 const BookCard = ({
 	id,
+	isbn,
 	title,
 	author,
 	coverId,
@@ -29,21 +30,15 @@ const BookCard = ({
 	onClick,
 }) => {
 	const navigate = useNavigate();
-	const { data: coverUrl, isLoading, isError } = useBookCover(coverId);
+	const { data: coverUrl, isLoading, isError } = useBookCover(
+		!coverId?.startsWith('http') ? coverId : null
+	);
 
 	// Size variants
 	const sizeClasses = {
 		sm: 'w-32',
 		md: 'w-48',
 		lg: 'w-64',
-	};
-	// Navigate to book page
-	const handleClick = () => {
-		if (onClick) {
-			onClick();
-		} else if (interactive && id) {
-			navigate(`/works/${id}`);
-		}
 	};
 
 	if (isLoading) {
@@ -53,13 +48,25 @@ const BookCard = ({
 	const baseClasses = `flex-shrink-0 ${sizeClasses[size]} m-2 overflow-hidden`;
 	const interactiveClasses = interactive ? 'cursor-pointer group' : '';
 
+	const imageUrl = coverId?.startsWith('http') ? coverId : coverUrl;
+
+	const handleClick = () => {
+		if (onClick) {
+			onClick();
+		} else if (interactive) {
+			if (isbn) {
+				navigate(`/book/${isbn}`);
+			} else if (id) {
+				navigate(`/books/${id}`);
+			} else {
+				console.warn('No ISBN or ID available for navigation');
+			}
+		}
+	};
+
 	return (
-		<a
-			href={`${id}`}
-			onClick={(e) => {
-				e.preventDefault();
-				navigate(`${id}`);
-			}}
+		<div
+			onClick={handleClick}
 			className={`${baseClasses} ${interactiveClasses}`}
 		>
 			<div
@@ -68,7 +75,7 @@ const BookCard = ({
 				}`}
 			>
 				<img
-					src={coverUrl || '/api/placeholder/150/200'}
+					src={imageUrl || '/api/placeholder/150/200'}
 					alt={title}
 					className='w-full h-full object-cover rounded-lg shadow-lg'
 					onError={(e) => {
@@ -93,7 +100,7 @@ const BookCard = ({
 					<p className='text-xs text-gray-600 truncate'>{author}</p>
 				</div>
 			)}
-		</a>
+		</div>
 	);
 };
 
