@@ -53,10 +53,14 @@ const BookCard = ({
 	const handleClick = () => {
 		if (onClick) {
 			onClick();
-		} else if (interactive && isbn) {
-			navigate(`/book/${isbn}`);
-		} else {
-			console.warn('No ISBN available for navigation');
+		} else if (interactive) {
+			if (isbn) {
+				navigate(`/book/${isbn}`);
+			} else if (id) {
+				navigate(`/books/${id}`);
+			} else {
+				console.warn('No ISBN or ID available for navigation');
+			}
 		}
 	};
 
