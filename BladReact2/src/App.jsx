@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import MainPage from './pages/MainPage/MainPage';
 import LogInPage from './pages/LogInPage';
@@ -40,7 +40,7 @@ const App = () => {
 						<Route path='privacy' element={<PrivacyPolicy />} />
 						<Route path='termsofservice' element={<TermsOfService />} />
 						<Route path='contact' element={<ContactUs />} />
-			
+
 						{/* Skyddad rutt för Home-sidan */}
 						<Route
 							path='account'
@@ -111,7 +111,7 @@ const App = () => {
 							path='book/:isbn'
 							element={
 								<ProtectedRoute>
-									<BookView/>
+									<BookView />
 								</ProtectedRoute>
 							}
 						/>

@@ -1,3 +1,4 @@
+
 # Blad. - Your Digital Book Community
 
 ## Overview
@@ -82,12 +83,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Contact
 - Email: your.email@example.com
 - Website: [blad-react.vercel.app](https://blad-react.vercel.app)
+- Api endpoints : [Live-api Azure](https://blad-api.azurewebsites.net/swagger/index.html)
 
 ## Acknowledgments
 - All the contributors who have helped shape Blad.
 - The amazing open-source community
 - Our dedicated users and book enthusiasts
-
----
-
-Made with ♥️ in Sweden

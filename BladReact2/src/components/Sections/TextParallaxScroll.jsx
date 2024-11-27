@@ -1,18 +1,19 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { FiArrowUpRight } from "react-icons/fi";
+import Image10 from '../../images/mainpageimages/Image10.jpg';
 
 export const TextParallaxContentExample = () => {
   return (
     <div className="bg-white">
       <TextParallaxContent
-        imgUrl="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        subheading="Collaborate"
-        heading="Built for all of us."
+        imgUrl={Image10}
+        subheading="Bokklubbar"
+        heading="Där berättelser möts och vänskaper växer"
       >
         <ExampleContent />
       </TextParallaxContent>
-      <TextParallaxContent
+      {/* <TextParallaxContent
         imgUrl="https://images.unsplash.com/photo-1530893609608-32a9af3aa95c?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         subheading="Quality"
         heading="Never compromise."
@@ -25,7 +26,7 @@ export const TextParallaxContentExample = () => {
         heading="Dress for the best."
       >
         <ExampleContent />
-      </TextParallaxContent>
+      </TextParallaxContent> */}
     </div>
   );
 };
@@ -116,17 +117,18 @@ const ExampleContent = () => (
     </h2>
     <div className="col-span-1 md:col-span-8">
       <p className="mb-4 text-xl text-neutral-600 md:text-2xl">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi,
-        blanditiis soluta eius quam modi aliquam quaerat odit deleniti minima
-        maiores voluptate est ut saepe accusantium maxime doloremque nulla
-        consectetur possimus.
+      Drömmer du om att hitta nya bokfavoriter och dela dina läsupplevelser med andra? Med Blad. får du allt detta och mer!
+
+Upptäck böcker som matchar dina intressen och bli inspirerad av tips från andra bokälskare.
+Skapa eller gå med i bokklubbar för att diskutera, dela tankar och knyta nya vänskapsband.
+Organisera din läsning – spåra böcker du vill läsa, läser just nu och har avslutat.
       </p>
       <p className="mb-8 text-xl text-neutral-600 md:text-2xl">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium
-        reiciendis blanditiis aliquam aut fugit sint.
+      Med Blad. är varje bok mer än en berättelse – det är en möjlighet till gemenskap och fördjupning.
+       Gå med och låt din passion för litteratur ta dig längre än någonsin! 
       </p>
       <button className="w-full rounded bg-neutral-900 px-9 py-4 text-xl text-white transition-colors hover:bg-neutral-700 md:w-fit">
-        Learn more <FiArrowUpRight className="inline" />
+        Registrera dig nu<FiArrowUpRight className="inline" />
       </button>
     </div>
   </div>

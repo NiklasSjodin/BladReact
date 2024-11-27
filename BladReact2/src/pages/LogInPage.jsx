@@ -4,17 +4,15 @@ import GoogleLogo from '../images/googlelogo.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { VITE_AZURE_API_URL } from '../services/api';
 
-console.log('API URL:', VITE_AZURE_API_URL);
-
 function LogInPage() {
-	const navigate = useNavigate();
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [showPassword, setShowPassword] = useState(false);
-	const [emailLocked, setEmailLocked] = useState(false);
-	const [error, setError] = useState('');
-	const [isLoading, setIsLoading] = useState(false);
-	const API_URL = VITE_AZURE_API_URL;
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [emailLocked, setEmailLocked] = useState(false);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const API_URL = VITE_AZURE_API_URL;
 	const handleNext = async () => {
 		if (!email) {
 			setError('Please enter an email address');

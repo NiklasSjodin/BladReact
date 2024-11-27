@@ -1,15 +1,15 @@
 // src/components/Sections/TestMarquee.jsx
 import React from 'react';
-import image1 from '../../images/marqueeImages/acotar.jpg';
-import image2 from '../../images/marqueeImages/alskade-betty.jpg';
-import image3 from '../../images/marqueeImages/benadaren.jpg';
-import image4 from '../../images/marqueeImages/den-som-foljer-en-stjarna-vander-inte-om.jpg';
-import image5 from '../../images/marqueeImages/doda-kvinnor-forlater-inte.jpg';
-import image6 from '../../images/marqueeImages/dune.jpg';
-import image7 from '../../images/marqueeImages/en-lyckligare-tid.jpg';
-import image8 from '../../images/marqueeImages/fourth-wing.jpg';
-import image9 from '../../images/marqueeImages/grand-final.jpg';
-import image10 from '../../images/marqueeImages/hercule-poirots-stilla-natt.png';
+
+import Cover1 from '../../images/bookCoversMainPage/Cover1.jpg';
+import Cover2 from '../../images/bookCoversMainPage/Cover2.jpg';
+import Cover3 from '../../images/bookCoversMainPage/Cover3.jpg';
+import Cover5 from '../../images/bookCoversMainPage/Cover5.jpg';
+import Cover6 from '../../images/bookCoversMainPage/Cover6.jpg';
+import Cover7 from '../../images/bookCoversMainPage/Cover7.jpg';
+import Cover8 from '../../images/bookCoversMainPage/Cover8.jpg';
+import Cover9 from '../../images/bookCoversMainPage/Cover9.jpg';
+
 
 import MarqueeComponent from './Marquee';
 
@@ -22,16 +22,14 @@ const TestMarquee = ({
   imageWidth = "auto"
 }) => {
   const images = [
-    { src: image1, alt: 'bookcover for marquee 1' },
-    { src: image2, alt: 'bookcover for marquee 2' },
-    { src: image3, alt: 'bookcover for marquee 3' },
-    { src: image4, alt: 'bookcover for marquee 4' },
-    { src: image5, alt: 'bookcover for marquee 5' },
-    { src: image6, alt: 'bookcover for marquee 6' },
-    { src: image7, alt: 'bookcover for marquee 7' },
-    { src: image8, alt: 'bookcover for marquee 8' },
-    { src: image9, alt: 'bookcover for marquee 9' },
-    { src: image10, alt: 'bookcover for marquee 10' },
+    { src: Cover1, alt: 'Image 1' },
+    { src: Cover2, alt: 'Image 2' },
+    // { src: Cover3, alt: 'Image 3' },
+    // { src: Cover6, alt: 'Image 4' },
+    { src: Cover7, alt: 'Image 5' },
+    { src: Cover8, alt: 'Image 5' },
+    { src: Cover9, alt: 'Image 5' },
+
   ];
 
   return (

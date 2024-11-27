@@ -1,3 +1,12 @@
+import Image1 from '../../images/mainpageimages/Image1.jpg';
+import Image2 from '../../images/mainpageimages/Image2.jpg';
+import Image3 from '../../images/mainpageimages/Image3.jpg';
+import Image4 from '../../images/mainpageimages/Image4.jpg';
+import Image5 from '../../images/mainpageimages/Image5.jpg';
+import Image6 from '../../images/mainpageimages/Image6.jpg';
+import Image7 from '../../images/mainpageimages/Image7.jpg';
+import Image8 from '../../images/mainpageimages/Image8.jpg';
+
 const features = [
   {
     name: "Skapad av Blad",
@@ -48,23 +57,23 @@ export default function Information() {
         </div>
         <div className="grid grid-cols-2 grid-rows-2 gap-4 sm:gap-6 lg:gap-8">
           <img
-            alt="Walnut card tray with white powder coated steel divider and 3 punchout holes."
-            src="https://tailwindui.com/plus/img/ecommerce-images/product-feature-03-detail-01.jpg"
+            alt="image 1"
+            src= {Image1}
             className="rounded-lg bg-gray-100"
           />
           <img
-            alt="Top down view of walnut card tray with embedded magnets and card groove."
-            src="https://tailwindui.com/plus/img/ecommerce-images/product-feature-03-detail-02.jpg"
+            alt="image 2"
+            src= {Image8}
             className="rounded-lg bg-gray-100"
           />
           <img
-            alt="Side of walnut card tray with card groove and recessed card area."
-            src="https://tailwindui.com/plus/img/ecommerce-images/product-feature-03-detail-03.jpg"
+            alt="Image 7"
+            src= {Image6}
             className="rounded-lg bg-gray-100"
           />
           <img
-            alt="Walnut card tray filled with cards and card angled in dedicated groove."
-            src="https://tailwindui.com/plus/img/ecommerce-images/product-feature-03-detail-04.jpg"
+            alt="Image 4"
+            src={Image2}
             className="rounded-lg bg-gray-100"
           />
         </div>
