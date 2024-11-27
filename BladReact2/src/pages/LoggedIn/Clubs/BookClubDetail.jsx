@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { PageContainer } from '../../../components/layout/PageContainer';
 import { format } from 'date-fns';
-import placeholder from '../../../images/placeholder.gif';
+import placeholder from '../../../images/placeholder-2.jpg';
 import { useAuthFetch } from '../../../services/useAuthFetch';
 import { VITE_AZURE_API_URL } from '../../../services/api';
 
