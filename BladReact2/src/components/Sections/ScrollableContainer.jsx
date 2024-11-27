@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { SectionHeader } from './SectionHeader';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const ScrollableContainer = ({ children, itemWidth, title, viewAllLink }) => {
 	const scrollContainerRef = useRef(null);
