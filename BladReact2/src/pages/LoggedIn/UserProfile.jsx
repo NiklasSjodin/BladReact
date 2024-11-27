@@ -16,7 +16,7 @@ const UserProfile = () => {
   useEffect(() => {
     const token = localStorage.getItem("token"); // Fetch token from local storage
     if (token) {
-      const decoded = jwtDecode(token); // Extract username from token
+      const decoded = jwtDecode(token); // Extract name from token
       setUserName(
         decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]
       );
