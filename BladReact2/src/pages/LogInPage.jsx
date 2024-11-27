@@ -72,12 +72,12 @@ function LogInPage() {
   };
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-red-900">
+    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-bladLightBackground">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <Link to="/" className="flex items-center justify-center font-general text-8xl pb-2">
           blad.
         </Link>
-        <h2 className="mt-10 text-left text-2xl font-bold leading-9 tracking-tight text-white">
+        <h2 className="mt-10 text-left text-2xl font-bold leading-9 tracking-tight text-bladLightTextColor">
           Log in
         </h2>
       </div>
@@ -92,7 +92,7 @@ function LogInPage() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium leading-6 text-white"
+              className="block text-sm font-medium leading-6 text-bladLightTextColor"
             >
               Email address
             </label>
@@ -105,7 +105,7 @@ function LogInPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={emailLocked}
-                className="block w-full rounded-md border-0 py-1.5 pl-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 py-1.5 pl-2 text-bladLightTextColor shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -115,7 +115,7 @@ function LogInPage() {
               <div className="flex items-center justify-between">
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-white"
+                  className="block text-sm font-medium leading-6 text-bladLightTextColor"
                 >
                   Password
                 </label>
