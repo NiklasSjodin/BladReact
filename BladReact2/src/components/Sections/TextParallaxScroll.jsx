@@ -1,7 +1,8 @@
 import React, { useRef } from "react";
+import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { FiArrowUpRight } from "react-icons/fi";
-import Image10 from '../../images/mainpageimages/Image10.jpg';
+import Image10 from "../../images/mainpageimages/Image10.jpg";
 
 export const TextParallaxContentExample = () => {
   return (
@@ -112,24 +113,27 @@ const OverlayCopy = ({ subheading, heading }) => {
 
 const ExampleContent = () => (
   <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 pb-24 pt-12 md:grid-cols-12">
-    <h2 className="col-span-1 text-3xl font-bold md:col-span-4">
-      Additional content explaining the above card here
-    </h2>
+    <h2 className="col-span-1 text-3xl font-bold md:col-span-4"></h2>
     <div className="col-span-1 md:col-span-8">
       <p className="mb-4 text-xl text-neutral-600 md:text-2xl">
-      Drömmer du om att hitta nya bokfavoriter och dela dina läsupplevelser med andra? Med Blad. får du allt detta och mer!
-
-Upptäck böcker som matchar dina intressen och bli inspirerad av tips från andra bokälskare.
-Skapa eller gå med i bokklubbar för att diskutera, dela tankar och knyta nya vänskapsband.
-Organisera din läsning – spåra böcker du vill läsa, läser just nu och har avslutat.
+        Drömmer du om att hitta nya bokfavoriter och dela dina läsupplevelser
+        med andra? Med Blad. får du allt detta och mer! Upptäck böcker som
+        matchar dina intressen och bli inspirerad av tips från andra bokälskare.
+        Skapa eller gå med i bokklubbar för att diskutera, dela tankar och knyta
+        nya vänskapsband. Organisera din läsning – spåra böcker du vill läsa,
+        läser just nu och har avslutat.
       </p>
       <p className="mb-8 text-xl text-neutral-600 md:text-2xl">
-      Med Blad. är varje bok mer än en berättelse – det är en möjlighet till gemenskap och fördjupning.
-       Gå med och låt din passion för litteratur ta dig längre än någonsin! 
+        Med Blad. är varje bok mer än en berättelse – det är en möjlighet till
+        gemenskap och fördjupning. Gå med och låt din passion för litteratur ta
+        dig längre än någonsin!
       </p>
-      <button className="w-full rounded bg-neutral-900 px-9 py-4 text-xl text-white transition-colors hover:bg-neutral-700 md:w-fit">
-        Registrera dig nu<FiArrowUpRight className="inline" />
-      </button>
+      <Link to="login">
+        <button className="w-full rounded bg-red-700 px-9 py-4 text-xl text-white transition-colors hover:bg-red-600 md:w-fit">
+          Registrera dig nu
+          <FiArrowUpRight className="inline" />
+        </button>
+      </Link>
     </div>
   </div>
 );
