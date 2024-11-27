@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import AddToBookListModal from '../Modal/AddToListModal';
 import { jwtDecode } from 'jwt-decode';
-import { VITE_LOCAL_API_URL } from '../../services/api';
+import { VITE_AZURE_API_URL } from '../../services/api';
 import { useAuthFetch } from '../../services/useAuthFetch';
 
 const BookView = () => {
@@ -18,7 +18,7 @@ const BookView = () => {
 	const [bookLists, setBookLists] = useState([]);
 	const [bookReference, setBookReference] = useState(null);
 	const { authFetch } = useAuthFetch();
-	const API_URL = VITE_LOCAL_API_URL;
+	const API_URL = VITE_AZURE_API_URL;
 
 	useEffect(() => {
 		const token = localStorage.getItem('token');
