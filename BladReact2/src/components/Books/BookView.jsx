@@ -128,7 +128,7 @@ const BookView = () => {
 		return <p className='text-center text-gray-500'>Ingen bok hittades!</p>;
 
 	return (
-		<div className='max-w-4xl mx-auto p-6 bg-gray-50 rounded-md shadow-md'>
+		<div className='max-w-4xl mx-auto pt-32 p-6 bg-gray-50 rounded-md shadow-md'>
 			<div className='flex flex-col md:flex-row items-start md:items-center gap-6'>
 				{book.thumbnail && (
 					<img
