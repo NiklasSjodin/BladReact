@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { PageContainer } from '../../../components/layout/PageContainer';
+import { PageContainer } from '@/components/layout/PageContainer';
 import ScrollableContainer from '@/components/Sections/ScrollableContainer';
 import ClubCard from '@/components/ClubCard';
-import { CardSkeleton } from '../../../components/CardSkeleton';
-import HeroSection from '../../../components/Sections/HeroSection';
+import { CardSkeleton } from '@/components/CardSkeleton';
+import ClubHeroSection from '@/components/Sections/ClubHeroSection';
 import { useNavigate } from 'react-router-dom';
 import { Searchbar } from '@/components/Searchbar';
 import { useAuthFetch } from '@/services/useAuthFetch';
@@ -91,37 +91,40 @@ export default function Clubs() {
 
 	return (
 		<PageContainer>
-			<HeroSection />
-			<div className='space-y-8 pb-24'>
-				<div className='pt-6 space-y-4'>
-					<h1 className='text-3xl font-bold text-white'>Book Clubs</h1>
-					<Searchbar
-						onSearch={handleSearch}
-						searchResults={searchResults}
-						onSelectItem={handleSelectClub}
-						searchType='clubs'
-						placeholder='Search clubs...'
-					/>
-				</div>
-
+			<ClubHeroSection />
+			<div className='space-y-12 py-8'>
 				<ScrollableContainer
-					title='Popular Clubs'
-					viewAllLink='/clubs/popular'
-					itemWidth={192}
+					title='Populära bokklubbar'
+					viewAllLink={{
+						pathname: '/clubs/all',
+						search: '?query=popular',
+						state: { 
+							apiUrl: `${API_URL}/bookclubs/popular?PageSize=20&PageIndex=1`,
+							searchQuery: 'popular',
+							pageSize: 20
+						}
+					}}
+					itemWidth={300}
 				>
-					{isLoading
-						? Array.from({ length: 8 }).map((_, index) => (
-								<CardSkeleton key={index} />
-						  ))
-						: popularClubs.map((club) => (
-								<div
-									onClick={() => handleClubClick(club.id)}
-									key={club.id}
-									className='py-4 px-2'
-								>
-									<ClubCard {...club} />
+					<div className='flex gap-6'>
+						{isLoading ? (
+							Array.from({ length: 4 }).map((_, index) => (
+								<div key={index} className='w-[300px] flex-shrink-0'>
+									<CardSkeleton />
 								</div>
-						  ))}
+							))
+						) : (
+							popularClubs.map((club) => (
+								<div 
+									key={club.id} 
+									className='w-[300px] flex-shrink-0'
+									onClick={() => handleClubClick(club.id)}
+								>
+									<BookClubCard {...club} />
+								</div>
+							))
+						)}
+					</div>
 				</ScrollableContainer>
 
 				<ScrollableContainer
