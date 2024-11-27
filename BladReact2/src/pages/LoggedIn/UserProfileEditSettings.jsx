@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
-import { VITE_AZURE_API_URL } from '../../services/api';
+const API_URL = "https://blad-api.azurewebsites.net/";
 
 export default function UserProfileSettings() {
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -26,7 +26,6 @@ export default function UserProfileSettings() {
 	const [message, setMessage] = useState('');
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
-	const API_URL = VITE_AZURE_API_URL;
 
 	useEffect(() => {
 		const token = localStorage.getItem('token');
@@ -68,7 +67,7 @@ export default function UserProfileSettings() {
 		try {
 			const updatedUser = { name, bio, imageUrl, privacyLevel }; // Inkludera värden för att uppdatera
 			console.log('Data som skickas:', updatedUser); // Logga vad som skickas i updatedUser
-			await axios.put(`${API_URL}/userprofile/${userId}`, updatedUser, {
+			await axios.put(`${API_URL}api/userprofile/${userId}`, updatedUser, {
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
 			});
 			console.log('Användarprofil uppdaterad.');
@@ -92,7 +91,7 @@ export default function UserProfileSettings() {
 		setMessage('');
 		try {
 			const response = await axios.put(
-				`${API_URL}/accounts/password`,
+				`${API_URL}api/accounts/password`,
 				{ currentPassword, newPassword },
 				{
 					headers: {
@@ -118,7 +117,7 @@ export default function UserProfileSettings() {
 	const handleDelete = async () => {
 		if (!userId) return;
 		try {
-			await axios.delete(`${API_URL}/users/${userId}`, {
+			await axios.delete(`${API_URL}api/users/${userId}`, {
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${localStorage.getItem('token')}`,
