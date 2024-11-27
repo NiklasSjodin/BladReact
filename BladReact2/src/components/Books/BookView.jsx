@@ -16,6 +16,7 @@ const BookView = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [userId, setUserId] = useState(null);
 	const [bookLists, setBookLists] = useState([]);
+	const [bookReference, setBookReference] = useState(null);
 	const { authFetch } = useAuthFetch();
 	const API_URL = VITE_LOCAL_API_URL;
 
@@ -80,6 +81,15 @@ const BookView = () => {
 				}
 
 				setBook(bookData);
+				
+				// Add this: Fetch book reference
+				try {
+					const referenceResponse = await authFetch(`${API_URL}/book/reference/${isbn}`);
+					setBookReference(referenceResponse);
+				} catch (error) {
+					console.warn('Could not fetch book reference:', error);
+				}
+				
 				setLoading(false);
 			} catch (error) {
 				console.error('Error fetching book:', error);
@@ -141,14 +151,12 @@ const BookView = () => {
 						<strong>Genre:</strong>{' '}
 						<span className='text-gray-600'>{book.genres || 'Okänd'}</span>
 					</p>
-						<Button
-							className='mt-5'
-						// variant="default"
-							onClick={() => setIsModalOpen(true)}
-						>
-							Lägg till i lista
-						</Button>
-					)}
+					<Button
+						className='mt-5'
+						onClick={() => setIsModalOpen(true)}
+					>
+						Lägg till i lista
+					</Button>
 				</div>
 			</div>
 
@@ -163,10 +171,11 @@ const BookView = () => {
 			{isModalOpen && (
 				<AddToBookListModal
 					userId={userId}
-				bookId={bookReferenceId.id}
+					bookId={bookReference?.id}
 					isOpen={isModalOpen}
-				onClose={() => setIsModalOpen(false)} // Stäng modalen
-			/>
+					onClose={() => setIsModalOpen(false)}
+				/>
+			)}
 
 			{/* Book Clubs */}
 			<div className='mt-8'>
@@ -213,7 +222,7 @@ const BookView = () => {
 						<p className='text-gray-500'>
 							Ingen recensioner ännu. Var först med att recencera!
 						</p>
-			)}
+					)}
 				</ul>
 			</div>
 		</div>
