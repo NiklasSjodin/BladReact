@@ -1,6 +1,6 @@
-import { useState } from "react";
-import BladLogo from "../images/blad.png";
-import GoogleLogo from "../images/googlelogo.png";
+import { useState } from 'react';
+import BladLogo from '../images/blad.png';
+import GoogleLogo from '../images/googlelogo.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { VITE_AZURE_API_URL } from '../services/api';
 
