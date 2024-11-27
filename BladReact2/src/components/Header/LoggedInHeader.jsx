@@ -95,6 +95,7 @@ export default function LoggedInHeader() {
 
 	const handleLogout = () => {
 		localStorage.removeItem('token');
+		localStorage.removeItem('hideHero');
 		// Perform logout functionality here
 	};
 	return (
