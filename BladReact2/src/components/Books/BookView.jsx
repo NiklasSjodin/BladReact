@@ -30,7 +30,6 @@ const BookView = () => {
 						'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
 					];
 				setUserId(extractedUserId);
-				console.log('Extracted userId:', extractedUserId); // Debugging
 			} catch (error) {
 				console.error('Error decoding token:', error);
 			}
@@ -62,79 +61,55 @@ const BookView = () => {
 		const fetchBookData = async () => {
 			try {
 				setLoading(true);
-
-				let bookData;
-				let bookReferenceId;
-
-				console.log(bookData);
-
-				// Step 1: Check the backend for bookreferenceId
-				const backendResponse = await fetch(
-					`${API_URL}/book/isbn/${isbn}/bookreferenceId`
-				);
-				if (backendResponse.ok) {
-					const backendData = await backendResponse.json();
-					bookReferenceId = backendData.bookReferenceId;
-
-					// Fetch bookdata using the bookReferenceId
-					const bookDetailsResponse = await fetch(
-						`${API_URL}/bookdata/book/${bookReferenceId}`
-					);
-					if (!bookDetailsResponse.ok)
-						throw new Error('Failed to fetch book details from the backend');
-					bookData = await bookDetailsResponse.json();
-				} else if (backendResponse.status === 404) {
-					// Step 2: If book not found in backend, fetch from Google Books API
-					const googleResponse = await fetch(
+				
+				// First try to get book from our database
+				let bookData = null;
+				try {
+					const response = await authFetch(`${API_URL}/book/isbn/${isbn}`);
+					bookData = response;
+				} catch (error) {
+					// If not found in our database, fetch from Google Books
+					const googleResponse = await authFetch(
 						`${API_URL}/googlebooks/search/isbn?isbn=${isbn}`
 					);
-					if (!googleResponse.ok)
-						throw new Error('Failed to fetch book data from Google API');
+					bookData = googleResponse;
+				}
 
-					bookData = await googleResponse.json();
-				} else {
-					throw new Error('Unexpected error while checking backend for book');
+				if (!bookData) {
+					throw new Error('Book not found');
 				}
 
 				setBook(bookData);
-
-				// Fetch book clubs and reviews if bookReferenceId exists
-				if (bookReferenceId) {
-					await fetchRelatedData(bookReferenceId);
-				}
+				setLoading(false);
 			} catch (error) {
+				console.error('Error fetching book:', error);
 				setError(error.message);
-			} finally {
 				setLoading(false);
 			}
 		};
 
-		const fetchRelatedData = async (bookReferenceId) => {
-			try {
-				// Fetch bookclubs
-				const clubsResponse = await fetch(
-					`${API_URL}/bookclubs/book/${bookReferenceId}`
-				);
-				if (clubsResponse.ok) {
-					const clubsData = await clubsResponse.json();
-					setBookClubs(clubsData);
-				}
+		if (isbn) {
+			fetchBookData();
+		}
+	}, [isbn, authFetch]);
 
-				// Fetch reviews
-				const reviewsResponse = await fetch(
-					`${API_URL}/bookreview/book/${bookReferenceId}`
-				);
-				if (reviewsResponse.ok) {
-					const reviewsData = await reviewsResponse.json();
-					setReviews(reviewsData);
+	// Fetch user's book lists only if we have both userId and book data
+	useEffect(() => {
+		const fetchBookLists = async () => {
+			if (!userId || !book) return;
+			
+			try {
+				const response = await authFetch(`${API_URL}/booklist/user/${userId}`);
+				if (response) {
+					setBookLists(response);
 				}
 			} catch (error) {
 				console.warn('Error fetching book clubs or reviews:', error.message);
 			}
 		};
 
-		fetchBookData();
-	}, [isbn]);
+		fetchBookLists();
+	}, [userId, book, authFetch]);
 
 	if (loading)
 		return <p className='text-center text-xl font-semibold'>Laddar...</p>;
@@ -166,13 +141,14 @@ const BookView = () => {
 						<strong>Genre:</strong>{' '}
 						<span className='text-gray-600'>{book.genres || 'Okänd'}</span>
 					</p>
-					<Button
-						className='mt-5'
+						<Button
+							className='mt-5'
 						// variant="default"
-						onClick={() => setIsModalOpen(true)}
-					>
-						Lägg till i lista
-					</Button>
+							onClick={() => setIsModalOpen(true)}
+						>
+							Lägg till i lista
+						</Button>
+					)}
 				</div>
 			</div>
 
@@ -184,10 +160,11 @@ const BookView = () => {
 				</span>
 			</p>
 
-			<AddToBookListModal
-				userId={userId}
+			{isModalOpen && (
+				<AddToBookListModal
+					userId={userId}
 				bookId={bookReferenceId.id}
-				isOpen={isModalOpen}
+					isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)} // Stäng modalen
 			/>
 
@@ -236,7 +213,7 @@ const BookView = () => {
 						<p className='text-gray-500'>
 							Ingen recensioner ännu. Var först med att recencera!
 						</p>
-					)}
+			)}
 				</ul>
 			</div>
 		</div>
