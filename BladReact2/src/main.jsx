@@ -3,6 +3,13 @@ import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import React from "react";
+import ReactDOM from "react-dom";
+import ReactGA from "react-ga4";
+
+ReactGA.initialize("G-G-ZY7D530LPM"); 
+ReactGA.send("pageview"); 
+
 
 const queryClient = new QueryClient()
 
