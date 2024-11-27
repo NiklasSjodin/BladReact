@@ -8,6 +8,7 @@ export const useNotificationService = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isConnecting, setIsConnecting] = useState(false);
 	const hubUrl = `${VITE_AZURE_API_URL}/notificationHub`;
+	const API_URL = VITE_AZURE_API_URL;
 
 	const createConnection = useCallback(() => {
 		if (hubConnection) return;
@@ -77,7 +78,7 @@ export const useNotificationService = () => {
 	const acceptFriendRequest = async (friendshipId) => {
 		try {
 			const response = await fetch(
-				`${VITE_AZURE_API_URL}/friendship/accept/${friendshipId}`,
+				`${API_URL}/friendship/accept/${friendshipId}`,
 				{
 					method: 'PUT',
 					headers: {

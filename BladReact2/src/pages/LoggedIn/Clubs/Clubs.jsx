@@ -6,8 +6,9 @@ import { CardSkeleton } from '../../../components/CardSkeleton';
 import HeroSection from '../../../components/Sections/HeroSection';
 import { useNavigate } from 'react-router-dom';
 import { Searchbar } from '@/components/Searchbar';
-import { useAuthFetch } from '../../../services/useAuthFetch';
-import { VITE_AZURE_API_URL } from '../../../services/api';
+import { useAuthFetch } from '@/services/useAuthFetch';
+import { VITE_AZURE_API_URL } from '@/services/api';
+import BookClubCard from '@/components/Cards/BookClubCard';
 
 export default function Clubs() {
 	const [popularClubs, setPopularClubs] = useState([]);

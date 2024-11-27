@@ -2,7 +2,7 @@ import { useState } from "react";
 import BladLogo from "../images/blad.png";
 import GoogleLogo from "../images/googlelogo.png";
 import { Link, useNavigate } from 'react-router-dom';
-import { Local_API_URL } from '../services/api';
+import { VITE_LOCAL_API_URL } from '../services/api';
 
 function LogInPage() {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ function LogInPage() {
   const [emailLocked, setEmailLocked] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const API_URL = Local_API_URL;
+  const API_URL = VITE_LOCAL_API_URL;
 	const handleNext = async () => {
 		if (!email) {
 			setError('Please enter an email address');
@@ -37,7 +37,7 @@ function LogInPage() {
 
     try {
       const response = await fetch(
-				`https://blad-api.azurewebsites.net/api/accounts/login`,
+				`${API_URL}/accounts/login`,
 				{
 					method: 'POST',
 					headers: {
